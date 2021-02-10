@@ -24,6 +24,7 @@ jobs:
       - name: Build documentation
         run: |
           source env.sh
+          tar zxf tests/test_db.sqlite.tar.gz tests/
           echo ++++++++++
           echo $PWD
           ls
