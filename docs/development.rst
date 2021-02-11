@@ -5,72 +5,98 @@ If you are interested in learning about how the NexusLIMS back-end works or
 adding new features, these instructions should get you up and running with a
 development environment that will allow you to modify how the code operates.
 
+Development environment setup
+-----------------------------
+
+NexusLIMS(Euclid) uses ``conda`` as environment management tool. To set up
+for development, we first install ``miniconda`` (a slimmed version of ``conda``).
+
+   Get the miniconda installer from `here <https://docs.conda.io/en/latest/miniconda.html>`_,
+   choose the latest Python3 version of your platform and archetecture.
+   Install with double clicking if you download a installer, or ``bash <SCRIPT_NAME>``
+   if you download a bash installation script.
+
+   In the process, it will ask a few questions:
+
+   Accept the license terms?
+      yes
+
+   Where to install?
+      Default location is ``$HOME/miniconda3``, or whatever you prefer.
+
+   Do you wish the installer to initialize Miniconda3
+      yes
+
+   . After these, open a new shell, you should be able to use ``conda``.
+
+Next create an environment with ``conda``:
+
+.. code::
+
+   conda create -n ENV_NAME python=3.8 # replace ENV_NAME with something
+                                       # you like, create an environment
+                                       # with such name, and install Python
+                                       # 3.8, which nexusLIMS(Euclid) depends
+                                       # on (3.7 - 3.8).
+
+To activate an environment, do:
+
+.. code:: bash
+
+   conda activate ENV_NAME # replace ENV_NAME with the concrete name you set.
+
+to deactivate, do:
+
+.. code:: bash
+
+   conda deactivate
+
+To delete an environment, do:
+
+.. code:: bash
+
+   conda env remove -n ENV_NAME
+
+For more conda usage, please refer to conda usage guide.
+
+
 Installation
 ------------
 
-NexusLIMS uses the `pipenv <https://docs.pipenv.org/en/latest/>`_ framework
-to manage dependencies and create reproducible deployments. This means that
-installing the ``nexusLIMS`` package will require
-`installing <https://docs.pipenv.org/en/latest/install/#installing-pipenv>`_
-``pipenv``. Once you have a Python distribution of some sort
-(NexusLIMS is developed and tested using v3.7.5), installing ``pipenv`` is
-usually as simple as:
+.. code:: bash
+
+   conda activate ENV_NAME                                        # activate conda environment
+   git clone https://github.com/YOUR_GITHUB_ACCOUNT/nexuslims.git # clone repository
+   cd nexuslims
+   pip install -e .                                               # install the package
+   pip install -r docs/requirements.txt                           # install dev-related package
+
+if ``python -c "import nexusLIMS"`` successfully executed (no error),
+then ``nexusLIMS`` is installed correctly.
+
+
+Set ``nexusLIMS`` environment variables
+---------------------------------------
+
+``nexusLIMS`` would require some environment variables set to run, an
+example would be like::
+
+   nexusLIMS_user='username'
+   nexusLIMS_pass='password'
+   mmfnexus_path='/path/to/mmfnexus/mount'
+   nexusLIMS_path='/path/to/nexusLIMS/mount/mmfnexus'
+   nexusLIMS_db_path='/path/to/nexusLIMS/nexuslims_db.sqlite'
+
+to let shell know them, do:
 
 .. code:: bash
 
-   pip install --user pipenv
+   source env.sh
 
-Once ``pipenv`` is installed, clone the |RepoLink|_ using ``git``, and
-then change to the root folder of the repository. Running the following
-``install``  command will cause the ``Pipfile`` to be examined and
-dependencies automatically resolved and installed into a local python
-virtual environment:
+.. warning::
+   Environment variables in ``env.sh`` may contain credentials, DO NOT
+   let git track its changes to avoid information leak!
 
-.. code:: bash
-
-   pipenv install --dev
-
-Make sure to specify the ``--dev`` flag to ensure that the packages needed for
-development are installed alongside the regular NexusLIMS code.
-
-Setting up the environment
---------------------------
-
-To interact with the remote systems from which NexusLIMS harvests information,
-it is necessary to provide credentials for authentication and the paths in which
-to search for new data files and where to write dataset previews, as well as
-the path to the :doc:`NexusLIMS database <database>`.
-These values should be set by copying the ``.env.example`` file from the git
-repository into a file named ``.env`` in the base directory (in the same folder
-as the ``Pipfile`` file). ``pipenv`` will source variables from this file when
-entering the environment (through the ``pipenv shell`` or ``pipenv run``
-commands) prior to running any other code. As an example, the  ``.env`` file
-content should look the following (substituting real credentials, of course)::
-
-    nexusLIMS_user='username'
-    nexusLIMS_pass='password'
-    mmfnexus_path='/path/to/mmfnexus/mount'
-    nexusLIMS_path='/path/to/nexusLIMS/mount/mmfnexus'
-    nexusLIMS_db_path='/path/to/nexusLIMS/nexuslims_db.sqlite'
-
-
-Getting into the environment
-----------------------------
-
-Once the package is installed using ``pipenv``, the code can be used
-like any other Python library within the resulting virtual environment.
-
-``pipenv`` allows you to run a single command inside that environment by
-using the ``pipenv run`` command from the repository:
-
-.. code:: bash
-
-   $ pipenv run python
-
-To use other commands in the NexusLIMS environment, you can also “activate”
-the environment using the ``$ pipenv shell`` command from within the cloned
-repository. This will spawn a new shell that ensures all commands will have
-access to the installed packages and environment variables set appropriately.
 
 Building new records
 --------------------
