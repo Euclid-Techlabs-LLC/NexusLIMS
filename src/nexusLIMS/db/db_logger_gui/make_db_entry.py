@@ -138,10 +138,7 @@ class DBSessionLogger:
             self.verbosity = 10   # make testing very verbose
             self.log('(TEST) Found testing environment variable', 1)
             test_db = os.environ['nexusLIMS_test_db_path']
-            if sys.platform == 'win32':
-                self.db_path = os.path.abspath('Z:\\')
-            else:
-                self.db_path = os.path.dirname(test_db)
+            self.db_path = os.path.dirname(test_db)
             self.db_name = os.path.basename(test_db) #'test_db.sqlite'
             # Make sure to mount cifs with nobrl option, or else sqlite will
             # fail with a "Database is Locked" error
