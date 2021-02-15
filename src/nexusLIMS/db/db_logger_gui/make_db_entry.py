@@ -42,7 +42,6 @@ import contextlib
 from uuid import uuid4
 import queue
 import string
-from ctypes import windll
 
 
 def get_drives():
@@ -57,6 +56,8 @@ def get_drives():
         A list of drive letters currently in use
     """
     drives = []
+
+    from ctypes import windll
     bitmask = windll.kernel32.GetLogicalDrives()
     for letter in string.ascii_uppercase:
         if bitmask & 1:
@@ -120,7 +121,8 @@ class DBSessionLogger:
         self.verbosity = verbosity
         self.testing = 'nexuslims_testing' in os.environ
         self.db_name = db_name
-        self.drive_letter = get_first_free_drive()
+        self.drive_letter = get_first_free_drive() if sys.platform == 'win32' \
+                            else None
         self.user = user
         self.hostname = hostname
         self.session_started = False
@@ -135,18 +137,18 @@ class DBSessionLogger:
             # Values for testing from local machine (XP mode)
             self.verbosity = 10   # make testing very verbose
             self.log('(TEST) Found testing environment variable', 1)
-            self.db_path = os.path.abspath('Z:\\')
-            self.db_name = 'test_db.sqlite'
+            test_db = os.environ['nexusLIMS_test_db_path']
+            self.db_path = os.path.dirname(test_db)
+            self.db_name = os.path.basename(test_db) #'test_db.sqlite'
             # Make sure to mount cifs with nobrl option, or else sqlite will
             # fail with a "Database is Locked" error
             self.password = None
             self.full_path = os.path.join(self.db_path, self.db_name)
-            self.cpu_name = "**REMOVED**"
-            self.user = '**REMOVED**'
+            self.cpu_name = "computer_name_01"
             self.log('(TEST) Using {} as path to db'.format(self.full_path), 2)
             self.log('(TEST) Using {} as cpu name'.format(self.cpu_name), 2)
-            self.log('(TEST) if not testing, self.full_path would be '
-                     '{}\\{}'.format(self.drive_letter, db_name), 1)
+            # self.log('(TEST) if not testing, self.full_path would be '
+            #          '{}\\{}'.format(self.drive_letter, db_name), 1)
         else:
             # actual values to use in production
             self.db_path = '\\**REMOVED**\\nexuslims'
@@ -164,10 +166,11 @@ class DBSessionLogger:
         self.instr_pid = None
         self.instr_schema_name = None
 
-        self.log('Used drives are: {}'.format(get_drives()), 2)
-        self.log('Unused drives are: {}'.format(get_free_drives()), 2)
-        self.log('First available drive letter is {}'.format(
-            self.drive_letter), 2)
+        if sys.platform == 'win32':
+            self.log('Used drives are: {}'.format(get_drives()), 2)
+            self.log('Unused drives are: {}'.format(get_free_drives()), 2)
+            self.log('First available drive letter is {}'.format(
+                self.drive_letter), 2)
 
     def log(self, to_print, this_verbosity):
         """
@@ -709,7 +712,7 @@ class DBSessionLogger:
             if sys.platform == 'win32' and not self.testing:
                 self.log('running `mount_network_share()`', 2)
                 self.mount_network_share()
-            elif sys.platform == 'linux' or self.testing:
+            else:
                 self.log('on linux/testing; skipping '
                          '`mount_network_share()`', 2)
                 self.log('sleeping for 1 second to simulate network lag', 2)
@@ -757,7 +760,7 @@ class DBSessionLogger:
             if sys.platform == 'win32' and not self.testing:
                 self.log('running `umount_network_share()`', 2)
                 self.umount_network_share()
-            elif sys.platform == 'linux' or self.testing:
+            else:
                 self.log('on linux/testing; skipping '
                          '`umount_network_share()`', 2)
                 self.log('sleeping for 1 second to simulate network lag', 2)
@@ -781,8 +784,7 @@ def cmdline_args():
     p = argparse.ArgumentParser(
         description="""This program will mount the nexuslims directory
                        on CFS2E, connect to the nexuslims_db.sqlite
-                       database, and insert an entry into the 
-                       session log.""",
+                       database, and insert an entry into the session log.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     p.add_argument("event_type", type=str,

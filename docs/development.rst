@@ -91,10 +91,16 @@ to let shell know them, do:
 
 .. code:: bash
 
-   source env.sh
+   # linux/macOS
+   source env.sh [test] # add `test` to set test flag
+
+.. code:: powershell
+
+   # Windows Powershell
+   .\env.ps1 [test] # add `test` to set test flag
 
 .. warning::
-   Environment variables in ``env.sh`` may contain credentials, DO NOT
+   Environment variables in ``env.sh/env.ps1`` may contain credentials, DO NOT
    let git track its changes to avoid information leak!
 
 
