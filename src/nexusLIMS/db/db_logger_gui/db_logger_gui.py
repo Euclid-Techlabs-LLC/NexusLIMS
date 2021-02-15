@@ -7,10 +7,9 @@ import sys
 import make_db_entry as db
 import threading
 import queue
-import pyperclip
+import getpass
 from uuid import uuid4
 from datetime import datetime
-import subprocess
 
 
 def check_singleton():
@@ -37,7 +36,7 @@ def check_singleton():
         else:
             # we're not running as an .exe, so use tendo
             return tendo_singleton()
-    elif sys.platform == 'linux':
+    else:
         return tendo_singleton()
 
 
@@ -220,8 +219,7 @@ class MainApp(Tk):
             fname = resource_path("logo_text_250x100_version.png")
         else:
             fname = resource_path("logo_text_250x100.png")
-        self.logo_img = PhotoImage(file=resource_path(
-            "logo_text_250x100_version.png"))
+        self.logo_img = PhotoImage(file=fname)
         self.logo_label = ttk.Label(self,
                                     background=self['background'],
                                     foreground="#000000",
@@ -927,8 +925,16 @@ class LogWindow(Toplevel):
         self.clipboard_clear()
         if sys.platform == 'win32':
             text_content = text_content.replace('\n', '\r\n')
-        pyperclip.copy(text_content)
-        pyperclip.paste()
+
+        # put some text on clipboard
+        # https://stackoverflow.com/a/4203897
+        r = Tk()
+        r.withdraw()
+        r.clipboard_clear()
+        r.clipboard_append(text_content)
+        r.update()
+        r.destroy()
+
         self.update()
 
 
@@ -1084,8 +1090,8 @@ if __name__ == "__main__":
         sys.exit(0)
 
     # if we're on Linux, use the testing settings for debugging
-    db_logger = db.DBSessionLogger(verbosity=2,
-                                   user=os.environ['username'])
+    username = getpass.getuser()
+    db_logger = db.DBSessionLogger(verbosity=2, user=username)
     screen_res = ScreenRes(db_logger=db_logger)
     root = MainApp(db_logger=db_logger, screen_res=screen_res)
     root.protocol("WM_DELETE_WINDOW", root.on_closing)
