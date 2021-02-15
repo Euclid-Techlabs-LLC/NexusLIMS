@@ -50,7 +50,7 @@ try:
     import sphinx
     from pkg_resources import parse_version
 
-    cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
+    cmd_line_template = "sphinx-apidoc -fM -o {outputdir} {moduledir}"
     cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
 
     args = cmd_line.split(" ")
@@ -172,8 +172,7 @@ html_theme_options = {
     # an arbitrary url.
     'navbar_links': [
         ("API Docs", 'api'),
-        ("Repository",
-         "https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS", True),
+        ("Repository", "https://github.com/euclidtechlabs/nexuslims", True),
         ("NIST ODI", "https://www.nist.gov/mml/odi", True),
     ],
 
