@@ -56,8 +56,10 @@ def pytest_configure(config):
     Unpack the test_db at the very beginning since we need it right away
     when importing the instruments.py module (for instrument_db)
     """
-    with tarfile.open(tars['DB'], 'r:gz') as tar:
-        tar.extractall(path=os.path.dirname(tars['DB']))
+    if not os.path.exists(os.environ['nexusLIMS_db_path']) and \
+        (tars['DB'].endswith('.gz') or tars['DB'].endswith('.tar.gz')):
+        with tarfile.open(tars['DB'], 'r:gz') as tar:
+            tar.extractall(path=os.path.dirname(tars['DB']))
 
 
 def pytest_sessionstart(session):
@@ -68,6 +70,8 @@ def pytest_sessionstart(session):
     Unpack the compressed test files.
     """
     for _, tarf in tars.items():
+        if not tarf.endswith('.tar.gz') and not tarf.endswith('.tgz'):
+            continue
         with tarfile.open(tarf, 'r:gz') as tar:
             tar.extractall(path=os.path.dirname(tarf))
 

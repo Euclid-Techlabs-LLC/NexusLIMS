@@ -52,7 +52,7 @@ tars ={
     # '4D_STEM': '4d_stem.hdf5.tar.gz',
     # 'PARSE_META_642_TITAN': '01 - 13k - 30um obj.dm3.tar.gz',
     # 'FEI_SER': 'fei_emi_ser_test_files.tar.gz',
-    'DB': 'test_db.sqlite.tar.gz',
+    'DB': 'nexuslims_db.sqlite',
     # 'RECORD': '2018-11-13_**REMOVED**_7de34313.xml.tar.gz'
 }
 
@@ -62,6 +62,9 @@ for name, f in tars.items():
 
 files = {}
 for k, v in tars.items():
-    with tarfile.open(v, 'r:gz') as tar:
-        files[k] = [os.path.join(os.path.dirname(__file__), 'files', i) for i
-                    in tar.getnames()]
+    if v.endswith('.tar.gz') or v.endswith('.tgz'):
+        with tarfile.open(v, 'r:gz') as tar:
+            files[k] = [os.path.join(os.path.dirname(__file__), 'files', i)
+                        for i in tar.getnames()]
+    else:
+        files[k] = [v]
