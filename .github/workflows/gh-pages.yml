@@ -23,8 +23,7 @@ jobs:
 
       - name: Build documentation
         run: |
-          source env.sh
-          tar zxf tests/files/test_db.sqlite.tar.gz -C tests/files
+          source env.sh test
           make -C docs html
           mkdir public
           mv docs/_build/html/* public/
