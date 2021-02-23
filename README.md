@@ -1,7 +1,7 @@
 # Welcome to NexusLIMS!
 
-![Python package](https://github.com/euclidtechlabs/nexuslims/workflows/Python%20package/badge.svg)
-![github pages](https://github.com/euclidtechlabs/nexuslims/workflows/github%20pages/badge.svg)
+![Python package](https://github.com/Euclid-Techlabs-LLC/NexusLIMS/workflows/Python%20package/badge.svg)
+![github pages](https://github.com/Euclid-Techlabs-LLC/NexusLIMS/workflows/github%20pages/badge.svg)
 
 The project serves as the development and documentation space for the back-end
 of the Nexus Microscopy Facility Laboratory Information Management System
