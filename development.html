@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer documentation &#8212; nexusLIMS 0.0.post0.dev1+gea2c9ee documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/custom.js"></script>
+    <link rel="shortcut icon" href="_static/nexusLIMS_bare_logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NexusLIMS taxonomy" href="taxonomy.html" />
+    <link rel="prev" title="Record building workflow" href="record_building.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
+           </a>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+gea2c9ee</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API Docs</a></li>
+                <li><a href="https://github.com/euclidtechlabs/nexuslims">Repository</a></li>
+                <li><a href="https://www.nist.gov/mml/odi">NIST ODI</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site Map <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="record_building.html">Record building workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taxonomy.html">NexusLIMS taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_documentation.html">Schema documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing_cdcs.html">Tips for customizing CDCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/modules.html">nexusLIMS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/nexusLIMS.html">nexusLIMS package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/nexusLIMS.builder.html">nexusLIMS.builder package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/nexusLIMS.db.html">nexusLIMS.db package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/nexusLIMS.extractors.html">nexusLIMS.extractors package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/nexusLIMS.harvester.html">nexusLIMS.harvester package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/nexusLIMS.schemas.html">nexusLIMS.schemas package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Misc.</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="record_building.html" title="Previous Chapter: Record building workflow"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Previous</span>
+    </a>
+  </li>
+  <li>
+    <a href="taxonomy.html" title="Next Chapter: NexusLIMS taxonomy"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Next &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><img src="_static/nexusLIMS_bare_logo.png">
+<h4><a href="index.html" title="Return to documentation home">
+    NexusLIMS Documentation</a></h4>
+<ul class="globaltoc">
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="record_building.html">Record building workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taxonomy.html">NexusLIMS taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema_documentation.html">Schema documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing_cdcs.html">Tips for customizing CDCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Misc.</a></li>
+</ul>
+
+</ul><h4>
+    <a class="no-hover">Page content</a>
+</h4>
+
+<ul>
+<li><a class="reference internal" href="#">Developer documentation</a><ul>
+<li><a class="reference internal" href="#development-environment-setup">Development environment setup</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#set-nexuslims-environment-variables">Set <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> environment variables</a></li>
+<li><a class="reference internal" href="#building-new-records">Building new records</a></li>
+<li><a class="reference internal" href="#using-other-features-of-the-library">Using other features of the library</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a></li>
+</ul>
+</li>
+</ul>
+
+<form action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+<div id="sourcelink">
+  <a href="_sources/development.rst.txt"
+     rel="nofollow">View page source</a>
+</div>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <div class="section" id="developer-documentation">
+<h1>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
+<p>If you are interested in learning about how the NexusLIMS back-end works or
+adding new features, these instructions should get you up and running with a
+development environment that will allow you to modify how the code operates.</p>
+<div class="section" id="development-environment-setup">
+<h2>Development environment setup<a class="headerlink" href="#development-environment-setup" title="Permalink to this headline">¶</a></h2>
+<p>NexusLIMS(Euclid) uses <code class="docutils literal notranslate"><span class="pre">conda</span></code> as environment management tool. To set up
+for development, we first install <code class="docutils literal notranslate"><span class="pre">miniconda</span></code> (a slimmed version of <code class="docutils literal notranslate"><span class="pre">conda</span></code>).</p>
+<blockquote>
+<div><p>Get the miniconda installer from <a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">here</a>,
+choose the latest Python3 version of your platform and archetecture.
+Install with double clicking if you download a installer, or <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">&lt;SCRIPT_NAME&gt;</span></code>
+if you download a bash installation script.</p>
+<p>In the process, it will ask a few questions:</p>
+<dl class="simple">
+<dt>Accept the license terms?</dt><dd><p>yes</p>
+</dd>
+<dt>Where to install?</dt><dd><p>Default location is <code class="docutils literal notranslate"><span class="pre">$HOME/miniconda3</span></code>, or whatever you prefer.</p>
+</dd>
+<dt>Do you wish the installer to initialize Miniconda3</dt><dd><p>yes</p>
+</dd>
+</dl>
+<p>. After these, open a new shell, you should be able to use <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
+</div></blockquote>
+<p>Next create an environment with <code class="docutils literal notranslate"><span class="pre">conda</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">ENV_NAME</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span> <span class="c1"># replace ENV_NAME with something</span>
+                                    <span class="c1"># you like, create an environment</span>
+                                    <span class="c1"># with such name, and install Python</span>
+                                    <span class="c1"># 3.8, which nexusLIMS(Euclid) depends</span>
+                                    <span class="c1"># on (3.7 - 3.8).</span>
+</pre></div>
+</div>
+<p>To activate an environment, do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate ENV_NAME <span class="c1"># replace ENV_NAME with the concrete name you set.</span>
+</pre></div>
+</div>
+<p>to deactivate, do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda deactivate
+</pre></div>
+</div>
+<p>To delete an environment, do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda env remove -n ENV_NAME
+</pre></div>
+</div>
+<p>For more conda usage, please refer to conda usage guide.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate ENV_NAME                                        <span class="c1"># activate conda environment</span>
+git clone https://github.com/YOUR_GITHUB_ACCOUNT/nexuslims.git <span class="c1"># clone repository</span>
+<span class="nb">cd</span> nexuslims
+pip install -e .                                               <span class="c1"># install the package</span>
+pip install -r docs/requirements.txt                           <span class="c1"># install dev-related package</span>
+</pre></div>
+</div>
+<p>if <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">&quot;import</span> <span class="pre">nexusLIMS&quot;</span></code> successfully executed (no error),
+then <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> is installed correctly.</p>
+</div>
+<div class="section" id="set-nexuslims-environment-variables">
+<h2>Set <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> environment variables<a class="headerlink" href="#set-nexuslims-environment-variables" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> would require some environment variables set to run, an
+example would be like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nexusLIMS_user</span><span class="o">=</span><span class="s1">&#39;username&#39;</span>
+<span class="n">nexusLIMS_pass</span><span class="o">=</span><span class="s1">&#39;password&#39;</span>
+<span class="n">mmfnexus_path</span><span class="o">=</span><span class="s1">&#39;/path/to/mmfnexus/mount&#39;</span>
+<span class="n">nexusLIMS_path</span><span class="o">=</span><span class="s1">&#39;/path/to/nexusLIMS/mount/mmfnexus&#39;</span>
+<span class="n">nexusLIMS_db_path</span><span class="o">=</span><span class="s1">&#39;/path/to/nexusLIMS/nexuslims_db.sqlite&#39;</span>
+</pre></div>
+</div>
+<p>to let shell know them, do:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># linux/macOS</span>
+<span class="nb">source</span> env.sh <span class="o">[</span>test<span class="o">]</span> <span class="c1"># add `test` to set test flag</span>
+</pre></div>
+</div>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Windows Powershell</span>
+<span class="p">.\</span><span class="n">env</span><span class="p">.</span><span class="n">ps1</span> <span class="no">[test]</span> <span class="c"># add `test` to set test flag</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Environment variables in <code class="docutils literal notranslate"><span class="pre">env.sh/env.ps1</span></code> may contain credentials, DO NOT
+let git track its changes to avoid information leak!</p>
+</div>
+</div>
+<div class="section" id="building-new-records">
+<h2>Building new records<a class="headerlink" href="#building-new-records" title="Permalink to this headline">¶</a></h2>
+<p>The most basic feature of the NexusLIMS back-end is to check the
+<a class="reference internal" href="database.html"><span class="doc">database</span></a> for any logs (inserted by the
+<a class="reference internal" href="session_logger_app.html"><span class="doc">Session Logger App</span></a>) with a status of
+<code class="docutils literal notranslate"><span class="pre">'TO_BE_BUILT'</span></code>. This can be accomplished simply by running the
+<a class="reference internal" href="api/nexusLIMS.builder.html#module-nexusLIMS.builder.record_builder" title="nexusLIMS.builder.record_builder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">record_builder</span></code></a> module directly via:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv run python -m nexusLIMS.builder.record_builder
+</pre></div>
+</div>
+<p>This command will find any records that need to be built, build the .xml file,
+and then upload it to the front-end CDCS instance.</p>
+</div>
+<div class="section" id="using-other-features-of-the-library">
+<h2>Using other features of the library<a class="headerlink" href="#using-other-features-of-the-library" title="Permalink to this headline">¶</a></h2>
+<p>Once you are in a python interpreter (such as <code class="docutils literal notranslate"><span class="pre">python</span></code>, <code class="docutils literal notranslate"><span class="pre">ipython</span></code>,
+<code class="docutils literal notranslate"><span class="pre">jupyter</span></code>, etc.) from the <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> environment, you can access the
+code of this library through the <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> package if you want to do other
+tasks, such as extracting metadata or building previews images, etc.</p>
+<p>For example, to extract the metadata from a <code class="docutils literal notranslate"><span class="pre">.tif</span></code> file saved on the
+FEI Quanta, run the following code using the
+<a class="reference internal" href="api/nexusLIMS.extractors.html#nexusLIMS.extractors.quanta_tif.get_quanta_metadata" title="nexusLIMS.extractors.quanta_tif.get_quanta_metadata"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_quanta_metadata()</span></code></a> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nexusLIMS.extractors.quanta_tif</span> <span class="kn">import</span> <span class="n">get_quanta_metadata</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">get_quanta_metadata</span><span class="p">(</span><span class="s2">&quot;path_to_file.tif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">meta</span></code> variable will then contain a dictionary with the extracted
+metadata from the file.</p>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>To contribute, please
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/forks/new">fork</a>
+the repository, develop your addition on a
+<a class="reference external" href="https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow">feature branch</a>
+within your forked repo, and submit a
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/merge_requests">merge request</a>
+to the
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/tree/master">master</a>
+branch to have it included in the project. Contributing to the package
+requires that every line of code is covered by a test case. This project uses
+testing through the <a class="reference external" href="https://docs.pytest.org/en/latest/">pytest</a> library,
+and features that do not pass the test cases or decrease coverage will not be
+accepted until suitable tests are included (see the <a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/-/tree/master/nexuslims/nexusLIMS/tests"><code class="docutils literal notranslate"><span class="pre">tests</span></code></a> directory
+for examples) and that the coverage of any new features is 100%.
+To get this information, you can use an IDE that includes coverage tracking
+(such as <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a>) or include the
+<code class="docutils literal notranslate"><span class="pre">--cov</span></code> flag when running the tests. To test the preview image generation,
+the <code class="docutils literal notranslate"><span class="pre">--mpl</span></code> option should also be provided, together with the path to
+the <cite>&quot;reference&quot;</cite> images that are tested against. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> &lt;path_to_repo&gt;
+$ pipenv run pytest nexuslims/nexusLIMS/tests --cov<span class="o">=</span>nexuslims/nexusLIMS <span class="se">\</span>
+     --cov-report term --mpl --mpl-baseline-path<span class="o">=</span>nexuslims/nexusLIMS/tests/files/figs
+
+<span class="c1"># ============================= test session starts ==============================</span>
+<span class="c1"># platform linux -- Python 3.7.5, pytest-5.3.5, py-1.8.1, pluggy-0.13.1</span>
+<span class="c1"># Matplotlib: 3.1.3</span>
+<span class="c1"># Freetype: 2.6.1</span>
+<span class="c1"># rootdir: nexuslims/nexusLIMS/tests, inifile: pytest.ini</span>
+<span class="c1"># plugins: mpl-0.11, cov-2.8.1, sugar-0.9.2</span>
+<span class="c1"># collected 104 items</span>
+<span class="c1">#</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_calendar_handling.py .............................. [ 28%]</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_extractors.py ..................................... [ 64%]</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_instruments.py .....                                [ 69%]</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_records.py ......................                   [ 90%]</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_utils.py .........                                  [ 99%]</span>
+<span class="c1"># nexuslims/nexusLIMS/tests/test_version.py .                                        [100%]</span>
+<span class="c1">#</span>
+<span class="c1"># ----------- coverage: platform linux, python 3.7.5-final-0 ---------------------</span>
+<span class="c1"># Name                                                         Stmts   Miss  Cover</span>
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<span class="c1"># nexuslims/nexusLIMS/__init__.py                             8      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/_urls.py                                3      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/builder/__init__.py                     0      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/builder/record_builder.py             149      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/cdcs.py                                69      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/db/__init__.py                         10      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/db/session_handler.py                  72      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/extractors/__init__.py                 65      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/extractors/digital_micrograph.py      421      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/extractors/fei_emi.py                   0      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/extractors/quanta_tif.py              197      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/extractors/thumbnail_generator.py     329      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/harvester/__init__.py                   0      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/harvester/sharepoint_calendar.py      108      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/instruments.py                         44      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/schemas/__init__.py                     0      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/schemas/activity.py                   151      0   100%</span>
+<span class="c1"># test_calendar_handling.py                                      154      0   100%</span>
+<span class="c1"># test_extractors.py                                             379      0   100%</span>
+<span class="c1"># test_instruments.py                                             27      0   100%</span>
+<span class="c1"># test_records.py                                                181      0   100%</span>
+<span class="c1"># test_utils.py                                                   61      0   100%</span>
+<span class="c1"># test_version.py                                                  5      0   100%</span>
+<span class="c1"># utils.py                                                         7      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/utils.py                              135      0   100%</span>
+<span class="c1"># nexuslims/nexusLIMS/version.py                              2      0   100%</span>
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<span class="c1"># TOTAL                                                         2577      0   100%</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+  
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/development.rst.txt"
+     rel="nofollow">View page source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
+      Last updated on Feb 23, 2021.<br/>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>
