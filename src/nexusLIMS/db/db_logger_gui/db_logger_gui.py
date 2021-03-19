@@ -4,13 +4,12 @@ from tkinter import ttk
 import time
 import os
 import sys
+import make_db_entry as db
 import threading
 import queue
 import getpass
 from uuid import uuid4
 from datetime import datetime
-
-import make_db_entry as db
 
 
 def check_singleton():
@@ -325,15 +324,6 @@ class MainApp(Tk):
                                  compound=LEFT,
                                  image=self.log_icon)
 
-        self.copydata_button = Button(
-            self.button_frame,
-            text="Copy data",
-            padx=5, pady=5,
-            state=DISABLED,
-            compound=LEFT,
-            command=self.db_logger.copydata
-        )
-
         # grid the Toplevel window contents
         self.logo_label.grid(row=0, column=0, sticky=N, pady=(15, 0))
 
@@ -344,10 +334,9 @@ class MainApp(Tk):
         self.loading_status_Label.grid(row=2, column=0)
 
         # grid the button_frame contents
-        self.button_frame.grid(row=3, column=0, sticky=S, pady=(0, 15))
+        self.button_frame.grid(row=2, column=0, sticky=S, pady=(0, 15))
         self.end_button.grid(row=0, column=0, sticky=N, pady=5)
         self.log_button.grid(row=1, column=0, sticky=S, pady=5)
-        self.copydata_button.grid(row=2, column=0, sticky=S, pady=5)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -482,7 +471,6 @@ class MainApp(Tk):
 
         # activate the "end session" button
         self.end_button.configure(state=ACTIVE)
-        self.copydata_button.configure(state=ACTIVE)
 
     def switch_gui_to_end(self):
         # Remove the setup_frame contents
@@ -493,9 +481,6 @@ class MainApp(Tk):
 
         # deactivate the "end session" button
         self.end_button.configure(state=DISABLED)
-
-        # deactivate the "copy data" button
-        self.copydata_button.configure(state=DISABLED)
 
     def session_end(self):
         # signal the startup thread to exit (if it's still running)
@@ -919,13 +904,13 @@ class LogWindow(Toplevel):
         self.rowconfigure(1, weight=1)
         self.focus_force()
         if is_error:
-            time_left = 3
-            self.change_close_button(3, DISABLED)
-            # self.after(1000, lambda: self.change_close_button(4))
-            # self.after(2000, lambda: self.change_close_button(3))
-            self.after(1000, lambda: self.change_close_button(2))
-            self.after(2000, lambda: self.change_close_button(1))
-            self.after(3000, lambda: self.change_close_button(0, ACTIVE))
+            time_left = 5
+            self.change_close_button(5, DISABLED)
+            self.after(1000, lambda: self.change_close_button(4))
+            self.after(2000, lambda: self.change_close_button(3))
+            self.after(3000, lambda: self.change_close_button(2))
+            self.after(4000, lambda: self.change_close_button(1))
+            self.after(5000, lambda: self.change_close_button(0, ACTIVE))
 
     def change_close_button(self, num_to_show, state=DISABLED):
         if num_to_show == 0:
@@ -1106,12 +1091,7 @@ if __name__ == "__main__":
 
     # if we're on Linux, use the testing settings for debugging
     username = getpass.getuser()
-    db_logger = db.DBSessionLogger(
-        verbosity=2,
-        db_name='nexuslims_db.sqlite',
-        user=username,
-        hostname='192.168.0.166'
-    )
+    db_logger = db.DBSessionLogger(verbosity=2, user=username)
     screen_res = ScreenRes(db_logger=db_logger)
     root = MainApp(db_logger=db_logger, screen_res=screen_res)
     root.protocol("WM_DELETE_WINDOW", root.on_closing)

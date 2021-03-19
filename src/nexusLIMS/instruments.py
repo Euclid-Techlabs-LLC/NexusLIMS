@@ -46,7 +46,7 @@ import os as _os
 def _get_instrument_db():
     """
     Connect to the NexusLIMS database and get a list of all the instruments
-    contained within.
+    contained within
 
     Returns
     -------

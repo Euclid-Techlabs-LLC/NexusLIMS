@@ -32,6 +32,7 @@
 
 import sqlite3
 import re
+import datetime
 import os
 import argparse
 import subprocess
@@ -39,11 +40,8 @@ import time
 import sys
 import contextlib
 from uuid import uuid4
-from datetime import datetime
 import queue
 import string
-import random
-import shutil
 
 
 def get_drives():
@@ -108,7 +106,7 @@ class DBSessionLogger:
                  verbosity=0,
                  db_name='nexuslims_db.sqlite',
                  user=None,
-                 hostname='192.168.0.166'):
+                 hostname='**REMOVED**'):
         """
 
         Parameters
@@ -127,7 +125,6 @@ class DBSessionLogger:
                             else None
         self.user = user
         self.hostname = hostname
-        self.filestore_path = None
         self.session_started = False
         self.session_start_time = None
         self.last_entry_type = None
@@ -153,10 +150,15 @@ class DBSessionLogger:
             # self.log('(TEST) if not testing, self.full_path would be '
             #          '{}\\{}'.format(self.drive_letter, db_name), 1)
         else:
-            # db path on network drive relative to mount point.
-            # FIXME - this can be a ctor argument
-            self.db_path = '\\TEMdata\\nexuslims'
-            self.password = os.environ.get('MMFQUANT_PASS', None) # FIXME
+            # actual values to use in production
+            self.db_path = '\\**REMOVED**\\nexuslims'
+            try:
+                self.password = os.environ['MMFQUANT_PASS']
+            except KeyError as e:
+                self.log('Could not find environment variable '
+                         '"MMFQUANT_PASS"', -1)
+                self.log_exception(e)
+                self.password = e
             self.full_path = '{}\\{}'.format(self.drive_letter, db_name)
             self.cpu_name = os.environ['COMPUTERNAME']
 
@@ -184,7 +186,7 @@ class DBSessionLogger:
             The verbosity level (higher is more verbose)
         """
         level_dict = {-1: 'ERROR', 0: ' WARN', 1: ' INFO', 2: 'DEBUG'}
-        str_to_log = '{}'.format(datetime.now().isoformat()) + \
+        str_to_log = '{}'.format(datetime.datetime.now().isoformat()) + \
                      ':{}'.format(level_dict[this_verbosity]) + \
                      ': {}'.format(to_print)
         if this_verbosity <= self.verbosity:
@@ -208,7 +210,7 @@ class DBSessionLogger:
 
     def check_exit_queue(self, thread_queue, exit_queue):
         """
-        Check to see if a queue (``exit_queue``) has anything in it. If so,
+        Check to see if a queue (``q``) has anything in it. If so,
         immediately exit.
 
         Parameters
@@ -266,23 +268,13 @@ class DBSessionLogger:
                 e.output), 0)
         return output
 
-    def mount_network_share(self, mount_point=None):
+    def mount_network_share(self):
         """
         Mount the path containing the database to the first free drive letter
         found using Windows `cmd`. Due to some Windows limitations,
         this requires looking up the server's IP address
         and mounting using the IP rather than the actual domain name
-
-        Parameters
-        ----------
-        mount_point : str
-            The mount point on the netword drive. The default points to the
-            `self.db_path`.
         """
-
-        if mount_point is None:
-            mount_point = self.db_path
-
         # we should not have to disconnect anything because we're using free
         # letter:
         # self.log('unmounting existing N:', 2)
@@ -309,12 +301,12 @@ class DBSessionLogger:
             self.log("Ping did not return a parsable IP", -1)
             raise EnvironmentError('Could not find IP of network share in '
                                    'output of ping command')
-        self.log('found network drive at {}'.format(ip), 2)
+        self.log('found cfs2e at {}'.format(ip), 2)
 
-        # if isinstance(self.password, Exception):
-        #     raise EnvironmentError("MMFQUANT_PASS environment variable is "
-        #                            "not defined. Please contact "
-        #                            "miclims@nist.gov for assistance.")
+        if isinstance(self.password, Exception):
+            raise EnvironmentError("MMFQUANT_PASS environment variable is "
+                                   "not defined. Please contact "
+                                   "miclims@nist.gov for assistance.")
 
         current_mounts = str(self.run_cmd('net use')).split('\r\n')
         self.log('Currently mounted: ', 2)
@@ -344,21 +336,16 @@ class DBSessionLogger:
             mount_command = 'net use {} \\\\{}{} '.format(self.drive_letter,
                                                           ip if have_ip else
                                                           self.hostname,
-                                                          mount_point)
-            if self.password is not None:
-                mount_command += '/user:NIST\\mmfquant {}'.format(self.password)
+                                                          self.db_path) + \
+                            '/user:NIST\\mmfquant {}'.format(self.password)
             self.log('mounting {}'.format(self.drive_letter), 2)
 
             # mounting requires a security policy:
             # https://support.microsoft.com/en-us/help/968264/error-message-when-
             # you-try-to-map-to-a-network-drive-of-a-dfs-share-by
 
-            command_shown = mount_command
-            if self.password is not None:
-                command_shown = command_shown.replace(self.password, '********')
-
-            self.log('using {}'.format(command_shown), 2)
-
+            self.log('using "{}'.format(
+                mount_command).replace(self.password, '**************'), 2)
             p = self.run_cmd(mount_command)
 
             if 'error' in str(p):
@@ -396,17 +383,13 @@ class DBSessionLogger:
         -------
         instrument_pid : str
             The PID for the instrument corresponding to this computer
-        instrument_schema_name : str
-            The schema name for the instrument corresponding to this computer
-        filestore_path : str
-            The filestore path for the instrument corresponding to this computer
         """
         # Get the instrument pid from the computer name of this computer
         with contextlib.closing(sqlite3.connect(self.full_path)) as con:
             self.log('Looking in database for computer name matching '
                      '{}'.format(self.cpu_name), 1)
             with con as cur:
-                res = cur.execute('SELECT instrument_pid, schema_name, filestore_path '
+                res = cur.execute('SELECT instrument_pid, schema_name '
                                   'from instruments '
                                   'WHERE '
                                   'computer_name is '
@@ -414,12 +397,13 @@ class DBSessionLogger:
                 one_result = res.fetchone()
                 self.log('Database result is {}'.format(one_result), 2)
                 if one_result is not None:
-                    instrument_pid, instrument_schema_name, filestore_path = one_result
+                    instrument_pid, instrument_schema_name = one_result
                 else:
-                    instrument_pid, instrument_schema_name, filestore_path = (None, None, None)
+                    instrument_pid, instrument_schema_name = (None, None)
 
-            self.log('instrument_pid: {} / instrument_schema_name: {} / filestore_path: {}'.format(
-                *one_result), 2)
+            self.log('instrument_pid: {} / '.format(instrument_pid) +
+                     'instrument_schema_name: '
+                     '{}'.format(instrument_schema_name), 2)
             if instrument_pid is None:
                 raise sqlite3.DataError('Could not find an instrument matching '
                                         'this computer\'s name '
@@ -432,7 +416,7 @@ class DBSessionLogger:
                 self.log('Found instrument ID: '
                          '{} using '.format(instrument_pid) +
                          '{}'.format(self.cpu_name), 1)
-        return instrument_pid, instrument_schema_name, filestore_path
+        return instrument_pid, instrument_schema_name
 
     def last_session_ended(self, thread_queue=None, exit_queue=None):
         """
@@ -581,7 +565,7 @@ class DBSessionLogger:
                 id_session_log = r.fetchone()
             self.check_exit_queue(thread_queue, exit_queue)
             self.log('Verified insertion of row {}'.format(id_session_log), 1)
-            self.session_start_time = datetime.strptime(
+            self.session_start_time = datetime.datetime.strptime(
                 id_session_log[3], "%Y-%m-%dT%H:%M:%S.%f")
             if thread_queue:
                 thread_queue.put(('Verified "START" session inserted into db',
@@ -721,13 +705,6 @@ class DBSessionLogger:
             return True
 
     def db_logger_setup(self, thread_queue=None, exit_queue=None):
-        """
-        setup routine:
-        1) mount network share.
-        2) check db exists.
-        3) get instrument info (pid, schema name).
-        """
-
         self.log('username is {}'.format(self.user), 1)
         self.log('computer name is {}'.format(self.cpu_name), 1)
         try:
@@ -758,7 +735,7 @@ class DBSessionLogger:
         self.log('running `get_instr_pid()`', 2)
         try:
             self.check_exit_queue(thread_queue, exit_queue)
-            self.instr_pid, self.instr_schema_name, self.filestore_path = self.get_instr_pid()
+            self.instr_pid, self.instr_schema_name = self.get_instr_pid()
         except Exception as e:
             thread_queue.put(e)
             self.log("Could not fetch instrument PID and name from database. "
@@ -773,44 +750,7 @@ class DBSessionLogger:
 
         return True
 
-    def _copydata_setup(self, thread_queue=None, exit_queue=None):
-        """
-        copydata routine:
-        1) mount network share.
-        """
-
-        self.log('username is {}'.format(self.user), 1)
-        self.log('computer name is {}'.format(self.cpu_name), 1)
-        try:
-            self.check_exit_queue(thread_queue, exit_queue)
-            if sys.platform == 'win32' and not self.testing:
-                self.log('running `mount_network_share()`', 2)
-                self.mount_network_share(mount_point='\\TEMdata\\daq') # FIXME
-            else:
-                self.log('on linux/testing; skipping '
-                         '`mount_network_share()`', 2)
-                self.log('sleeping for 1 second to simulate network lag', 2)
-                time.sleep(1)
-        except Exception as e:
-            if thread_queue:
-                thread_queue.put(e)
-            self.log("Could not mount the network share holding the "
-                     "database. Details:", -1)
-            self.log_exception(e)
-            return False
-        if thread_queue:
-            self.progress_num = 1
-            thread_queue.put(('Mounted network share', self.progress_num))
-            self.progress_num += 1
-
-        return True
-
     def db_logger_teardown(self, thread_queue=None, exit_queue=None):
-        """
-        teardown routine
-        1) unmount network share.
-        """
-
         try:
             if thread_queue:
                 thread_queue.put(('Unmounting the database network share',
@@ -826,8 +766,7 @@ class DBSessionLogger:
                 self.log('sleeping for 1 second to simulate network lag', 2)
                 time.sleep(1)
         except Exception as e:
-            if thread_queue:
-                thread_queue.put(e)
+            thread_queue.put(e)
             self.log("Could not unmount the network share holding the "
                      "database. Details:", -1)
             self.log_exception(e)
@@ -838,45 +777,6 @@ class DBSessionLogger:
 
         self.log('Finished unmounting network share', 2)
         return True
-
-    def _copydata(self):
-        """ Take a data file randomly from **mock** data folder,
-        copy it to ``filestore_path`` of this instument, to mock the
-        behavior of generating experiment data.
-        """
-
-        src_dir = os.path.join(self.drive_letter, 'mock') # FIXME
-        dst_dir = os.path.join(self.drive_letter, self.filestore_path)
-
-        datafiles = [f for f in os.listdir(src_dir) if not f.startswith('.')]
-        src_file = random.choice(datafiles)
-        suffix = src_file.split('.')[-1]
-        timestamp = datetime.strftime(datetime.now(), "%y%m%d_%H%M%S")
-        dst_file = '%s.%s' % (timestamp, suffix)
-
-        logstr = 'COPY {} --> {}'.format(
-            os.path.join(src_dir, src_file),
-            os.path.join(dst_dir, dst_file)
-        )
-
-        try:
-            shutil.copy2(os.path.join(src_dir, src_file),
-                        os.path.join(dst_dir, dst_file))
-            self.log(logstr, 2)
-        except Exception as e:
-            self.log('Failed to ' + logstr, -1)
-            self.log_exception(e)
-
-    def copydata(self, thread_queue=None, exit_queue=None):
-        """copy a data file from mock folder to instument ``filestore_path``.
-
-        Returns True if successful, False if not
-        """
-        self.check_exit_queue(thread_queue, exit_queue)
-        if self._copydata_setup(thread_queue, exit_queue):
-            self._copydata()
-            self.db_logger_teardown(thread_queue, exit_queue)
-            return True
 
 
 def cmdline_args():
