@@ -7,6 +7,7 @@ export nexusLIMS_path=$PWD
 export nexusLIMS_db_path=$nexusLIMS_path/tests/files/nexuslims_db.sqlite
 export nexusLIMS_test_db_path=$nexusLIMS_path/tests/files/nexuslims_db.sqlite
 export nexusLIMS_timezone='US/Eastern'
+export COMPUTERNAME="MBP"
 
 if [[ "$1" == "test" ]]; then
     export nexuslims_testing=1
