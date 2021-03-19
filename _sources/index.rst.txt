@@ -4,6 +4,7 @@
    :hidden:
 
    Package introduction <self>
+   get_started
    data_security
    database
    session_logger_app
