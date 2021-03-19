@@ -36,17 +36,8 @@ Next create an environment with ``conda``:
    conda create -n ENV_NAME python=3.8 # replace ENV_NAME with something
                                        # you like, create an environment
                                        # with such name, and install Python
-                                       # 3.8, which NexusLIMS(Euclid) depends
+                                       # 3.8, which nexusLIMS(Euclid) depends
                                        # on (3.7 - 3.8).
-
-We strongly recommend you install a supported ``numpy`` version when you
-create the environment. The installation of other dependency packages may
-(not) throw an error if ``numpy`` can not be found. Example:
-.. code-block::
-
-    conda create -n ENV_NAME python=3.8 numpy=1.19.1 # Get the appropriate
-                                                     # numpy version from
-                                                     # the conda website.
 
 To activate an environment, do:
 
@@ -153,14 +144,16 @@ metadata from the file.
 Contributing
 ------------
 
-To contribute, please fork
+To contribute, please
+`fork <https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/forks/new>`_
 the repository, develop your addition on a
 `feature branch <https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow>`_
-within your forked repo, and submit a pull request
-to the master branch to have it included in the project.
-Contributing to the
-package requires that every line of code is covered by a test case. This
-project uses
+within your forked repo, and submit a
+`merge request <https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/merge_requests>`_
+to the
+`master <https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/tree/master>`_
+branch to have it included in the project. Contributing to the package
+requires that every line of code is covered by a test case. This project uses
 testing through the `pytest <https://docs.pytest.org/en/latest/>`_ library,
 and features that do not pass the test cases or decrease coverage will not be
 accepted until suitable tests are included (see the |testsLink|_ directory

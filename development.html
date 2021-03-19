@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Developer documentation &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>Developer documentation &#8212; nexusLIMS 0.0.post0.dev1+gb6aa905 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+gb6aa905</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +63,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -133,7 +132,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -206,17 +204,8 @@ if you download a bash installation script.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">ENV_NAME</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span> <span class="c1"># replace ENV_NAME with something</span>
                                     <span class="c1"># you like, create an environment</span>
                                     <span class="c1"># with such name, and install Python</span>
-                                    <span class="c1"># 3.8, which NexusLIMS(Euclid) depends</span>
+                                    <span class="c1"># 3.8, which nexusLIMS(Euclid) depends</span>
                                     <span class="c1"># on (3.7 - 3.8).</span>
-</pre></div>
-</div>
-<p>We strongly recommend you install a supported <code class="docutils literal notranslate"><span class="pre">numpy</span></code> version when you
-create the environment. The installation of other dependency packages may
-(not) throw an error if <code class="docutils literal notranslate"><span class="pre">numpy</span></code> can not be found. Example:
-.. code-block:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">ENV_NAME</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span> <span class="n">numpy</span><span class="o">=</span><span class="mf">1.19</span><span class="o">.</span><span class="mi">1</span> <span class="c1"># Get the appropriate</span>
-                                                 <span class="c1"># numpy version from</span>
-                                                 <span class="c1"># the conda website.</span>
 </pre></div>
 </div>
 <p>To activate an environment, do:</p>
@@ -302,14 +291,16 @@ metadata from the file.</p>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
-<p>To contribute, please fork
+<p>To contribute, please
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/forks/new">fork</a>
 the repository, develop your addition on a
 <a class="reference external" href="https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow">feature branch</a>
-within your forked repo, and submit a pull request
-to the master branch to have it included in the project.
-Contributing to the
-package requires that every line of code is covered by a test case. This
-project uses
+within your forked repo, and submit a
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/merge_requests">merge request</a>
+to the
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/tree/master">master</a>
+branch to have it included in the project. Contributing to the package
+requires that every line of code is covered by a test case. This project uses
 testing through the <a class="reference external" href="https://docs.pytest.org/en/latest/">pytest</a> library,
 and features that do not pass the test cases or decrease coverage will not be
 accepted until suitable tests are included (see the <a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/-/tree/master/nexuslims/nexusLIMS/tests"><code class="docutils literal notranslate"><span class="pre">tests</span></code></a> directory

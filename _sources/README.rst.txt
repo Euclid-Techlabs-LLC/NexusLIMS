@@ -41,7 +41,7 @@ while on a microscope, and then using the NexusLIMS front-end system at
 https://**REMOVED** to search through and browse your experimental data.
 Beyond that, suggestions for improvements or additional features are always
 welcome by submitting a
-`new issue <https://github.com/euclidtechlabs/nexuslims/issues/new>`__
+`new issue <https://gitlab.nist.gov/gitlab/nexuslims/NexusMicroscopyLIMS/issues/new>`_
 at the project's code |repoLink|_.
 
 About the logo
