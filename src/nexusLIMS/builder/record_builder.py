@@ -64,7 +64,7 @@ XSLT_PATH = _os.path.join(_os.path.dirname(__file__),
                           "cal_events_to_nx_record.xsl")
 XSD_PATH = _os.path.join(_os.path.dirname(_activity.__file__),
                          "nexus-experiment.xsd")
-
+CONFIG = nexusLIMS.get_config()
 
 def build_record(instrument, dt_from, dt_to,
                  user=None,
@@ -78,8 +78,7 @@ def build_record(instrument, dt_from, dt_to,
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument`
-        One of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        One of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events.
     dt_from : datetime.datetime
 
@@ -129,16 +128,16 @@ def build_record(instrument, dt_from, dt_to,
     _logger.info(f"Getting calendar events with instrument: {instrument.name}, "
                  f"from {dt_from.isoformat()} to {dt_to.isoformat()}, "
                  f"user: {user}")
-    events_str = _sp_cal.get_events(instrument=instrument, dt_from=dt_from,
-                                    dt_to=dt_to, user=user, wrap=True)
-
+    # events_str = _sp_cal.get_events(instrument=instrument, dt_from=dt_from,
+    #                                 dt_to=dt_to, user=user, wrap=True)
     # Apply XSLT to transform calendar events to single record format:
-    output = _parse_xml(events_str, XSLT_PATH,
-                        instrument_PID=instrument.name,
-                        instrument_name=instrument.schema_name,
-                        experiment_id=str(_uuid4()),
-                        collaborator=None,
-                        sample_id=sample_id)
+    # output = _parse_xml(events_str, XSLT_PATH,
+    #                     instrument_PID=instrument.name,
+    #                     instrument_name=instrument.schema_name,
+    #                     experiment_id=str(_uuid4()),
+    #                     collaborator=None,
+    #                     sample_id=sample_id)
+    output = '' # FIXME bypass calendar query for now.
 
     # No calendar events were found
     if str(output) == '':
@@ -176,8 +175,7 @@ def build_acq_activities(instrument, dt_from, dt_to,
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument`
-        One of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        One of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events.
     dt_from : datetime.datetime
         The starting timestamp that will be used to determine which files go
@@ -204,7 +202,7 @@ def build_acq_activities(instrument, dt_from, dt_to,
         _logging.WARNING)
 
     start_timer = _timer()
-    path = _os.path.abspath(_os.path.join(_os.environ['mmfnexus_path'],
+    path = _os.path.abspath(_os.path.join(CONFIG['mmfnexus_path'],
                                           instrument.filestore_path))
     # find the files to be included
     files = get_files(path, dt_from, dt_to)
@@ -248,7 +246,7 @@ def build_acq_activities(instrument, dt_from, dt_to,
             # add this file to the AA
             _logger.info(
                 f'Adding file {i}/{len(files)} '
-                f'{f.replace(_os.environ["mmfnexus_path"], "").strip("/")} '
+                f'{f.replace(CONFIG["mmfnexus_path"], "").strip("/")} '
                 f'to activity {aa_idx}')
             activities[aa_idx].add_file(f, generate_previews)
             # assume this file is the last one in the activity (this will be
@@ -324,8 +322,7 @@ def dump_record(instrument,
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument`
-        One of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        One of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events.
     dt_from : datetime.datetime
         The starting timestamp that will be used to determine which files go
@@ -412,7 +409,7 @@ def build_new_session_records():
             if isinstance(e, FileNotFoundError):
                 # if no files were found for this session log, mark it as so in
                 # the database
-                path = _os.path.join(_os.environ['mmfnexus_path'],
+                path = _os.path.join(CONFIG['mmfnexus_path'],
                                      s.instrument.filestore_path)
                 _logger.warning(f'No files found in '
                                 f'{_os.path.abspath(path)} between '
@@ -432,7 +429,7 @@ def build_new_session_records():
                 basename = f'{s.dt_from.strftime("%Y-%m-%d")}_' \
                            f'{s.instrument.name}_' \
                            f'{s.session_identifier.split("-")[0]}.xml'
-                filename = _os.path.join(_os.environ['nexusLIMS_path'], '..',
+                filename = _os.path.join(CONFIG['nexusLIMS_path'],
                                          'records', basename)
                 filename = _os.path.abspath(filename)
                 _pathlib.Path(_os.path.dirname(filename)).mkdir(parents=True,
@@ -530,7 +527,7 @@ def dry_run_file_find(s):
         A list of strings containing the files that would be included for the
         record of this session (if it were not a dry run)
     """
-    path = _os.path.abspath(_os.path.join(_os.environ['mmfnexus_path'],
+    path = _os.path.abspath(_os.path.join(CONFIG['mmfnexus_path'],
                                           s.instrument.filestore_path))
     _logger.info(f'Searching for files in '
                  f'{_os.path.abspath(path)} between '

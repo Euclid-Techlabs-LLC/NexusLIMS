@@ -26,20 +26,23 @@
 #  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
 #
 
-import nexusLIMS.utils
-from nexusLIMS.utils import *
-from nexusLIMS.utils import find_dirs_by_mtime, _zero_bytes
-from nexusLIMS.extractors import extension_reader_map as _ext
-from nexusLIMS.extractors import quanta_tif
-from datetime import datetime
+import logging
 import os
 import sys
-from io import BytesIO
-from lxml import etree
-import pytest
-import logging
+from datetime import datetime
 from datetime import timedelta as _td
+from io import BytesIO
 
+import nexusLIMS
+import nexusLIMS.utils
+import pytest
+from lxml import etree
+from nexusLIMS.extractors import extension_reader_map as _ext
+from nexusLIMS.extractors import quanta_tif
+from nexusLIMS.utils import *
+from nexusLIMS.utils import _zero_bytes, find_dirs_by_mtime
+
+CONFIG = nexusLIMS.get_config()
 
 class TestUtils:
     def test_parse_xml_bad_xslt(self):
@@ -47,13 +50,13 @@ class TestUtils:
         xsl_string = \
             b"""
             <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema"                                                             
-            xmlns:nx="https://data.nist.gov/od/dm/nexus/experiment/v1.0"                                             
-            version="1.0">                                                                                           
-            <xsl:output method="html" indent="yes" encoding="UTF-8"/>                                                
-            <xsl:template match="/">                                                                                 
-                <xsl:comment>--</xsl:comment>                                                                        
-            </xsl:template> 
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+            xmlns:nx="https://data.nist.gov/od/dm/nexus/experiment/v1.0"
+            version="1.0">
+            <xsl:output method="html" indent="yes" encoding="UTF-8"/>
+            <xsl:template match="/">
+                <xsl:comment>--</xsl:comment>
+            </xsl:template>
             </xsl:stylesheet>
             """
         with pytest.raises(etree.XSLTApplyError):
@@ -75,7 +78,7 @@ class TestUtils:
             'level3.1': 'value'}
 
     # def test_find_dirs_by_mtime(self, fix_mountain_time, monkeypatch):
-    #     path = os.path.join(os.environ["mmfnexus_path"], "JEOL3010")
+    #     path = os.path.join(CONFIG["mmfnexus_path"], "JEOL3010")
     #     dt_from = datetime.fromisoformat("2019-07-24T11:00:00.000")
     #     dt_to = datetime.fromisoformat("2019-07-24T16:00:00.000")
     #     dirs = find_dirs_by_mtime(path, dt_from, dt_to)
@@ -84,11 +87,11 @@ class TestUtils:
     #     for d in ['JEOL3010/**REMOVED**/C36_Paraffin/20190724/M1_DC_Beam',
     #               'JEOL3010/**REMOVED**/C36_Paraffin/20190724/M2_DC_Beam_Dose_1',
     #               'JEOL3010/**REMOVED**/C36_Paraffin/20190724/M3_DC_Beam_Dose_2']:
-    #         assert os.path.join(os.environ['mmfnexus_path'], d) in dirs
+    #         assert os.path.join(CONFIG['mmfnexus_path'], d) in dirs
 
     # def test_gnu_find(self, fix_mountain_time):
     #     files = gnu_find_files_by_mtime(
-    #         os.path.join(os.environ["mmfnexus_path"], "Titan"),
+    #         os.path.join(CONFIG["mmfnexus_path"], "Titan"),
     #         dt_from=datetime.fromisoformat("2018-11-13T13:00:00.000"),
     #         dt_to=datetime.fromisoformat("2018-11-13T16:00:00.000"),
     #         extensions=_ext.keys()
@@ -99,7 +102,7 @@ class TestUtils:
     # def test_gnu_and_pure_find_together(self):
     #     # both file-finding methods should return the same list (when sorted
     #     # by mtime) for the same path and date range
-    #     path = os.path.join(os.environ["mmfnexus_path"], "JEOL3010")
+    #     path = os.path.join(CONFIG["mmfnexus_path"], "JEOL3010")
     #     dt_from = datetime.fromisoformat("2019-07-24T11:00:00.000")
     #     dt_to = datetime.fromisoformat("2019-07-24T16:00:00.000")
     #     gnu_files = gnu_find_files_by_mtime(path, dt_from=dt_from,
@@ -118,7 +121,7 @@ class TestUtils:
 
     #     with pytest.raises(NotImplementedError):
     #         files = gnu_find_files_by_mtime(
-    #             os.path.join(os.environ["mmfnexus_path"], "643Titan"),
+    #             os.path.join(CONFIG["mmfnexus_path"], "643Titan"),
     #             dt_from=datetime.fromisoformat("2019-11-06T15:00:00.000"),
     #             dt_to=datetime.fromisoformat("2019-11-06T18:00:00.000"),
     #             extensions=_ext.keys())
@@ -128,7 +131,7 @@ class TestUtils:
 
     #     with pytest.raises(RuntimeError) as e:
     #         files = gnu_find_files_by_mtime(
-    #             os.path.join(os.environ["mmfnexus_path"], "643Titan"),
+    #             os.path.join(CONFIG["mmfnexus_path"], "643Titan"),
     #             dt_from=datetime.fromisoformat("2019-11-06T15:00:00.000"),
     #             dt_to=datetime.fromisoformat("2019-11-06T18:00:00.000"),
     #             extensions=_ext.keys())

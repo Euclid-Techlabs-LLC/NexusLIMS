@@ -30,20 +30,21 @@
 # the Windows XP-based microscope PCs. Using this version of Python with
 # pyinstaller 3.5 seems to work on the 642 Titan
 
-import sqlite3
-import re
-import os
 import argparse
-import subprocess
-import time
-import sys
 import contextlib
-from uuid import uuid4
-from datetime import datetime
+import os
+import pathlib
+import platform
 import queue
-import string
 import random
 import shutil
+import socket
+import sqlite3
+import string
+import subprocess
+import sys
+from datetime import datetime
+from uuid import uuid4
 
 
 def get_drives():
@@ -96,37 +97,34 @@ def get_first_free_drive():
         The first free drive letter that should be safe to use with colon
         appended
     """
-    first_free = get_free_drives()[0]
-    return first_free + ':'
+    if sys.platform == "win32":
+        first_free = get_free_drives()[0]
+        return first_free + ':'
+    else:
+        res = os.path.expanduser("~/.nexuslims/mnt")
+        if not os.path.isdir(res):
+            os.makedirs(res)
+        return res
 
 
 class DBSessionLogger:
-    ip_regex = r'(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}' \
-               r'(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
-
-    def __init__(self,
-                 verbosity=0,
-                 db_name='nexuslims_db.sqlite',
-                 user=None,
-                 hostname='192.168.0.166'):
+    def __init__(self, config, verbosity=0, user=None):
         """
-
         Parameters
         ----------
+        config : dict
         verbosity : int
-        testing
-        db_name
+            -1: 'ERROR', 0: ' WARN', 1: ' INFO', 2: 'DEBUG'
         user : str
             The user to attach to this record
         """
         self.log_text = ""
+        self.config = config
         self.verbosity = verbosity
-        self.testing = 'nexuslims_testing' in os.environ
-        self.db_name = db_name
-        self.drive_letter = get_first_free_drive() if sys.platform == 'win32' \
-                            else None
+        self.db_name = config["database_name"]
+        self.drive_letter = get_first_free_drive()
         self.user = user
-        self.hostname = hostname
+        self.hostname = config["networkdrive_hostname"]
         self.filestore_path = None
         self.session_started = False
         self.session_start_time = None
@@ -136,29 +134,10 @@ class DBSessionLogger:
         self.last_session_ts = None
         self.progress_num = 0
 
-        if self.testing:
-            # Values for testing from local machine (XP mode)
-            self.verbosity = 10   # make testing very verbose
-            self.log('(TEST) Found testing environment variable', 1)
-            test_db = os.environ['nexusLIMS_test_db_path']
-            self.db_path = os.path.dirname(test_db)
-            self.db_name = os.path.basename(test_db) #'test_db.sqlite'
-            # Make sure to mount cifs with nobrl option, or else sqlite will
-            # fail with a "Database is Locked" error
-            self.password = None
-            self.full_path = os.path.join(self.db_path, self.db_name)
-            self.cpu_name = "computer_name_01"
-            self.log('(TEST) Using {} as path to db'.format(self.full_path), 2)
-            self.log('(TEST) Using {} as cpu name'.format(self.cpu_name), 2)
-            # self.log('(TEST) if not testing, self.full_path would be '
-            #          '{}\\{}'.format(self.drive_letter, db_name), 1)
-        else:
-            # db path on network drive relative to mount point.
-            # FIXME - this can be a ctor argument
-            self.db_path = '\\TEMdata\\nexuslims'
-            self.password = os.environ.get('MMFQUANT_PASS', None) # FIXME
-            self.full_path = '{}\\{}'.format(self.drive_letter, db_name)
-            self.cpu_name = os.environ['COMPUTERNAME']
+        self.db_path = str(pathlib.Path(config["database_relpath"]))
+        self.password = config["networddrive_password"] if config["networddrive_password"] else None
+        self.full_path = os.path.join(self.drive_letter, self.db_name)
+        self.cpu_name = platform.node().split('.')[0]
 
         self.session_id = str(uuid4())
         self.instr_pid = None
@@ -282,71 +261,76 @@ class DBSessionLogger:
 
         if mount_point is None:
             mount_point = self.db_path
+        mount_point = str(pathlib.Path(mount_point))
 
         # we should not have to disconnect anything because we're using free
         # letter:
         # self.log('unmounting existing N:', 2)
         # _ = self.run_cmd(r'net use N: /delete /y')
 
-        # Connect to shared drive, windows does not allow multiple connections
-        # to the same server, but you can trick it by using IP address
-        # instead of DNS name... nslookup command sometimes fails,
-        # but parsing the output of ping seems to work
-        self.log('getting ip of {}'.format(self.hostname), 2)
-        p = self.run_cmd(r'ping {} -n 1'.format(self.hostname))
-        self.log('output of ping: {}'.format(p), 2)
-
-        # The second line contains "pinging hostname [ip]..."
-        ip = None
-        have_ip = False
-
-        ip_line = p.split('\r\n')[1]
-        ips = re.findall(DBSessionLogger.ip_regex, ip_line)
-        have_ip = True
-        if len(ips) == 1:
-            ip = ips[0]
-        else:
-            self.log("Ping did not return a parsable IP", -1)
-            raise EnvironmentError('Could not find IP of network share in '
-                                   'output of ping command')
+        ip = socket.gethostbyname(self.hostname)
         self.log('found network drive at {}'.format(ip), 2)
 
-        # if isinstance(self.password, Exception):
-        #     raise EnvironmentError("MMFQUANT_PASS environment variable is "
-        #                            "not defined. Please contact "
-        #                            "miclims@nist.gov for assistance.")
-
-        current_mounts = str(self.run_cmd('net use')).split('\r\n')
-        self.log('Currently mounted: ', 2)
         do_mount = True
-        self.log('Looking for '
-                 r'{}\{}'.format(ip if have_ip else
-                                 self.hostname,
-                                 self.db_path).replace(r'\\', '\\'), 2)
-        for m in current_mounts:
-            self.log(m, 2)
-            if r'{}\{}'.format(ip if have_ip else
-                               self.hostname,
-                               self.db_path).replace(r'\\', '\\') in m:
-                old_drive_letter = self.drive_letter
-                self.drive_letter = m.split()[0]
-                if 'test_db' in os.environ:
-                    self.log('(TEST) Using test db at '
-                             '{}'.format(self.full_path), 0)
-                else:
-                    self.full_path = '{}\\{}'.format(self.drive_letter,
-                                                     self.db_name)
-                    self.log('{} is already mounted'.format(self.drive_letter),
-                             0)
+        if sys.platform == "win32":
+            current_mounts = str(self.run_cmd('net use')).split('\r\n')
+            self.log('Currently mounted: ', 2)
+            self.log('Looking for '
+                    r'{}\{}'.format(ip,
+                                    self.db_path).replace(r'\\', '\\'), 2)
+            for m in current_mounts:
+                self.log(m, 2)
+                if r'{}\{}'.format(ip, self.db_path).replace(r'\\', '\\') in m:
+                    old_drive_letter = self.drive_letter
+                    for item in m.split():
+                        if len(item) == 2 and item[1] == ':' \
+                            and item[0] in string.ascii_uppercase:
+                            self.drive_letter = item
+                            break
+
+                    self.full_path = '{}\\{}'.format(self.drive_letter, self.db_name)
+                    self.log('{} is already mounted'.format(self.drive_letter), 0)
+                    do_mount = False
+        else:
+            if os.listdir(self.drive_letter):
                 do_mount = False
 
         if do_mount:
-            mount_command = 'net use {} \\\\{}{} '.format(self.drive_letter,
-                                                          ip if have_ip else
-                                                          self.hostname,
-                                                          mount_point)
-            if self.password is not None:
-                mount_command += '/user:NIST\\mmfquant {}'.format(self.password)
+            workgroup = self.config.get("networkdrive_workgroup")
+            username = self.config.get("networkdrive_username")
+            password = self.config.get("networddrive_password")
+
+            if sys.platform == "win32":
+                mount_command = 'net use {} \\\\{}\\{} '.format(self.drive_letter,
+                                                                ip,
+                                                                mount_point)
+                credential_part = ""
+                if username:
+                    if workgroup:
+                        credential_part = "/user:%s\\%s" % (workgroup, username)
+                    else:
+                        credential_part = "/user:%s" % username
+                    if password:
+                        credential_part += ' ' + password
+                if credential_part:
+                    mount_command += credential_part
+            elif sys.platform == "darwin":
+                credential_part = ""
+                if workgroup:
+                    credential_part += workgroup + ';'
+                if username:
+                    credential_part += username
+                    if password:
+                        credential_part += ':' + password
+                if credential_part:
+                    credential_part += '@'
+
+                # Here assuming network drive is SMB drive
+                mount_command = "mount -t smbfs //%s%s/%s %s" % (
+                    credential_part, ip, mount_point, self.drive_letter)
+            else:
+                raise NotImplementedError("Current OS -- %s not supported." % sys.platform)
+
             self.log('mounting {}'.format(self.drive_letter), 2)
 
             # mounting requires a security policy:
@@ -383,7 +367,12 @@ class DBSessionLogger:
         Unmount the network share using the Windows `cmd`
         """
         self.log('unmounting {}'.format(self.drive_letter), 2)
-        p = self.run_cmd(r'net use {} /del /y'.format(self.drive_letter))
+        if sys.platform == 'win32':
+            p = self.run_cmd(r'net use {} /del /y'.format(self.drive_letter))
+        elif sys.platform == "darwin":
+            p = self.run_cmd("umount %s" % self.drive_letter)
+        else:
+            raise NotImplementedError("Current OS -- %s not supported." % sys.platform)
         if 'error' in str(p):
             self.log(str(p), 0)
 
@@ -418,7 +407,7 @@ class DBSessionLogger:
                 else:
                     instrument_pid, instrument_schema_name, filestore_path = (None, None, None)
 
-            self.log('instrument_pid: {} / instrument_schema_name: {} / filestore_path: {}'.format(
+            self.log('instrument_pid: {}, instrument_schema_name: {}, filestore_path: {}'.format(
                 *one_result), 2)
             if instrument_pid is None:
                 raise sqlite3.DataError('Could not find an instrument matching '
@@ -732,14 +721,8 @@ class DBSessionLogger:
         self.log('computer name is {}'.format(self.cpu_name), 1)
         try:
             self.check_exit_queue(thread_queue, exit_queue)
-            if sys.platform == 'win32' and not self.testing:
-                self.log('running `mount_network_share()`', 2)
-                self.mount_network_share()
-            else:
-                self.log('on linux/testing; skipping '
-                         '`mount_network_share()`', 2)
-                self.log('sleeping for 1 second to simulate network lag', 2)
-                time.sleep(1)
+            self.log('running `mount_network_share()`', 2)
+            self.mount_network_share()
             if not os.path.isfile(self.full_path):
                 raise FileNotFoundError('Could not find NexusLIMS database at '
                                         '{}'.format(self.full_path))
@@ -779,18 +762,10 @@ class DBSessionLogger:
         1) mount network share.
         """
 
-        self.log('username is {}'.format(self.user), 1)
-        self.log('computer name is {}'.format(self.cpu_name), 1)
         try:
             self.check_exit_queue(thread_queue, exit_queue)
-            if sys.platform == 'win32' and not self.testing:
-                self.log('running `mount_network_share()`', 2)
-                self.mount_network_share(mount_point='\\TEMdata\\daq') # FIXME
-            else:
-                self.log('on linux/testing; skipping '
-                         '`mount_network_share()`', 2)
-                self.log('sleeping for 1 second to simulate network lag', 2)
-                time.sleep(1)
+            self.log('running `mount_network_share()`', 2)
+            self.mount_network_share(mount_point=self.config["daq_relpath"])
         except Exception as e:
             if thread_queue:
                 thread_queue.put(e)
@@ -817,14 +792,8 @@ class DBSessionLogger:
                                   self.progress_num))
                 self.progress_num += 1
             self.check_exit_queue(thread_queue, exit_queue)
-            if sys.platform == 'win32' and not self.testing:
-                self.log('running `umount_network_share()`', 2)
-                self.umount_network_share()
-            else:
-                self.log('on linux/testing; skipping '
-                         '`umount_network_share()`', 2)
-                self.log('sleeping for 1 second to simulate network lag', 2)
-                time.sleep(1)
+            self.log('running `umount_network_share()`', 2)
+            self.umount_network_share()
         except Exception as e:
             if thread_queue:
                 thread_queue.put(e)
@@ -839,14 +808,16 @@ class DBSessionLogger:
         self.log('Finished unmounting network share', 2)
         return True
 
-    def _copydata(self):
+    def _copydata(self, srcdir='mock'):
         """ Take a data file randomly from **mock** data folder,
         copy it to ``filestore_path`` of this instument, to mock the
         behavior of generating experiment data.
         """
 
-        src_dir = os.path.join(self.drive_letter, 'mock') # FIXME
+        src_dir = os.path.join(self.drive_letter, srcdir)
         dst_dir = os.path.join(self.drive_letter, self.filestore_path)
+        if not os.path.isdir(dst_dir):
+            os.makedirs(dst_dir)
 
         datafiles = [f for f in os.listdir(src_dir) if not f.startswith('.')]
         src_file = random.choice(datafiles)
@@ -860,7 +831,7 @@ class DBSessionLogger:
         )
 
         try:
-            shutil.copy2(os.path.join(src_dir, src_file),
+            shutil.copy(os.path.join(src_dir, src_file),
                         os.path.join(dst_dir, dst_file))
             self.log(logstr, 2)
         except Exception as e:
@@ -899,7 +870,7 @@ def cmdline_args():
     return p.parse_args()
 
 
-def gui_start_callback(verbosity=2, testing=False):
+def gui_start_callback(config, verbosity=2):
     """
     Process the start of a session when the GUI is opened
 
@@ -909,10 +880,7 @@ def gui_start_callback(verbosity=2, testing=False):
         The session logger instance for this session (contains all the
         information about instrument, computer, session_id, etc.)
     """
-    db_logger = DBSessionLogger(verbosity=verbosity,
-                                testing=testing,
-                                user=None if testing else
-                                os.environ['username'])
+    db_logger = DBSessionLogger(config, verbosity=verbosity)
     db_logger.db_logger_setup()
     db_logger.process_start()
     db_logger.db_logger_teardown()

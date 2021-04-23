@@ -27,8 +27,12 @@
 #
 
 import os
+import nexusLIMS
 from nexusLIMS.instruments import *
 
+CONFIG = nexusLIMS.get_config()
+
+# instrument_db = get_instrument_db()
 
 # class TestInstruments:
 #     def test_getting_instruments(self):
@@ -78,7 +82,7 @@ from nexusLIMS.instruments import *
 #             f'Computer mount:   M:/\n'
 
 #     def test_get_instr_from_filepath(self):
-#         path = os.path.join(os.environ['mmfnexus_path'],
+#         path = os.path.join(CONFIG['mmfnexus_path'],
 #                             'Titan/**REMOVED**/190628 - **REMOVED** Training/'
 #                             '6_28_2019 Box6 4S/4_330mm.dm3')
 #         instr = get_instr_from_filepath(path)

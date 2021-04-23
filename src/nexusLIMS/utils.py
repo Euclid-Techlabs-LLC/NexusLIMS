@@ -1,41 +1,21 @@
-#  NIST Public License - 2019
-#
-#  This software was developed by employees of the National Institute of
-#  Standards and Technology (NIST), an agency of the Federal Government
-#  and is being made available as a public service. Pursuant to title 17
-#  United States Code Section 105, works of NIST employees are not subject
-#  to copyright protection in the United States.  This software may be
-#  subject to foreign copyright.  Permission in the United States and in
-#  foreign countries, to the extent that NIST may hold copyright, to use,
-#  copy, modify, create derivative works, and distribute this software and
-#  its documentation without fee is hereby granted on a non-exclusive basis,
-#  provided that this notice and disclaimer of warranty appears in all copies.
-#
-#  THE SOFTWARE IS PROVIDED 'AS IS' WITHOUT ANY WARRANTY OF ANY KIND,
-#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED
-#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY
-#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
-#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION
-#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE
-#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,
-#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,
-#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,
-#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER
-#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND
-#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,
-#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
-#
+# This file has been co-edited by both Euclid Techlabs and NIST.
+# For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS
 
 from lxml import etree as _etree
+import sqlite3 as sql3
 import certifi as _certifi
 import tempfile as _tempfile
 import os as _os
 import subprocess as _sp
 from datetime import timedelta as _timedelta
 from os.path import getmtime as _getmtime
-from warnings import warn
+import contextlib
+import pytz
 import logging as _logging
 import sys as _sys
+import ldap3
+
+import nexusLIMS
 
 _logger = _logging.getLogger(__name__)
 _logger.setLevel(_logging.INFO)
@@ -43,6 +23,29 @@ _logger.setLevel(_logging.INFO)
 # hours to add to datetime objects (hack for poole testing -- should be -2 if
 # running tests from Mountain Time on files in Eastern Time)
 tz_offset = _timedelta(hours=0)
+
+CONFIG = nexusLIMS.get_config()
+
+def local_datetime(dt, tz):
+    """
+    Convert an UTC datetime to a local datetime.
+    Parameters
+    ----------
+    dt : :py:class:~datetime.datetime
+        Datetime in the UTC timezone.
+
+    tz : str
+        Local timezone information. e.g. "America/Chicago".
+
+    Returns
+    -------
+    local_dt : :py:class:~datetime.datetime
+        New datetime in the local timezone.
+    """
+    local_tz = pytz.timezone(tz)
+    iso_dt = dt.replace(tzinfo=pytz.utc)
+    local_dt = iso_dt.astimezone(local_tz)
+    return local_dt
 
 
 def setup_loggers(log_level):
@@ -73,7 +76,7 @@ def parse_xml(xml, xslt_file, **kwargs):
         A string containing XML, such as that returned by :py:func:`~.fetch_xml`
     xslt_file : str or io.BytesIO
         Path to the XSLT file to use for transformation
-    **kwargs : str, optional
+    **kwargs : dict, optional
         Other keyword arguments are passed as parameters to the XSLT
         transformer. ``None`` values are converted to an empty string.
     Returns
@@ -171,7 +174,7 @@ def is_subpath(path, of_paths):
     --------
     >>> is_subpath('/mnt/**REMOVED**_mmfnexus/Titan/**REMOVED**/190628 - **REMOVED** ' +
     ...            'Training/6_28_2019 Box6 4S/4_330mm.dm3',
-    ...            os.path.join(os.environ['mmfnexus_path'],
+    ...            os.path.join(CONFIG['mmfnexus_path'],
     ...                         titan.filestore_path))
     True
     """
@@ -183,6 +186,35 @@ def is_subpath(path, of_paths):
                  for subpath in abs_of_paths)
 
     return result
+
+
+def get_from_db(query):
+    """
+    Get contents and column names from a table in the NexusLIMS database file.
+
+    Parameters
+    ----------
+    query: str
+        Query for the database. e.g. "SELECT * from instruments
+
+    Returns
+    -------
+    results: list
+        Fetched all (remaining) rows of a query result defined in the sqlite3's cursor. The list
+        is empty if fetching failed.
+    col_names: list
+        A list of column names defined in the table. Note that the list is different from the
+        7-tuple defined in the original cursor.description. Only the first item in the 7-tuple is
+        saved in the list.
+    """
+    # use contextlib to auto-close the connection and database cursors
+    with contextlib.closing(sql3.connect(
+            CONFIG['nexusLIMS_db_path'])) as conn:
+        with conn:  # auto-commits
+            with contextlib.closing(conn.cursor()) as cursor:  # auto-closes
+                results = cursor.execute(query).fetchall()
+                col_names = list(map(lambda x: x[0], cursor.description))
+    return results, col_names
 
 
 def get_nested_dict_value(nested_dict, value, prepath=()):
@@ -209,10 +241,10 @@ def get_nested_dict_value(nested_dict, value, prepath=()):
     """
     for k, v in nested_dict.items():
         path = prepath + (k,)
-        if v == value:                                   # found value
+        if v == value:  # found value
             return path
-        elif hasattr(v, 'items'):                        # v is a dict
-            p = get_nested_dict_value(v, value, path)    # recursive call
+        elif hasattr(v, 'items'):  # v is a dict
+            p = get_nested_dict_value(v, value, path)  # recursive call
             if p is not None:
                 return p
 
@@ -241,10 +273,10 @@ def get_nested_dict_key(nested_dict, key_to_find, prepath=()):
     """
     for k, v in nested_dict.items():
         path = prepath + (k,)
-        if k == key_to_find:                                 # found key
+        if k == key_to_find:  # found key
             return path
-        elif hasattr(v, 'items'):                            # v is a dict
-            p = get_nested_dict_key(v, key_to_find, path)    # recursive call
+        elif hasattr(v, 'items'):  # v is a dict
+            p = get_nested_dict_key(v, key_to_find, path)  # recursive call
             if p is not None:
                 return p
 
@@ -407,7 +439,7 @@ def find_files_by_mtime(path, dt_from, dt_to):
     dt_from += tz_offset
     dt_to += tz_offset
 
-    files = set()    # use a set here (faster and we won't have duplicates)
+    files = set()  # use a set here (faster and we won't have duplicates)
     # for each of those directories, walk the file tree and inspect the
     # actual files:
     for d in dirs:
@@ -487,13 +519,13 @@ def gnu_find_files_by_mtime(path, dt_from, dt_to, extensions):
     # Actually run find command (ignoring mib files if specified by
     # environment variable):
     filetype_regex = '|'.join(extensions)
-    cmd = f'find {_os.path.join(_os.environ["mmfnexus_path"], path)} ' + \
+    cmd = f'find {_os.path.join(CONFIG["mmfnexus_path"], path)} ' + \
           f'-type f ' + \
           f'-regextype posix-egrep ' + \
           f'-regex ".*\\.({filetype_regex})$" ' + \
           f'-newermt "{dt_from.isoformat()}" ' + \
           f'\\! -newermt "{dt_to.isoformat()}" ' + \
-          (f'\\! -name "*.mib" ' if 'ignore_mib' in _os.environ else '') + \
+          (f'\\! -name "*.mib" ' if CONFIG.get("ignore_mib") else '') + \
           f'-print0'
 
     _logger.info(f'Running via subprocess: "{cmd}"')
@@ -614,3 +646,38 @@ def _get_timespan_overlap(range_1, range_2):
     overlap = max(_timedelta(0), delta)
 
     return overlap
+
+#
+#
+# NIST-specific area
+#
+#
+
+
+def get_nist_div_and_group(username):
+    """
+    Query the NIST active directory to get division and group information for a
+    user.
+
+    Parameters
+    ----------
+    username : str
+        a valid NIST username (the short format: e.g. "ear1"
+        instead of ernst.august.ruska@nist.gov).
+
+    Returns
+    -------
+    div, group : str
+        The division and group numbers for the user (as strings)
+    """
+    server = ldap3.Server(nexusLIMS.ldap_url)
+    with ldap3.Connection(server, auto_bind=True) as conn:
+        conn.search('ou=people,dc=ndir,dc=nist,dc=gov',
+                    f'(otherMailbox={username}@email.nist.gov)',
+                    attributes=['*'])
+        res = conn.entries[0]
+
+    div = res.nistdivisionnumber.value
+    group = res.nistgroupnumber.value
+
+    return div, group

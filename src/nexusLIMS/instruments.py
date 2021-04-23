@@ -1,30 +1,5 @@
-#  NIST Public License - 2019
-#
-#  This software was developed by employees of the National Institute of
-#  Standards and Technology (NIST), an agency of the Federal Government
-#  and is being made available as a public service. Pursuant to title 17
-#  United States Code Section 105, works of NIST employees are not subject
-#  to copyright protection in the United States.  This software may be
-#  subject to foreign copyright.  Permission in the United States and in
-#  foreign countries, to the extent that NIST may hold copyright, to use,
-#  copy, modify, create derivative works, and distribute this software and
-#  its documentation without fee is hereby granted on a non-exclusive basis,
-#  provided that this notice and disclaimer of warranty appears in all copies.
-#
-#  THE SOFTWARE IS PROVIDED 'AS IS' WITHOUT ANY WARRANTY OF ANY KIND,
-#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED
-#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY
-#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
-#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION
-#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE
-#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,
-#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,
-#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,
-#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER
-#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND
-#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,
-#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
-#
+# This file has been co-edited by both Euclid Techlabs and NIST.
+# For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS
 """
 **Attributes**
 
@@ -38,12 +13,14 @@ instrument_db : dict
 """
 
 from nexusLIMS.utils import is_subpath as _is_subpath
-import sqlite3 as _sql3
-import contextlib as _contextlib
+from nexusLIMS.utils import get_from_db
 import os as _os
+import nexusLIMS
+
+CONFIG = nexusLIMS.get_config()
 
 
-def _get_instrument_db():
+def get_instrument_db():
     """
     Connect to the NexusLIMS database and get a list of all the instruments
     contained within.
@@ -55,19 +32,11 @@ def _get_instrument_db():
         instruments that were found in the ``instruments`` table of the
         NexusLIMS database
     """
-    query = "SELECT * from instruments"
-    # use contextlib to auto-close the connection and database cursors
-    with _contextlib.closing(_sql3.connect(
-            _os.environ['nexusLIMS_db_path'])) as conn:
-        with conn:  # auto-commits
-            with _contextlib.closing(conn.cursor()) as cursor:  # auto-closes
-                results = cursor.execute(query).fetchall()
-                col_names = list(map(lambda x: x[0], cursor.description))
-
+    results, col_names = get_from_db("SELECT * from instruments")
     instr_db = {}
-    for l in results:
+    for line in results:
         this_dict = {}
-        for key, val in zip(col_names, l):
+        for key, val in zip(col_names, line):
             this_dict[key] = val
 
         key = this_dict.pop('instrument_pid')
@@ -156,9 +125,6 @@ class Instrument:
         return f'{self.name}' + f' in {self.location}' if self.location else ''
 
 
-instrument_db = _get_instrument_db()
-
-
 def get_instr_from_filepath(path):
     """
     Using the NexusLIMS database, get an instrument object by a given path.
@@ -183,8 +149,8 @@ def get_instr_from_filepath(path):
     >>> str(inst)
     '**REMOVED** in **REMOVED**'
     """
-    for k, v in instrument_db.items():
-        if _is_subpath(path, _os.path.join(_os.environ["mmfnexus_path"],
+    for k, v in get_instrument_db().items():
+        if _is_subpath(path, _os.path.join(CONFIG["mmfnexus_path"],
                                            v.filestore_path)):
             return v
 
@@ -193,7 +159,7 @@ def get_instr_from_filepath(path):
 
 def get_instr_from_calendar_name(cal_name):
     """
-    Using the NexusLIMS database, get an instrument object by a given path.
+    Using the NexusLIMS database, get an instrument object by a calendar name.
 
     Parameters
     ----------
@@ -204,17 +170,48 @@ def get_instr_from_calendar_name(cal_name):
     Returns
     -------
     instrument : Instrument or None
-        An `_Instrument` instance matching the path, or None if no match was
-        found
+        An `_Instrument` instance matching the path, or None if no match was found.
 
     Examples
     --------
-    >>> inst = get_instr_from_calendar_name('**REMOVED**')
+    >>> inst = get_instr_from_calendar_name('JEOL_TEM_01')
     >>> str(inst)
-    '**REMOVED** in **REMOVED**'
+    'JEOL_TEM_01 in Location_01'
     """
-    for k, v in instrument_db.items():
-        if cal_name in v.api_url:
+    # To-do: calendar_name in Instrument class and the database is currently set to be the same as
+    # instrument_pid. This was inherited from the original NexusLIMS, but can be changed.
+    # In the SQLite, instrument_pid and api_url have to be unique, but calendar_name does not.
+    # If ones needs this function to do its job, then calendar_name needs to be unique,
+    # but it can be different from instrument_pid
+    for k, v in get_instrument_db().items():
+        if cal_name == v.calendar_name:
+            return v
+
+    return None
+
+
+def get_instr_from_api_url(url):
+    """
+    Using the NexusLIMS database, get an instrument object by a calendar API url.
+
+    Parameters
+    ----------
+    url : str
+        The **unique** API url for the instrument calendar.
+
+    Returns
+    -------
+    instrument : Instrument or None
+        An `_Instrument` instance matching the API url, or None if no match was found.
+
+    Examples
+    --------
+    >>> inst = get_instr_from_api_url('URL_FOR_YOUR_INSTRUMENT_CALENDAR')
+    >>> str(inst)
+    'JEOL_TEM_01 in Location_01'
+    """
+    for k, v in get_instrument_db().items():
+        if url == v.api_url:
             return v
 
     return None

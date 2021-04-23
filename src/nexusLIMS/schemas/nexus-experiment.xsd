@@ -757,7 +757,7 @@
         <xs:attribute name="warning" type="boolean">
           <xs:annotation>
             <xs:documentation>
-                A marker to indicate that this parameter may not be reliable 
+                A marker to indicate that this parameter may not be reliable
                 (an instrument may have not written it correctly, or it is commonly not
                 filled out properly, etc.)
             </xs:documentation>
@@ -771,7 +771,7 @@
   <xs:simpleType name="InstrumentName">
     <xs:annotation>
       <xs:documentation>
-         Controlled labels that identify available instruments in the 
+         Controlled labels that identify available instruments in the
          NIST Electron Microscopy Nexus facility (as named in the SharePoint
          calendar resource).
        </xs:documentation>
@@ -859,13 +859,29 @@
         </xs:annotation>
       </xs:enumeration>
 
+      <xs:enumeration value="Euclid Schema">
+        <xs:annotation>
+          <xs:documentation>
+            Instrument connected by LAPTOP-FCSL871D
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
+      <xs:enumeration value="Weinan MacBookPro">
+        <xs:annotation>
+          <xs:documentation>
+            Instrument connected by Weinan-MBP16
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
     </xs:restriction>
   </xs:simpleType>
 
   <xs:simpleType name="InstrumentPID">
     <xs:annotation>
       <xs:documentation>
-        Controlled unique IDs used to identify available 
+        Controlled unique IDs used to identify available
         instruments in the NIST Electron Microscopy Nexus
         facility. These are the same PID values used in the
         SharePoint calendar system.
@@ -953,6 +969,23 @@
           </xs:documentation>
         </xs:annotation>
       </xs:enumeration>
+
+      <xs:enumeration value="euclid_pid_00">
+        <xs:annotation>
+          <xs:documentation>
+            Instrument connected by LAPTOP-FCSL871D
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
+      <xs:enumeration value="WeinanMBP">
+        <xs:annotation>
+          <xs:documentation>
+            Instrument connected by Weinan-MBP16
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+
     </xs:restriction>
   </xs:simpleType>
 

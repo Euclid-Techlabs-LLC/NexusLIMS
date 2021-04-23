@@ -26,22 +26,25 @@
 #  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
 
 
+import argparse
+import logging as _logging
 import os as _os
-import requests as _requests
+import sys
 from glob import glob as _glob
 from urllib.parse import urljoin as _urljoin
-import sys
-import argparse
-from nexusLIMS._urls import cdcs_url as _cdcs_url
-from nexusLIMS.harvester.sharepoint_calendar import AuthenticationError as \
-    _authError
-from nexusLIMS.utils import nexus_req as _nx_req
+
+import requests as _requests
 from tqdm import tqdm as _tqdm
-import logging as _logging
+
+import nexusLIMS
+from nexusLIMS.harvester.sharepoint_calendar import \
+    AuthenticationError as _authError
+from nexusLIMS.utils import nexus_req as _nx_req
 
 _logging.basicConfig()
 _logger = _logging.getLogger(__name__)
 _logger.setLevel(_logging.INFO)
+CONFIG = nexusLIMS.get_config()
 
 
 def get_workspace_id():
@@ -56,7 +59,7 @@ def get_workspace_id():
     """
     # assuming there's only one workspace for this user (that is the public
     # workspace)
-    _endpoint = _urljoin(_cdcs_url, 'rest/workspace/read_access')
+    _endpoint = _urljoin(CONFIG["cdcs_url"], 'rest/workspace/read_access')
     _r = _nx_req(_endpoint, _requests.get, basic_auth=True)
     if _r.status_code == 401:
         raise _authError('Could not authenticate to CDCS. Are the '
@@ -76,12 +79,14 @@ def get_template_id():
         The template ID
     """
     # get the current template (XSD) id value:
-    _endpoint = _urljoin(_cdcs_url, 'rest/template-version-manager/global')
+    _endpoint = _urljoin(CONFIG["cdcs_url"], 'rest/template-version-manager/global')
     _r = _nx_req(_endpoint, _requests.get, basic_auth=True)
     if _r.status_code == 401:
         raise _authError('Could not authenticate to CDCS. Are the '
                          'nexusLIMS_user and nexusLIMS_pass environment '
                          'variables set correctly?')
+    if not _r.json():
+        raise ValueError("No template found in CDCS, is there any there?")
     template_id = _r.json()[0]['current']
     return template_id
 
@@ -105,7 +110,7 @@ def upload_record_content(xml_content, title):
     record_id : str
         The id (on the server) of the record that was uploaded
     """
-    endpoint = _urljoin(_cdcs_url, 'rest/data/')
+    endpoint = _urljoin(CONFIG["cdcs_url"], 'rest/data/')
 
     payload = {
         'template': get_template_id(),
@@ -123,9 +128,9 @@ def upload_record_content(xml_content, title):
 
     # assign this record to the public workspace
     record_id = post_r.json()['id']
-    record_url = _urljoin(_cdcs_url,
+    record_url = _urljoin(CONFIG["cdcs_url"],
                           f'data?id={record_id}')
-    wrk_endpoint = _urljoin(_cdcs_url,
+    wrk_endpoint = _urljoin(CONFIG["cdcs_url"],
                             f'rest/data/{record_id}/assign/'
                             f'{get_workspace_id()}')
 
@@ -150,7 +155,7 @@ def delete_record(record_id):
         The REST response returned from the CDCS instance after attempting
         the delete
     """
-    endpoint = _urljoin(_cdcs_url, f'rest/data/{record_id}')
+    endpoint = _urljoin(CONFIG["cdcs_url"], f'rest/data/{record_id}')
     r = _nx_req(endpoint, _requests.delete, basic_auth=True)
     if r.status_code != 204:
         # anything other than 204 status means something went wrong

@@ -1,14 +1,13 @@
-from tkinter import *
-from tkinter import messagebox
-from tkinter import ttk
-import time
+import getpass
 import os
+import queue
 import sys
 import threading
-import queue
-import getpass
-from uuid import uuid4
+import time
 from datetime import datetime
+from tkinter import *
+from tkinter import messagebox, ttk
+from uuid import uuid4
 
 import make_db_entry as db
 
@@ -54,7 +53,7 @@ def resource_path(relative_path):
     try:
         # try to set the base_path to the pyinstaller temp dir (for when we're)
         # running from a compiled .exe built with pyinstaller
-        base_path = sys._MEIPASS
+        base_path = os.path.join(sys._MEIPASS, 'resources')
     except Exception:
         base_path = os.path.join(os.path.abspath('.'), 'resources')
 
@@ -585,7 +584,7 @@ class PauseOrEndDialogue(Toplevel):
         self.response = StringVar()
         self.screen_res = ScreenRes() if screen_res is None else screen_res
         Toplevel.__init__(self, parent)
-        self.geometry(self.screen_res.get_center_geometry_string(400, 175))
+        self.geometry(self.screen_res.get_center_geometry_string(480, 175))
         self.grab_set()
         self.title("Confirm exit")
         self.protocol("WM_DELETE_WINDOW", self.destroy)
@@ -1103,16 +1102,3 @@ if __name__ == "__main__":
                              title="Error",
                              message=message)
         sys.exit(0)
-
-    # if we're on Linux, use the testing settings for debugging
-    username = getpass.getuser()
-    db_logger = db.DBSessionLogger(
-        verbosity=2,
-        db_name='nexuslims_db.sqlite',
-        user=username,
-        hostname='192.168.0.166'
-    )
-    screen_res = ScreenRes(db_logger=db_logger)
-    root = MainApp(db_logger=db_logger, screen_res=screen_res)
-    root.protocol("WM_DELETE_WINDOW", root.on_closing)
-    root.mainloop()

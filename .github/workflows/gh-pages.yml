@@ -1,12 +1,9 @@
 name: github pages
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,12 +20,12 @@ jobs:
 
       - name: Build documentation
         run: |
-          source env.sh test
           make -C docs html
           mkdir public
           mv docs/_build/html/* public/
 
       - name: GitHub Pages action
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -28,7 +28,11 @@
 
 import contextlib as _contextlib
 import sqlite3 as _sql3
-import os as _os
+
+import nexusLIMS
+
+
+CONFIG = nexusLIMS.get_config()
 
 
 def make_db_query(query):
@@ -48,7 +52,7 @@ def make_db_query(query):
     """
     # use contextlib to auto-close the connection and database cursors
     with _contextlib.closing(_sql3.connect(
-            _os.environ['nexusLIMS_db_path'])) as conn:
+            CONFIG['nexusLIMS_db_path'])) as conn:
         with conn:  # auto-commits
             with _contextlib.closing(
                     conn.cursor()) as cursor:  # auto-closes

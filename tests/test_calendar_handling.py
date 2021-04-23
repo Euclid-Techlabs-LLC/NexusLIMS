@@ -1,17 +1,16 @@
 import os
+import warnings
+from collections import OrderedDict
+from datetime import datetime as dt
+
 import pytest
 import requests
 from lxml import etree
-from datetime import datetime as dt
+from nexusLIMS import instruments
 from nexusLIMS.harvester import sharepoint_calendar as sc
-from nexusLIMS.utils import parse_xml as _parse_xml
-from nexusLIMS.utils import nexus_req as _nexus_req
 from nexusLIMS.harvester.sharepoint_calendar import AuthenticationError
-# from nexusLIMS import instruments
-from nexusLIMS.instruments import instrument_db
-from collections import OrderedDict
-
-import warnings
+from nexusLIMS.utils import nexus_req as _nexus_req
+from nexusLIMS.utils import parse_xml as _parse_xml
 
 warnings.filterwarnings(
     action='ignore',
@@ -22,6 +21,7 @@ warnings.filterwarnings(
     r"Manually creating the cbt stuct from the cert hash will be removed",
     DeprecationWarning)
 
+# instrument_db = instruments.get_instrument_db()
 
 # class TestCalendarHandling:
 #     SC_XSL_FILE = os.path.abspath(
@@ -440,7 +440,7 @@ warnings.filterwarnings(
 #             return MockResponse(text="""
 #             <content type="application/xml">
 #                 <m:properties>
-#                     <d:Description>(UTC-05:00) Eastern Time (US and 
+#                     <d:Description>(UTC-05:00) Eastern Time (US and
 #                     Canada)</d:Description>
 #                     <d:Id m:type="Edm.Int32">11</d:Id>
 #                     <d:Information m:type="SP.TimeZoneInformation">
@@ -456,7 +456,7 @@ warnings.filterwarnings(
 #             return MockResponse(text="""
 #             <content type="application/xml">
 #                 <m:properties>
-#                     <d:Description>(UTC-06:00) Central Time (US and 
+#                     <d:Description>(UTC-06:00) Central Time (US and
 #                     Canada)</d:Description>
 #                     <d:Id m:type="Edm.Int32">11</d:Id>
 #                     <d:Information m:type="SP.TimeZoneInformation">
@@ -472,7 +472,7 @@ warnings.filterwarnings(
 #             return MockResponse(text="""
 #             <content type="application/xml">
 #                 <m:properties>
-#                     <d:Description>(UTC-07:00) Mountain Time (US and 
+#                     <d:Description>(UTC-07:00) Mountain Time (US and
 #                     Canada)</d:Description>
 #                     <d:Id m:type="Edm.Int32">12</d:Id>
 #                     <d:Information m:type="SP.TimeZoneInformation">
@@ -488,7 +488,7 @@ warnings.filterwarnings(
 #             return MockResponse(text="""
 #             <content type="application/xml">
 #                 <m:properties>
-#                     <d:Description>(UTC-08:00) Pacific Time (US and 
+#                     <d:Description>(UTC-08:00) Pacific Time (US and
 #                     Canada)</d:Description>
 #                     <d:Id m:type="Edm.Int32">13</d:Id>
 #                     <d:Information m:type="SP.TimeZoneInformation">
