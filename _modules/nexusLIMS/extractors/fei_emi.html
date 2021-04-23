@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.extractors.fei_emi &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.extractors.fei_emi &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -188,21 +186,23 @@
 <span class="c1">#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,</span>
 <span class="c1">#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.</span>
 
-<span class="kn">from</span> <span class="nn">hyperspy.io</span> <span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">_hs_load</span>
-<span class="kn">from</span> <span class="nn">hyperspy.signal</span> <span class="kn">import</span> <span class="n">BaseSignal</span> <span class="k">as</span> <span class="n">_BaseSignal</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
 <span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">_logging</span>
 <span class="kn">import</span> <span class="nn">os</span> <span class="k">as</span> <span class="nn">_os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="k">as</span> <span class="n">_dt</span>
 
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">hyperspy.io</span> <span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">_hs_load</span>
+<span class="kn">from</span> <span class="nn">hyperspy.signal</span> <span class="kn">import</span> <span class="n">BaseSignal</span> <span class="k">as</span> <span class="n">_BaseSignal</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">get_instr_from_filepath</span> <span class="k">as</span> <span class="n">_get_instr</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">_remove_dtb_element</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">_remove_dtb_element</span><span class="p">,</span> <span class="n">_sort_dict</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">get_nested_dict_key</span> <span class="k">as</span> <span class="n">_get_nest_dict_key</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">get_nested_dict_value_by_path</span> <span class="k">as</span> \
-    <span class="n">_get_nest_dict_val_by_path</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> \
+    <span class="n">get_nested_dict_value_by_path</span> <span class="k">as</span> <span class="n">_get_nest_dict_val_by_path</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">set_nested_dict_value</span> <span class="k">as</span> <span class="n">_set_nest_dict_val</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">try_getting_dict_value</span> <span class="k">as</span> <span class="n">_try_get_dict_val</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">_sort_dict</span>
+
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">_logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -305,7 +305,7 @@
     <span class="c1"># if we successfully found the .emi file, add it to the metadata</span>
     <span class="k">if</span> <span class="n">emi_filename</span><span class="p">:</span>
         <span class="n">rel_emi_fname</span> <span class="o">=</span> <span class="n">emi_filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-            <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">emi_filename</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">emi_filename</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;nx_meta&#39;</span><span class="p">][</span><span class="s1">&#39;emi Filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rel_emi_fname</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;nx_meta&#39;</span><span class="p">][</span><span class="s1">&#39;emi Filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -753,7 +753,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

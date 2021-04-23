@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.extractors package &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>nexusLIMS.extractors package &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><span><img src="../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../session_logger_app.html">Session logging</a></li>
@@ -189,7 +188,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="module-nexusLIMS.extractors">
+  <section id="module-nexusLIMS.extractors">
 <span id="nexuslims-extractors-package"></span><h1>nexusLIMS.extractors package<a class="headerlink" href="#module-nexusLIMS.extractors" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the code used to harvest metadata from various file types
 generated from instruments in the Electron Microscopy Nexus facility.</p>
@@ -266,10 +265,10 @@ requested</p></li>
 </dl>
 </dd></dl>
 
-<div class="section" id="submodules">
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-nexusLIMS.extractors.digital_micrograph">
+</section>
+<section id="module-nexusLIMS.extractors.digital_micrograph">
 <span id="nexuslims-extractors-digital-micrograph-module"></span><h2>nexusLIMS.extractors.digital_micrograph module<a class="headerlink" href="#module-nexusLIMS.extractors.digital_micrograph" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.extractors.digital_micrograph.get_dm3_metadata">
@@ -488,8 +487,8 @@ form.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nexusLIMS.extractors.fei_emi">
+</section>
+<section id="module-nexusLIMS.extractors.fei_emi">
 <span id="nexuslims-extractors-fei-emi-module"></span><h2>nexusLIMS.extractors.fei_emi module<a class="headerlink" href="#module-nexusLIMS.extractors.fei_emi" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.extractors.fei_emi.get_emi_from_ser">
@@ -612,7 +611,7 @@ determination.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal that contains the data of interest</p></li>
+<li><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal that contains the data of interest</p></li>
 <li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- A metadata dictionary as returned by <a class="reference internal" href="#nexusLIMS.extractors.fei_emi.get_ser_metadata" title="nexusLIMS.extractors.fei_emi.get_ser_metadata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ser_metadata()</span></code></a></p></li>
 </ul>
 </dd>
@@ -691,8 +690,8 @@ item and the unit (if present) as the second item</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nexusLIMS.extractors.quanta_tif">
+</section>
+<section id="module-nexusLIMS.extractors.quanta_tif">
 <span id="nexuslims-extractors-quanta-tif-module"></span><h2>nexusLIMS.extractors.quanta_tif module<a class="headerlink" href="#module-nexusLIMS.extractors.quanta_tif" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.extractors.quanta_tif.get_quanta_metadata">
@@ -820,8 +819,8 @@ root-level <code class="docutils literal notranslate"><span class="pre">nx_meta<
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nexusLIMS.extractors.thumbnail_generator">
+</section>
+<section id="module-nexusLIMS.extractors.thumbnail_generator">
 <span id="nexuslims-extractors-thumbnail-generator-module"></span><h2>nexusLIMS.extractors.thumbnail_generator module<a class="headerlink" href="#module-nexusLIMS.extractors.thumbnail_generator" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.extractors.thumbnail_generator.add_annotation_markers">
@@ -832,7 +831,7 @@ Adapted from a currently (at the time of writing) open <a class="reference exter
 HyperSpy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal for which a thumbnail should be generated</p>
+<dd class="field-odd"><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal for which a thumbnail should be generated</p>
 </dd>
 </dl>
 </dd></dl>
@@ -878,9 +877,9 @@ number of navigation dimensions:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal for which a thumbnail should be generated</p></li>
+<li><p><strong>s</strong> (<a class="reference external" href="http://hyperspy.org/hyperspy-doc/current/api/hyperspy.signal.html#hyperspy.signal.BaseSignal" title="(in HyperSpy v1.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hyperspy.signal.BaseSignal</span></code></a> (or subclass)) -- The HyperSpy signal for which a thumbnail should be generated</p></li>
 <li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- A path to the desired thumbnail filename. All formats supported by
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.savefig" title="(in Matplotlib v3.3.4)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">savefig()</span></code></a> can be used.</p></li>
+<a class="reference external" href="https://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.savefig" title="(in Matplotlib v3.4.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">savefig()</span></code></a> can be used.</p></li>
 <li><p><strong>dpi</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- The &quot;dots per inch&quot; resolution for the outputted figure</p></li>
 </ul>
 </dd>
@@ -888,7 +887,7 @@ number of navigation dimensions:</p>
 <dd class="field-even"><p><strong>f</strong> -- Handle to a matplotlib Figure</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.figure.Figure</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.figure.Figure</span></code></a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -896,8 +895,8 @@ number of navigation dimensions:</p>
 figure out how to best display the image</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -920,7 +919,7 @@ figure out how to best display the image</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

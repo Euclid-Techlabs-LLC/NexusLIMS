@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data security in NexusLIMS &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Data security in NexusLIMS &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -19,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NexusLIMS database" href="database.html" />
-    <link rel="prev" title="Getting Started with NexusLIMS" href="get_started.html" />
+    <link rel="prev" title="Welcome to NexusLIMS!" href="index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -96,7 +96,7 @@
               
                 
   <li>
-    <a href="get_started.html" title="Previous Chapter: Getting Started with NexusLIMS"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Previous</span>
+    <a href="index.html" title="Previous Chapter: Welcome to NexusLIMS!"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Previous</span>
     </a>
   </li>
   <li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -174,7 +173,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="data-security-in-nexuslims">
+  <section id="data-security-in-nexuslims">
 <span id="data-security"></span><h1>Data security in NexusLIMS<a class="headerlink" href="#data-security-in-nexuslims" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><p><cite>Last updated: February 27, 2020</cite></p>
@@ -192,7 +191,7 @@ The following sections go into further detail about these points.</p>
 &quot;leaving your data in someone else's hands&quot;. It explains that NexusLIMS in fact
 never &quot;takes control&quot; of any data, and operates on a purely &quot;read-only&quot; basis,
 so control of the researchers' data stays with the researchers.</p>
-<div class="section" id="the-miclims-user">
+<section id="the-miclims-user">
 <h2>The <code class="docutils literal notranslate"><span class="pre">miclims</span></code> user<a class="headerlink" href="#the-miclims-user" title="Permalink to this headline">¶</a></h2>
 <p>The first &quot;firewall&quot; with respect to protecting raw research data is the access
 control enforced by the design of the system.
@@ -209,8 +208,8 @@ event that a mistake in the code attempted to move or delete a raw data file
 from this folder, it would fail with a <cite>Permission Error</cite>, just as such an
 operation would from a user's workstation in their office (only the microscope
 computers are allowed to write to this folder).</p>
-</div>
-<div class="section" id="how-nexuslims-stores-data">
+</section>
+<section id="how-nexuslims-stores-data">
 <h2>How NexusLIMS stores data<a class="headerlink" href="#how-nexuslims-stores-data" title="Permalink to this headline">¶</a></h2>
 <p>Aside from the <code class="docutils literal notranslate"><span class="pre">miclims</span></code> user access rights, the NexusLIMS codebase never
 even attempts write or move files from the MMF Nexus root folder. Instead,
@@ -243,8 +242,8 @@ backed up at least daily, meaning recovery should be possible from any
 unforeseen errors. In the event of complete disaster, because the session logs
 are backed up, the entire contents of the CDCS instance could be recreated from
 scratch, if needed.</p>
-</div>
-<div class="section" id="development-practices">
+</section>
+<section id="development-practices">
 <h2>Development practices<a class="headerlink" href="#development-practices" title="Permalink to this headline">¶</a></h2>
 <p>The final piece of the data security ecosystem is the methodology used to
 develop the back-end code that handles record building and communication with
@@ -265,8 +264,8 @@ integration process, and can be viewed from anywhere on the NIST network.
 Similarly, every function used in the project is documented fully, which
 enables the automatic creation of detailed <a class="reference internal" href="api.html"><span class="doc">API Documentation</span></a>
 that is ensured to be up to date every time a change is made to the code.</p>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -289,7 +288,7 @@ that is ensured to be up to date every time a change is made to the code.</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

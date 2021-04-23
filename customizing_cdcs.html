@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tips for customizing CDCS &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tips for customizing CDCS &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -182,7 +181,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="tips-for-customizing-cdcs">
+  <section id="tips-for-customizing-cdcs">
 <h1>Tips for customizing CDCS<a class="headerlink" href="#tips-for-customizing-cdcs" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><p><cite>Originally written by: Joshua Taillon -- ODI</cite></p>
@@ -198,7 +197,7 @@ using a customized <cite>XSLT</cite> stylesheet (eXtensible Stylesheet Language
 Transformations). These stylesheets can incorporate any arbitrary HTML and
 javascript, giving great control over what content is ultimately displayed to
 the end user when he or she opens a record.</p>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>On the technical side, CDCS is implemented in Python using the Django framework
 and MongoDB for record storage in a NoSQL database. In addition to the actual
@@ -215,8 +214,8 @@ comprised of many individual Django <cite>apps</cite> (or <cite>modules</cite> -
 or function of the overall application. For example, the
 <code class="docutils literal notranslate"><span class="pre">core_explore_keyword_app</span></code> controls the display of the data &quot;search by
 keyword&quot; page.</p>
-</div>
-<div class="section" id="installation">
+</section>
+<section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>General documentation for the installation of CDCS is available from the
 <a class="reference external" href="https://www.nist.gov/itl/ssd/information-systems-group/configurable-data-curation-system-cdcs/cdcs-help-and-resources">documentation site</a> of CDCS itself. The easiest way to install
@@ -260,8 +259,8 @@ customization of a few high-level CDCS elements. The following sections go into
 each of these in more detail. To view the specific changes that were made,
 the <cite>NexusLIMS</cite> CDCS <a class="reference external" href="https://gitlab.nist.gov/gitlab/nexuslims/nexuslims-cdcs/commits/NexusLIMS_master">git commit history</a> will show
 every change in detail from what is provided in the default CDCS installation.</p>
-</div>
-<div class="section" id="general-tips">
+</section>
+<section id="general-tips">
 <h2>General tips<a class="headerlink" href="#general-tips" title="Permalink to this headline">¶</a></h2>
 <p>A couple general strategies help when trying to customize various pieces of the
 CDCS installation. It is common not to know where to look when trying to change
@@ -292,8 +291,8 @@ automatically by &quot;touching&quot; a special file in the <code class="docutil
 touch /srv/curator/mdcs/wsgi.py
 </pre></div>
 </div>
-</div>
-<div class="section" id="the-static-folder">
+</section>
+<section id="the-static-folder">
 <h2>The <code class="docutils literal notranslate"><span class="pre">static</span></code> folder<a class="headerlink" href="#the-static-folder" title="Permalink to this headline">¶</a></h2>
 <p id="static">The <code class="docutils literal notranslate"><span class="pre">static</span></code> folder contains resources that can be used on any page within
 the Django application, such as images, javascript, CSS style definitions,
@@ -341,10 +340,10 @@ from within a Django template:</p>
 will see this syntax all over, for example in  <code class="docutils literal notranslate"><span class="pre">&lt;script&gt;</span></code> elements
 (for including javascript), <code class="docutils literal notranslate"><span class="pre">&lt;style&gt;</span></code> elements (to include <code class="docutils literal notranslate"><span class="pre">.css</span></code> files),
 images, etc.</p>
-</div>
-<div class="section" id="the-templates-folder">
+</section>
+<section id="the-templates-folder">
 <h2>The <code class="docutils literal notranslate"><span class="pre">templates</span></code> folder<a class="headerlink" href="#the-templates-folder" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="intro-to-django-templates">
+<section id="intro-to-django-templates">
 <span id="templates"></span><h3>Intro to Django templates<a class="headerlink" href="#intro-to-django-templates" title="Permalink to this headline">¶</a></h3>
 <p>While this section will not be a definitive introduction to Django's templating
 system (see the <a class="reference external" href="https://docs.djangoproject.com/en/2.2/ref/templates/language/">official docs</a> for more detail), it
@@ -385,10 +384,10 @@ the user.</p>
 <p>These basic tools are good to understand when working with the CDCS templates,
 as they provide the building blocks required to start making your own
 customizations.</p>
-</div>
-<div class="section" id="working-with-the-cdcs-templates">
+</section>
+<section id="working-with-the-cdcs-templates">
 <h3>Working with the CDCS templates<a class="headerlink" href="#working-with-the-cdcs-templates" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="changing-the-default-files">
+<section id="changing-the-default-files">
 <h4>Changing the default files<a class="headerlink" href="#changing-the-default-files" title="Permalink to this headline">¶</a></h4>
 <p><strong>theme.html:</strong></p>
 <p>Within the <code class="docutils literal notranslate"><span class="pre">/srv/curator</span></code> directory, the <code class="docutils literal notranslate"><span class="pre">templates</span></code> folder by default
@@ -488,8 +487,8 @@ the welcome message on the CDCS homepage. By default, it loops through the
 installed <cite>XML Schema</cite> templates that have been loaded into CDCS and displays
 them to the user. This was not needed for the <cite>NexusLIMS</cite> project, and so was
 commented out entirely.</p>
-</div>
-<div class="section" id="overriding-other-cdcs-templates">
+</section>
+<section id="overriding-other-cdcs-templates">
 <h4>Overriding other CDCS templates<a class="headerlink" href="#overriding-other-cdcs-templates" title="Permalink to this headline">¶</a></h4>
 <p>Inspecting the directory structure of the <code class="docutils literal notranslate"><span class="pre">templates</span></code> folder in the
 <cite>NexusLIMS</cite> CDCS <a class="reference external" href="NexusLIMSCDCSRepo">repository</a>, you will notice a few more
@@ -534,8 +533,8 @@ XSLT translators, this modification was necessary.</p>
 <code class="docutils literal notranslate"><span class="pre">core_explore_common_app</span></code> were overridden for <cite>NexusLIMS</cite>, primarily to modify
 how the search page lists the records. Check the NexusLIMS repository for more
 specific information about the changes.</p>
-</div>
-<div class="section" id="more-advanced-django-tweaks">
+</section>
+<section id="more-advanced-django-tweaks">
 <h4>More advanced Django tweaks<a class="headerlink" href="#more-advanced-django-tweaks" title="Permalink to this headline">¶</a></h4>
 <p id="more-advanced">Instead of (or in addition to) overriding templates from CDCS, there are other
 pieces of the Django application that can be modified to change how the user
@@ -551,10 +550,10 @@ parameters to the XSLT stylesheet. This also required modifying the
 Django template files) are defined. Small modifications were made to the methods
 as well to allow the passing of parameters to directly to the XSLT stylesheets
 on the list and detail view pages.</p>
-</div>
-</div>
-</div>
-<div class="section" id="the-mdcs-home-folder">
+</section>
+</section>
+</section>
+<section id="the-mdcs-home-folder">
 <h2>The <code class="docutils literal notranslate"><span class="pre">mdcs_home</span></code> folder<a class="headerlink" href="#the-mdcs-home-folder" title="Permalink to this headline">¶</a></h2>
 <p id="mdcs-home">While it has been mentioned a few times previously in this document, the
 <code class="docutils literal notranslate"><span class="pre">mdcs_home</span></code> folder contains a place to store customizations, overrides, and
@@ -586,8 +585,8 @@ functionality entirely and hide them from the tile list on the homepage.</p>
 <p>Likewise, the <code class="docutils literal notranslate"><span class="pre">mdcs_home/menus.py</span></code> file was modified by commenting out menu
 items in the top bar that were not needed for <cite>NexusLIMS</cite>. This is also the
 place to modify the text that is shown for each value along the top bar.</p>
-</div>
-<div class="section" id="debugging">
+</section>
+<section id="debugging">
 <h2>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h2>
 <p>When making changes to the application within a Docker container, it can be
 difficult to use standard IDE tools for debugging. A useful tool for this is a
@@ -618,8 +617,8 @@ National Institute of Standards and Technology, nor does it imply that
 the product identified is necessarily the best available for the purpose.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -642,7 +641,7 @@ the product identified is necessarily the best available for the purpose.</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

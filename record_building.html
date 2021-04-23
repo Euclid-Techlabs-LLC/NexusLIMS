@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Record building workflow &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Record building workflow &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -175,7 +174,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="record-building-workflow">
+  <section id="record-building-workflow">
 <span id="record-building"></span><h1>Record building workflow<a class="headerlink" href="#record-building-workflow" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><p><cite>Last updated: February 23, 2020</cite></p>
@@ -189,7 +188,7 @@ how the different modules work together to generate records from the centralized
 file storage and the NexusLIMS session database. Throughout this page, links
 are made to the <a class="reference external" href="api.html">API Documentation</a> as appropriate for further
 detail about the methods and classes used during record generation.</p>
-<div class="section" id="general-approach">
+<section id="general-approach">
 <span id="id1"></span><h2>General Approach<a class="headerlink" href="#general-approach" title="Permalink to this headline">¶</a></h2>
 <p>Because the instruments cannot communicate directly with the NexusLIMS back-end,
 the system utilizes a polling approach to detect when a new record should be
@@ -223,8 +222,8 @@ this is by editing the <code class="docutils literal notranslate"><span class="p
 repository and renaming it to <code class="docutils literal notranslate"><span class="pre">.env</span></code> (make sure not to push this file to
 any remote source, since it has a password in it!).</p>
 </div>
-</div>
-<div class="section" id="finding-new-sessions">
+</section>
+<section id="finding-new-sessions">
 <h2>Finding New Sessions<a class="headerlink" href="#finding-new-sessions" title="Permalink to this headline">¶</a></h2>
 <p>The session finding is initiated by
 <a class="reference internal" href="api/nexusLIMS.builder.html#nexusLIMS.builder.record_builder.process_new_records" title="nexusLIMS.builder.record_builder.process_new_records"><code class="xref py py-func docutils literal notranslate"><span class="pre">process_new_records()</span></code></a>, which
@@ -232,9 +231,9 @@ immediately calls
 <a class="reference internal" href="api/nexusLIMS.builder.html#nexusLIMS.builder.record_builder.build_new_session_records" title="nexusLIMS.builder.record_builder.build_new_session_records"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_new_session_records()</span></code></a>, which in
 turn uses <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.get_sessions_to_build" title="nexusLIMS.db.session_handler.get_sessions_to_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_sessions_to_build()</span></code></a> to
 query the NexusLIMS database for sessions awaiting processing (the database
-location can be referenced within the code using the environment variable
-<a class="reference internal" href="api/nexusLIMS.html#nexuslims-db-path"><span class="std std-ref">nexusLIMS_db_path</span></a> (<cite>e.g.</cite>
-<code class="docutils literal notranslate"><span class="pre">os.environ[&quot;nexusLIMS_db_path&quot;]</span></code>. This method interrogates the database for
+location can be referenced within the code using the configuration variable
+<a class="reference internal" href="api/nexusLIMS.html#nexuslims-db-path"><span class="std std-ref">nexusLIMS_db_path</span></a>.
+This method interrogates the database for
 session logs with a status of <code class="docutils literal notranslate"><span class="pre">TO_BE_BUILT</span></code> using the SQL query:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="p">(</span><span class="n">session_identifier</span><span class="p">,</span> <span class="n">instrument</span><span class="p">,</span> <span class="k">timestamp</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="k">user</span><span class="p">)</span>
 <span class="k">FROM</span> <span class="n">session_log</span> <span class="k">WHERE</span> <span class="n">record_status</span> <span class="o">==</span> <span class="s1">&#39;TO_BE_BUILT&#39;</span><span class="p">;</span>
@@ -266,8 +265,8 @@ every instrument requires the user to login)</p>
 <p>The <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.get_sessions_to_build" title="nexusLIMS.db.session_handler.get_sessions_to_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_sessions_to_build()</span></code></a> method
 returns a list of these <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>
 objects to the record builder, which are processed one at a time.</p>
-</div>
-<div class="section" id="building-a-single-record">
+</section>
+<section id="building-a-single-record">
 <h2>Building a Single Record<a class="headerlink" href="#building-a-single-record" title="Permalink to this headline">¶</a></h2>
 <p>With the list of <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> instances
 returned by <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.get_sessions_to_build" title="nexusLIMS.db.session_handler.get_sessions_to_build"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_sessions_to_build()</span></code></a>, the
@@ -275,7 +274,7 @@ code then loops through each <a class="reference internal" href="api/nexusLIMS.d
 executing a number of steps at each iteration (which are expanded upon below —
 the link after each number will bring you directly to the details for that
 step).</p>
-<div class="section" id="overview">
+<section id="overview">
 <span id="id2"></span><h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="#starting-record-builder">(link)</a>
@@ -321,8 +320,8 @@ Any records created are uploaded to the NexusLIMS CDCS instance using
 <a class="reference internal" href="api/nexusLIMS.html#nexusLIMS.cdcs.upload_record_files" title="nexusLIMS.cdcs.upload_record_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">upload_record_files()</span></code></a> and the NexusLIMS database
 is updated as needed.</p></li>
 </ol>
-</div>
-<div class="section" id="initiating-the-build">
+</section>
+<section id="initiating-the-build">
 <span id="starting-record-builder"></span><h3>1. Initiating the Build<a class="headerlink" href="#initiating-the-build" title="Permalink to this headline">¶</a></h3>
 <p>Prior to calling <a class="reference internal" href="api/nexusLIMS.builder.html#nexusLIMS.builder.record_builder.build_record" title="nexusLIMS.builder.record_builder.build_record"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_record()</span></code></a> for
 a given <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>,
@@ -337,8 +336,8 @@ the given <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db
 begins the record by writing basic XML header information before querying the
 reservation system for additional information about the experiment.
 <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="querying-the-sharepoint-calendar">
+</section>
+<section id="querying-the-sharepoint-calendar">
 <span id="querying-sharepoint"></span><h3>2. Querying the SharePoint Calendar<a class="headerlink" href="#querying-the-sharepoint-calendar" title="Permalink to this headline">¶</a></h3>
 <p>Since users must make reservations on the SharePoint calendar, this is an
 important source of metadata for the experimental records created by NexusLIMS.
@@ -360,8 +359,8 @@ representation of the current record.</p>
 <code class="docutils literal notranslate"><span class="pre">&lt;summary&gt;</span></code> section of the record using the information that can be accessed,
 such as the instrument the Experiment was performed on, as well as the date and
 time. <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="identifying-files">
+</section>
+<section id="identifying-files">
 <span id="identifying-files-to-include"></span><h3>3. Identifying Files to Include<a class="headerlink" href="#identifying-files" title="Permalink to this headline">¶</a></h3>
 <p>The majority of the information included in an Experiment record is extracted
 from the files identified as part of a given session on one of the Electron
@@ -419,8 +418,8 @@ used to mark the session's record status as <code class="docutils literal notran
 database, and the back-end proceeds with <a class="reference internal" href="#starting-record-builder">step 1</a> for
 the next <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to be processed.
 <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="separating-acquisition-activities">
+</section>
+<section id="separating-acquisition-activities">
 <span id="build-activities"></span><h3>4. Separating Acquisition Activities<a class="headerlink" href="#separating-acquisition-activities" title="Permalink to this headline">¶</a></h3>
 <p>Once the list of files that should be associated with this record is obtained,
 the next step is to separate those files into logical groupings to try and
@@ -441,13 +440,15 @@ slightly different areas. In (b), a histogram of time differences between
 consecutive pairs of files, it is clear that the majority of files have a very
 short time difference, and the larger time differences represent the gaps
 between groups.</p>
-<div class="figure align-default" id="id3" style="width: 80%">
+<figure class="align-default" id="id3" style="width: 80%">
 <span id="cluster-fig"></span><a class="reference internal image-reference" href="_images/file_clustering.png"><img alt="How groups of files are separated into Acquisition Activities" src="_images/file_clustering.png" style="width: 640.0px; height: 480.0px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">An example of determining the
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">An example of determining the
 <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a> time boundaries
 for a group of files collected during an experiment. See the surrounding
 text for a full explanation of these plots.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+</figcaption>
+</figure>
 <p>Since the pattern of file times will vary (greatly) between experiments, a
 statistical approach is needed, as implemented in
 <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.cluster_filelist_mtimes" title="nexusLIMS.schemas.activity.cluster_filelist_mtimes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cluster_filelist_mtimes()</span></code></a>. In this method,
@@ -467,8 +468,8 @@ between the groups of files, and identifies 13 different groups, as a user
 performing the clustering manually would, as well. This approach has proven to
 be generalizable to many different sets of files and is robust across filetypes,
 as well. <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="parsing-individual-files-metadata">
+</section>
+<section id="parsing-individual-files-metadata">
 <span id="parse-metadata"></span><h3>5. Parsing Individual Files' Metadata<a class="headerlink" href="#parsing-individual-files-metadata" title="Permalink to this headline">¶</a></h3>
 <p>Once the files have been assigned to specific
 <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a> objects, the
@@ -538,8 +539,8 @@ simpler formats, such as the TIF images produced by certain SEMs.</p>
 <p>The metadata dictionaries and path to the preview image are maintained at the
 <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a> level for all the
 files contained within a given activity. <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="determining-setup-parameters">
+</section>
+<section id="determining-setup-parameters">
 <span id="separate-setup-parameters"></span><h3>6. Determining Setup Parameters<a class="headerlink" href="#determining-setup-parameters" title="Permalink to this headline">¶</a></h3>
 <p>For each <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a>, the
 record builder will identify metadata keys/values that are common across all the
@@ -562,8 +563,8 @@ compares the metadata for each file to that of the
 the values unique to that dataset (or at least not identical among all files
 in the <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a>).
 <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="validating-the-built-records">
+</section>
+<section id="validating-the-built-records">
 <span id="validating-the-record"></span><h3>7. Validating the Built Records<a class="headerlink" href="#validating-the-built-records" title="Permalink to this headline">¶</a></h3>
 <p>After the processing of each
 <a class="reference internal" href="api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.AcquisitionActivity" title="nexusLIMS.schemas.activity.AcquisitionActivity"><code class="xref py py-class docutils literal notranslate"><span class="pre">AcquisitionActivity</span></code></a> is finished, it is
@@ -588,8 +589,8 @@ before it is uploaded to the CDCS instance.</p>
 for the next <a class="reference internal" href="api/nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> to be processed,
 and repeats until all sessions have been analyzed.
 <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-<div class="section" id="uploading-completed-records-and-updating-database">
+</section>
+<section id="uploading-completed-records-and-updating-database">
 <span id="upload-records"></span><h3>8. Uploading Completed Records and Updating Database<a class="headerlink" href="#uploading-completed-records-and-updating-database" title="Permalink to this headline">¶</a></h3>
 <p>Once all the new sessions have been processed, if there were any XML records
 generated, they are uploaded using the
@@ -606,9 +607,9 @@ implemented, since records will be owned by the user that creates them.</p>
 <p>At this point, the record generation process has completed. This entire logic
 is looped periodically as described <a class="reference internal" href="#general-approach">at the top</a> to
 continually parse new sessions, as they occur. <a class="reference internal" href="#overview">(go to top)</a></p>
-</div>
-</div>
-<div class="section" id="record-generation-diagram">
+</section>
+</section>
+<section id="record-generation-diagram">
 <span id="activity-diagram"></span><h2>Record Generation Diagram<a class="headerlink" href="#record-generation-diagram" title="Permalink to this headline">¶</a></h2>
 <p>The following diagram illustrates the logic (described above) that is used to
 generate <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> records and upload them to the NexusLIMS CDCS instance.
@@ -623,8 +624,8 @@ can be read by simply following the arrows. The only exception is for the orange
 boxes, which indicate a jump to the other orange box in the bottom left,
 representing when an individual session is updated in the database.</p>
 <a class="reference internal image-reference" href="_images/record_building.png"><img alt="Activity diagram for record building process" src="_images/record_building.png" style="width: 90%;" /></a>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -647,7 +648,7 @@ representing when an individual session is updated in the database.</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

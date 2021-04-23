@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nexusLIMS.harvester.google_calendar &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom-styles.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/custom.js"></script>
+    <link rel="shortcut icon" href="../../../_static/nexusLIMS_bare_logo.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/logo_horizontal.png"></span>
+           </a>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../../api.html">API Docs</a></li>
+                <li><a href="https://github.com/euclidtechlabs/nexuslims">Repository</a></li>
+                <li><a href="https://www.nist.gov/mml/odi">NIST ODI</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site Map <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../record_building.html">Record building workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../taxonomy.html">NexusLIMS taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema_documentation.html">Schema documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customizing_cdcs.html">Tips for customizing CDCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/modules.html">nexusLIMS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/nexusLIMS.html">nexusLIMS package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/nexusLIMS.builder.html">nexusLIMS.builder package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/nexusLIMS.db.html">nexusLIMS.db package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/nexusLIMS.extractors.html">nexusLIMS.extractors package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/nexusLIMS.harvester.html">nexusLIMS.harvester package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/nexusLIMS.schemas.html">nexusLIMS.schemas package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc.html">Misc.</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li class="dummy-sidebarrel">
+    <a><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Previous</span>
+    </a>
+  </li>
+  <li class="dummy-sidebarrel">
+    <a><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Next &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><img src="../../../_static/nexusLIMS_bare_logo.png">
+<h4><a href="../../../index.html" title="Return to documentation home">
+    NexusLIMS Documentation</a></h4>
+<ul class="globaltoc">
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../record_building.html">Record building workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../taxonomy.html">NexusLIMS taxonomy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema_documentation.html">Schema documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customizing_cdcs.html">Tips for customizing CDCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc.html">Misc.</a></li>
+</ul>
+
+</ul><h4>
+    <a class="no-hover">Page content</a>
+</h4>
+
+
+<form action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <h1>Source code for nexusLIMS.harvester.google_calendar</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file has been edited by Euclid Techlabs.</span>
+<span class="c1"># For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Manager</span>
+
+<span class="kn">from</span> <span class="nn">googleapiclient.discovery</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span> <span class="nn">google_auth_oauthlib.flow</span> <span class="kn">import</span> <span class="n">InstalledAppFlow</span>
+
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">get_instrument_db</span><span class="p">,</span> <span class="n">get_instr_from_calendar_name</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">Instrument</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">local_datetime</span>
+
+
+<div class="viewcode-block" id="build_service"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.google_calendar.build_service">[docs]</a><span class="k">def</span> <span class="nf">build_service</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">cred</span><span class="o">=</span><span class="s2">&quot;credentials.json&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build Google Calendar service through OAuth2.</span>
+<span class="sd">    For more information:</span>
+<span class="sd">    https://developers.google.com/workspace/guides/create-credentials</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    service : dict</span>
+<span class="sd">        An empty dictionary.</span>
+<span class="sd">        This is needed because :py:class:`~multiprocessing.Process` is used</span>
+<span class="sd">        to timeout the authorization process. If the user chooses to do nothing when the Google</span>
+<span class="sd">        OAuth2 page pops out, or uses a wrong Google account without access to the Calendar,</span>
+<span class="sd">        then the process is killed after 10 seconds.</span>
+
+<span class="sd">    cred : str</span>
+<span class="sd">        Path for the JSON credentials file downloaded from the Google Cloud Console.</span>
+<span class="sd">        Default: &quot;credentials.json&quot; in the same folder as this script.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    service : :py:class:`~googleapiclient.Resource`</span>
+<span class="sd">        A Resource instance built for &quot;calendar&quot; and &quot;v3&quot; using the credentials from the ``cred``</span>
+<span class="sd">        file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># For safety reasons, do not store the credential token locally. Use tempfile.</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">scopes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://www.googleapis.com/auth/calendar.readonly&#39;</span><span class="p">]</span>
+    <span class="n">flow</span> <span class="o">=</span> <span class="n">InstalledAppFlow</span><span class="o">.</span><span class="n">from_client_secrets_file</span><span class="p">(</span><span class="n">cred</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">run_local_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;token.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">token</span><span class="p">:</span>
+        <span class="n">token</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">creds</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+    <span class="n">service</span><span class="p">[</span><span class="s2">&quot;service&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s2">&quot;calendar&quot;</span><span class="p">,</span> <span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_dict"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.google_calendar.fetch_dict">[docs]</a><span class="k">def</span> <span class="nf">fetch_dict</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">dt_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a dict of information from the Google Calendar event that best matches the datetime</span>
+<span class="sd">    period specified by ``dt_from`` and ``dt_to`` for one ``instrument``.</span>
+<span class="sd">    The current stage is that, if ``dt_from`` or ``dt_to`` is None, then the most recent Calendar</span>
+<span class="sd">    event is returned. In the future this may change to a list of events (up to a certain maximum</span>
+<span class="sd">    number).</span>
+
+<span class="sd">    Due to how the Google Calendar API was set up, ``dt_from`` and ``dt_to`` have to be fairly</span>
+<span class="sd">    close to the event of interest, since the query will only get a maximum of 1000 events</span>
+<span class="sd">    between the two dates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument`</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the</span>
+<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        Contains information about the api_url to be used to connect to the instrument Calendar.</span>
+<span class="sd">    dt_from : :py:class:`~datetime.datetime` or None</span>
+<span class="sd">        A :py:class:`~datetime.datetime` object representing the start of a</span>
+<span class="sd">        calendar event to search for. Must be an RFC3339 timestamp with mandatory time zone offset.</span>
+<span class="sd">        For example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.</span>
+<span class="sd">        If both ``dt_from`` and ``dt_to`` are `None`, no date filtering will be done.</span>
+<span class="sd">        If just ``dt_from`` is `None`, all events from the beginning of the</span>
+<span class="sd">        calendar record will be returned up until ``dt_to``.</span>
+<span class="sd">    dt_to : :py:class:`~datetime.datetime` or None</span>
+<span class="sd">        dt_to : :py:class:`~datetime.datetime` or None</span>
+<span class="sd">        A :py:class:`~datetime.datetime` object representing the end of</span>
+<span class="sd">        calendar event to search for. Must be an RFC3339 timestamp with mandatory time zone offset.</span>
+<span class="sd">        For example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z.</span>
+<span class="sd">        If ``dt_from`` and ``dt_to`` are `None`, no date filtering will be done.</span>
+<span class="sd">        If just ``dt_to`` is `None`, all events from the ``dt_from`` to the</span>
+<span class="sd">        present will be returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    query : dict</span>
+<span class="sd">        A :py:class:`~dict` with detailed information about the Google Calendar event returned</span>
+<span class="sd">        from the query.</span>
+<span class="sd">        The two most important keys for ``query`` are &quot;timeZone&quot; and &quot;items&quot;.</span>
+<span class="sd">        query[&quot;timeZone&quot;] is the timezone of the Google Calendar, e.g. &quot;America/Chicago&quot;;</span>
+<span class="sd">        query[&quot;items&quot;] is a list of Calendar events meeting the ``dt_from`` and ``dt_to`` time</span>
+<span class="sd">        criteria, up to 1000 events. The events are sorted by time and in an ascending order.</span>
+<span class="sd">        Each event is a :py:class:`~dict` itself, containing information about the event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># try to convert from instrument PID string to actual instrument</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">instrument</span> <span class="o">=</span> <span class="n">get_instrument_db</span><span class="p">()[</span><span class="n">instrument</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Entered instrument string &#39;</span><span class="si">{}</span><span class="s2">&#39; could not be &quot;</span>
+                           <span class="s2">&quot;parsed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">instrument</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">Instrument</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Entered instrument &quot;</span>
+                         <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; could not be parsed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">instrument</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">dt_from</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt_from</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;From google_calendar:fetch_dict: need datetime.datetime, got &quot;</span>
+                            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dt_from</span><span class="p">)))</span>
+        <span class="n">dt_from</span> <span class="o">=</span> <span class="n">dt_from</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;Z&quot;</span>
+    <span class="k">if</span> <span class="n">dt_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt_to</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;From google_calendar:fetch_dict: need datetime.datetime, got &quot;</span>
+                            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dt_to</span><span class="p">)))</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">dt_to</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;Z&quot;</span>
+
+    <span class="n">calendar_id</span> <span class="o">=</span> <span class="n">instrument</span><span class="o">.</span><span class="n">api_url</span>
+    <span class="k">with</span> <span class="n">Manager</span><span class="p">()</span> <span class="k">as</span> <span class="n">manager</span><span class="p">:</span>
+        <span class="n">service</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">build_service</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">service</span><span class="p">,))</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to get Google authentication in 10 seconds. The token is not saved and &quot;</span>
+                  <span class="s2">&quot;the service is not built.&quot;</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">service</span><span class="p">[</span><span class="s2">&quot;service&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">events</span><span class="p">()</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">calendarId</span><span class="o">=</span><span class="n">calendar_id</span><span class="p">,</span> <span class="n">pageToken</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxResults</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                            <span class="n">timeMax</span><span class="o">=</span><span class="n">dt_to</span><span class="p">,</span> <span class="n">timeMin</span><span class="o">=</span><span class="n">dt_from</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">query</span></div>
+
+
+<div class="viewcode-block" id="GCalendarEvent"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.google_calendar.GCalendarEvent">[docs]</a><span class="k">class</span> <span class="nc">GCalendarEvent</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A representation of a single calendar &quot;entry&quot; returned from the Google Calendar</span>
+<span class="sd">    API. Datetime attributes should be timezone-aware, i.e. matching the timezone used in the</span>
+<span class="sd">    instrument calendar.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        The title of the event (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:TitleOfExperiment``)</span>
+<span class="sd">    instrument : ~nexusLIMS.instruments.Instrument</span>
+<span class="sd">        The instrument associated with this calendar entry (fetched using</span>
+<span class="sd">        the name of the calendar, present at ``/feed/title``)</span>
+<span class="sd">    updated : datetime.datetime</span>
+<span class="sd">        The time this event was last updated (present at</span>
+<span class="sd">        ``/feed/entry/updated``)</span>
+<span class="sd">    username : str</span>
+<span class="sd">        The NIST &quot;short&quot; username of the user indicated in this event (present</span>
+<span class="sd">        at ``/feed/entry/link[@title=&quot;UserName&quot;]/m:inline/feed/entry/content</span>
+<span class="sd">        /m:properties/d:UserName``)</span>
+<span class="sd">    created_by : str</span>
+<span class="sd">        The NIST &quot;short&quot; username of the user that created this event (present</span>
+<span class="sd">        at ```/feed/entry/link[@title=&quot;CreatedBy&quot;]/m:inline/feed/entry/content</span>
+<span class="sd">        /m:properties/d:UserName``)</span>
+<span class="sd">    start_time : datetime.datetime</span>
+<span class="sd">        The time this event was scheduled to start (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:StartTime``)</span>
+<span class="sd">        The API response returns this value without a timezone, in the timezone</span>
+<span class="sd">        of the sharepoint server</span>
+<span class="sd">    end_time : datetime.datetime</span>
+<span class="sd">        The time this event was scheduled to end (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:EndTime``)</span>
+<span class="sd">    category_value : str</span>
+<span class="sd">        The &quot;type&quot; or category of this event (such as User session, service,</span>
+<span class="sd">        etc.) (present at ``/feed/entry/content/m:properties/d:CategoryValue``)</span>
+<span class="sd">    experiment_purpose : str</span>
+<span class="sd">        The user-entered purpose of this experiment (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:ExperimentPurpose``)</span>
+<span class="sd">    sample_details : str</span>
+<span class="sd">        The user-entered sample details for this experiment (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:SampleDetails``)</span>
+<span class="sd">    project_id : str</span>
+<span class="sd">        The user-entered project identifier for this experiment (present at</span>
+<span class="sd">        ``/feed/entry/content/m:properties/d:ProjectID``)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">instrument</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">updated</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment_purpose</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sample_details</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instrument</span> <span class="o">=</span> <span class="n">instrument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated</span> <span class="o">=</span> <span class="n">updated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span> <span class="o">=</span> <span class="n">created_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_value</span> <span class="o">=</span> <span class="n">category_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_purpose</span> <span class="o">=</span> <span class="n">experiment_purpose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_details</span> <span class="o">=</span> <span class="n">sample_details</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
+
+<div class="viewcode-block" id="GCalendarEvent.from_dict"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.google_calendar.GCalendarEvent.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="n">last_event</span> <span class="o">=</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">extra_info</span> <span class="o">=</span> <span class="n">last_event</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+        <span class="n">extra_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">extra_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">extra_info</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From google_calendar.py:GCalendarEvent:from_dict:</span><span class="se">\n</span><span class="s2">The description of the &quot;</span>
+                  <span class="s2">&quot;event has to be JSON decoder-compatible. e.g. &#39;{&#39;category_value&#39;: &#39;XXX&#39;}&#39;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The event description will be ignored. Search for experimental information &quot;</span>
+                  <span class="s2">&quot;will not be performed. The GCalendarEvent instance will have None for those &quot;</span>
+                  <span class="s2">&quot;attributes.&quot;</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">last_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="s2">&quot;(No Title)&quot;</span><span class="p">)</span>
+        <span class="n">instrument</span> <span class="o">=</span> <span class="n">get_instr_from_calendar_name</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">])</span>
+        <span class="n">updated_utc</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s2">&quot;updated&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">))</span>
+        <span class="n">updated</span> <span class="o">=</span> <span class="n">local_datetime</span><span class="p">(</span><span class="n">updated_utc</span><span class="p">,</span> <span class="n">query</span><span class="p">[</span><span class="s2">&quot;timeZone&quot;</span><span class="p">])</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">last_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;creator&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">created_by</span> <span class="o">=</span> <span class="n">last_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;creator&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">last_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">last_event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;From google_calendar.py:GCalendarEvent:from_dict:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="s2">&quot;Invalid start_time or end_time. Default to a time period between an hour before &quot;</span>
+                  <span class="s2">&quot;now and now (local timezone).&quot;</span><span class="p">)</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">category_value</span> <span class="o">=</span> <span class="n">extra_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category_value&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">experiment_purpose</span> <span class="o">=</span> <span class="n">extra_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;experiment_purpose&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">sample_details</span> <span class="o">=</span> <span class="n">extra_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sample_details&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">project_id</span> <span class="o">=</span> <span class="n">extra_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">GCalendarEvent</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                              <span class="n">instrument</span><span class="o">=</span><span class="n">instrument</span><span class="p">,</span>
+                              <span class="n">updated</span><span class="o">=</span><span class="n">updated</span><span class="p">,</span>
+                              <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                              <span class="n">created_by</span><span class="o">=</span><span class="n">created_by</span><span class="p">,</span>
+                              <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                              <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
+                              <span class="n">category_value</span><span class="o">=</span><span class="n">category_value</span><span class="p">,</span>
+                              <span class="n">experiment_purpose</span><span class="o">=</span><span class="n">experiment_purpose</span><span class="p">,</span>
+                              <span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+  
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
+      Last updated on Apr 23, 2021.<br/>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

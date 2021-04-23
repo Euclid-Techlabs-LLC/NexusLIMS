@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Session logging &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Session logging &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Session logging</a></li>
@@ -175,7 +174,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="session-logging">
+  <section id="session-logging">
 <h1>Session logging<a class="headerlink" href="#session-logging" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><p><cite>Last updated: March 7, 2020</cite></p>
@@ -188,23 +187,23 @@ control) PC and logs basic session information to the
 <a class="reference internal" href="database.html"><span class="doc">NexusLIMS database</span></a>. This document explains how this
 application is used, its design, what information it collects, and how it is
 deployed to the individual microscopes.</p>
-<div class="section" id="how-to-use-the-logger-app">
+<section id="how-to-use-the-logger-app">
 <h2>How to use the logger app<a class="headerlink" href="#how-to-use-the-logger-app" title="Permalink to this headline">¶</a></h2>
 <p>Using the Session Logger application is very simple. On each Nexus Facility
 microscope, there will be a shortcut on the desktop that points to the
 application that has been stored within a local directory on the computer. At
 the beginning of an Experiment, double click on the following icon to start a
 session:</p>
-<div class="align-center figure">
+<figure class="align-center">
 <a class="reference internal image-reference" href="_images/logger_icon.png"><img alt="Session Logger application shortcut icon" src="_images/logger_icon.png" style="width: 15%;" /></a>
-</div>
+</figure>
 <p>After a short delay (about 5 seconds, depending on the microscope), the
 application will launch and perform a number of steps (described
 <a class="reference internal" href="#actions">below</a>), resulting in a display informing the user that a session
 has been started:</p>
-<div class="align-center figure">
+<figure class="align-center">
 <a class="reference internal image-reference" href="_images/logger_in_action.png"><img alt="Session Logger application in action" src="_images/logger_in_action.png" style="width: 30%;" /></a>
-</div>
+</figure>
 <p>Once this screen is displayed, the user should simply keep the window open
 while they work (it can be minimized with no problem). The logger does not
 perform any actions during this stage, and is simply waiting for the user to
@@ -213,29 +212,29 @@ click the <cite>&quot;End Session&quot;</cite> button.</p>
 <cite>&quot;End Session&quot;</cite> button in the application. This will trigger the application
 to mark the current Experiment as finished in the <a class="reference internal" href="database.html"><span class="doc">database</span></a>,
 and the logger application will close itself after a short delay.</p>
-<div class="section" id="what-if-something-goes-wrong">
+<section id="what-if-something-goes-wrong">
 <h3>What if something goes wrong?<a class="headerlink" href="#what-if-something-goes-wrong" title="Permalink to this headline">¶</a></h3>
 <p>In the unlikely event that the logger application encounters an unexpected
 condition in the database or other error, it will inform the user and pop-up
 a debugging log with more information (this log can also always be accessed
 by clicking the <cite>&quot;Show debug log&quot;</cite> button on the main screen):</p>
-<div class="align-center figure">
+<figure class="align-center">
 <a class="reference internal image-reference" href="_images/logger_log.png"><img alt="Session Logger debugging log window" src="_images/logger_log.png" style="width: 40%;" /></a>
-</div>
+</figure>
 <p>If this log window appears on its own (which it shouldn't), we ask that that
 you click the <cite>&quot;Copy&quot;</cite> button to copy all the text to the clipboard and send it
 to <a class="reference external" href="mailto:miclims&#37;&#52;&#48;nist&#46;gov">miclims<span>&#64;</span>nist<span>&#46;</span>gov</a> so the NexusLIMS developers
 can resolve the issue.</p>
-</div>
-<div class="section" id="interrupted-sessions">
+</section>
+<section id="interrupted-sessions">
 <span id="interrupted"></span><h3>Interrupted sessions<a class="headerlink" href="#interrupted-sessions" title="Permalink to this headline">¶</a></h3>
 <p>The session logger application does it's best to ensure that if the window is
 closed by any means, it sends an <cite>&quot;End Session&quot;</cite> log to the
 <a class="reference internal" href="database.html"><span class="doc">database</span></a>. There is an option to &quot;Pause Session&quot; however,
 which is prompted if the regular &quot;Close window&quot; button is clicked:</p>
-<div class="align-center figure">
+<figure class="align-center">
 <a class="reference internal image-reference" href="_images/logger_pause_session.png"><img alt="Session Logger pause session option" src="_images/logger_pause_session.png" style="width: 50%;" /></a>
-</div>
+</figure>
 <p>Clicking <cite>&quot;Pause session&quot;</cite> will immediately close the application without
 sending any further information to the database, and should only be done if the
 user plans to resume the session before another user will use the instrument
@@ -244,22 +243,22 @@ will leave the database in an inconsistent state, which will be detected the
 next time the logger application is run. If this is the case, the user will be
 prompted to confirm whether they want to continue the existing session, or
 start a new one:</p>
-<div class="align-center figure">
+<figure class="align-center">
 <a class="reference internal image-reference" href="_images/logger_resume_session.png"><img alt="Session Logger pause session option" src="_images/logger_resume_session.png" style="width: 40%;" /></a>
-</div>
+</figure>
 <p>This dialog will also appear when the user clicks on the desktop shortcut
 in the event the computer crashed for some reason and the application was
 forcibly closed. Clicking <cite>&quot;Continue&quot;</cite> will cause the application to use the
 existing session (found in the database), while clicking <cite>&quot;New session&quot;</cite> will
 end the session that was found and start a new one.</p>
-</div>
-</div>
-<div class="section" id="actions-performed-by-the-logger">
+</section>
+</section>
+<section id="actions-performed-by-the-logger">
 <span id="actions"></span><h2>Actions performed by the logger<a class="headerlink" href="#actions-performed-by-the-logger" title="Permalink to this headline">¶</a></h2>
 <p>The NexusLIMS Session Logger performs a number of steps to record that an
 Experiment has occurred, and keeps the progress bar up to date while it is
 operating. These steps are detailed below.</p>
-<div class="section" id="mounting-the-network-share">
+<section id="mounting-the-network-share">
 <span id="step-1"></span><h3>1. Mounting the network share<a class="headerlink" href="#mounting-the-network-share" title="Permalink to this headline">¶</a></h3>
 <p>The first action performed by the logger is to &quot;ping&quot; the central file server
 where data is saved and the NexusLIMS database is stored. Based on the
@@ -272,16 +271,16 @@ information, the program runs a Windows command to mount the drive, such as:</p>
 </div>
 <p>After this command finishes, the logger confirms that it can access the
 database file as expected, and raises an error if not.</p>
-</div>
-<div class="section" id="getting-the-instrument-name">
+</section>
+<section id="getting-the-instrument-name">
 <h3>2. Getting the instrument name<a class="headerlink" href="#getting-the-instrument-name" title="Permalink to this headline">¶</a></h3>
 <p>Using the database file on the mounted drive, the logger application queries
 the <code class="docutils literal notranslate"><span class="pre">instruments</span></code> table in the database using the <cite>&quot;hostname&quot;</cite> of the current
 computer. In this way, a computer name (such as <code class="docutils literal notranslate"><span class="pre">**REMOVED**</span></code>) gets mapped
 to an instrument persistent identifier (PID) (such as <code class="docutils literal notranslate"><span class="pre">**REMOVED**</span></code>)
 and this value is stored for later use.</p>
-</div>
-<div class="section" id="checking-instrument-status">
+</section>
+<section id="checking-instrument-status">
 <h3>3. Checking instrument status<a class="headerlink" href="#checking-instrument-status" title="Permalink to this headline">¶</a></h3>
 <p>Before logging the start of a new Experiment, first the logger application
 checks to ensure that the most recent entry logged for this instrument was
@@ -302,8 +301,8 @@ start a new one (see the <a class="reference internal" href="#interrupted">inter
 details). If the user chooses to continue the existing session, the logger
 application notes the session identifier from the database for that session and
 jumps to <a class="reference internal" href="#step-6">step 6</a>.</p>
-</div>
-<div class="section" id="inserting-a-start-log">
+</section>
+<section id="inserting-a-start-log">
 <span id="step-4"></span><h3>4. Inserting a <code class="docutils literal notranslate"><span class="pre">START</span></code> log<a class="headerlink" href="#inserting-a-start-log" title="Permalink to this headline">¶</a></h3>
 <p>With the instrument PID known and a randomly generated identifier string, the
 logger runs a database insertion query on the <code class="docutils literal notranslate"><span class="pre">session_log</span></code> table to record
@@ -317,15 +316,15 @@ the current timestamp is also included in the insertion. As an example:</p>
 </div>
 <p>After this has finished, the logger runs another query to verify that the row
 was inserted into the database as expected, and raises an error if not.</p>
-</div>
-<div class="section" id="unmounting-the-network-share">
+</section>
+<section id="unmounting-the-network-share">
 <h3>5. Unmounting the network share<a class="headerlink" href="#unmounting-the-network-share" title="Permalink to this headline">¶</a></h3>
 <p>After the session start log has been added, the network share created in step 1
 is unmounted to clean up while the logger application waits for the next
 action. While the application is waiting, it simply sits idle until the
 <cite>&quot;End session&quot;</cite> button is pressed.</p>
-</div>
-<div class="section" id="ending-the-session">
+</section>
+<section id="ending-the-session">
 <span id="step-6"></span><h3>6. Ending the session<a class="headerlink" href="#ending-the-session" title="Permalink to this headline">¶</a></h3>
 <p>Once the user clicks the <cite>&quot;End session&quot;</cite> button, the logger application again
 mounts the network share (as in <a class="reference internal" href="#step-1">step 1</a>) so it can communicate with
@@ -337,16 +336,16 @@ then updates the status of both the <code class="docutils literal notranslate"><
 session from <code class="docutils literal notranslate"><span class="pre">'WAITING_FOR_END'</span></code> to <code class="docutils literal notranslate"><span class="pre">'TO_BE_BUILT'</span></code>. This status indicates
 to the <a class="reference internal" href="record_building.html"><span class="doc">record builder</span></a> that it should go ahead to
 actually build and upload the record for this Experiment.</p>
-</div>
-<div class="section" id="cleaning-up">
+</section>
+<section id="cleaning-up">
 <h3>7. Cleaning up<a class="headerlink" href="#cleaning-up" title="Permalink to this headline">¶</a></h3>
 <p>After updating the logs in the previous step, the logger application unmounts
 the network share (as before), and if everything went according to plan,
 waits three seconds and then shuts itself down. At this point, it is ready
 to be run again by the next user that arrives to begin a new session.</p>
-</div>
-</div>
-<div class="section" id="information-collected">
+</section>
+</section>
+<section id="information-collected">
 <h2>Information collected<a class="headerlink" href="#information-collected" title="Permalink to this headline">¶</a></h2>
 <p>As described above and in the database <a class="reference internal" href="database.html"><span class="doc">documentation</span></a>, the
 logger application collects the bare minimum amount of information required
@@ -394,8 +393,8 @@ session has ended.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="logger-implementation-and-deployment">
+</section>
+<section id="logger-implementation-and-deployment">
 <h2>Logger implementation and deployment<a class="headerlink" href="#logger-implementation-and-deployment" title="Permalink to this headline">¶</a></h2>
 <p>As <a class="reference internal" href="data_security.html"><span class="doc">data security</span></a> is of the utmost importance in
 NexusLIMS, the developers felt it prudent to describe in detail the specific
@@ -438,7 +437,7 @@ database communication uses the
 <cite>Windows</cite>-specific parts of the code are used to find an unused drive letter
 to mount the central file network share using the
 <a class="reference external" href="https://docs.python.org/3.4/library/ctypes.html">ctypes</a> module.</p>
-<div class="section" id="system-calls">
+<section id="system-calls">
 <h3>System calls<a class="headerlink" href="#system-calls" title="Permalink to this headline">¶</a></h3>
 <p>While most of the logger application's logic is implemented in the Python code,
 a few operations require interfacing directly with the microscope computer
@@ -501,8 +500,8 @@ system call:</p>
 the database.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="application-dependencies">
+</section>
+<section id="application-dependencies">
 <h3>Application dependencies<a class="headerlink" href="#application-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>The third-party dependencies used by the logger application are:</p>
 <table class="docutils align-default">
@@ -615,9 +614,9 @@ installed as a dependency of <code class="docutils literal notranslate"><span cl
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
     </div>
@@ -640,7 +639,7 @@ installed as a dependency of <code class="docutils literal notranslate"><span cl
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

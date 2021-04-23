@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.builder.record_builder &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.builder.record_builder &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -227,7 +225,7 @@
                           <span class="s2">&quot;cal_events_to_nx_record.xsl&quot;</span><span class="p">)</span>
 <span class="n">XSD_PATH</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">_activity</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span>
                          <span class="s2">&quot;nexus-experiment.xsd&quot;</span><span class="p">)</span>
-
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
 <div class="viewcode-block" id="build_record"><a class="viewcode-back" href="../../../api/nexusLIMS.builder.html#nexusLIMS.builder.record_builder.build_record">[docs]</a><span class="k">def</span> <span class="nf">build_record</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">dt_from</span><span class="p">,</span> <span class="n">dt_to</span><span class="p">,</span>
                  <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -241,8 +239,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument`</span>
-<span class="sd">        One of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events.</span>
 <span class="sd">    dt_from : datetime.datetime</span>
 
@@ -292,16 +289,16 @@
     <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting calendar events with instrument: </span><span class="si">{</span><span class="n">instrument</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, &quot;</span>
                  <span class="sa">f</span><span class="s2">&quot;from </span><span class="si">{</span><span class="n">dt_from</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dt_to</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s2">, &quot;</span>
                  <span class="sa">f</span><span class="s2">&quot;user: </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">events_str</span> <span class="o">=</span> <span class="n">_sp_cal</span><span class="o">.</span><span class="n">get_events</span><span class="p">(</span><span class="n">instrument</span><span class="o">=</span><span class="n">instrument</span><span class="p">,</span> <span class="n">dt_from</span><span class="o">=</span><span class="n">dt_from</span><span class="p">,</span>
-                                    <span class="n">dt_to</span><span class="o">=</span><span class="n">dt_to</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
+    <span class="c1"># events_str = _sp_cal.get_events(instrument=instrument, dt_from=dt_from,</span>
+    <span class="c1">#                                 dt_to=dt_to, user=user, wrap=True)</span>
     <span class="c1"># Apply XSLT to transform calendar events to single record format:</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">_parse_xml</span><span class="p">(</span><span class="n">events_str</span><span class="p">,</span> <span class="n">XSLT_PATH</span><span class="p">,</span>
-                        <span class="n">instrument_PID</span><span class="o">=</span><span class="n">instrument</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="n">instrument_name</span><span class="o">=</span><span class="n">instrument</span><span class="o">.</span><span class="n">schema_name</span><span class="p">,</span>
-                        <span class="n">experiment_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">_uuid4</span><span class="p">()),</span>
-                        <span class="n">collaborator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">sample_id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">)</span>
+    <span class="c1"># output = _parse_xml(events_str, XSLT_PATH,</span>
+    <span class="c1">#                     instrument_PID=instrument.name,</span>
+    <span class="c1">#                     instrument_name=instrument.schema_name,</span>
+    <span class="c1">#                     experiment_id=str(_uuid4()),</span>
+    <span class="c1">#                     collaborator=None,</span>
+    <span class="c1">#                     sample_id=sample_id)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># FIXME bypass calendar query for now.</span>
 
     <span class="c1"># No calendar events were found</span>
     <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
@@ -339,8 +336,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument`</span>
-<span class="sd">        One of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events.</span>
 <span class="sd">    dt_from : datetime.datetime</span>
 <span class="sd">        The starting timestamp that will be used to determine which files go</span>
@@ -367,7 +363,7 @@
         <span class="n">_logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 
     <span class="n">start_timer</span> <span class="o">=</span> <span class="n">_timer</span><span class="p">()</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
                                           <span class="n">instrument</span><span class="o">.</span><span class="n">filestore_path</span><span class="p">))</span>
     <span class="c1"># find the files to be included</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_files</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dt_from</span><span class="p">,</span> <span class="n">dt_to</span><span class="p">)</span>
@@ -411,7 +407,7 @@
             <span class="c1"># add this file to the AA</span>
             <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Adding file </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
                 <span class="sa">f</span><span class="s1">&#39;to activity </span><span class="si">{</span><span class="n">aa_idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">activities</span><span class="p">[</span><span class="n">aa_idx</span><span class="p">]</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">generate_previews</span><span class="p">)</span>
             <span class="c1"># assume this file is the last one in the activity (this will be</span>
@@ -487,8 +483,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument`</span>
-<span class="sd">        One of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events.</span>
 <span class="sd">    dt_from : datetime.datetime</span>
 <span class="sd">        The starting timestamp that will be used to determine which files go</span>
@@ -575,7 +570,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
                 <span class="c1"># if no files were found for this session log, mark it as so in</span>
                 <span class="c1"># the database</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
                                      <span class="n">s</span><span class="o">.</span><span class="n">instrument</span><span class="o">.</span><span class="n">filestore_path</span><span class="p">)</span>
                 <span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No files found in &#39;</span>
                                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1"> between &#39;</span>
@@ -595,7 +590,7 @@
                 <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">dt_from</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">_&#39;</span> \
                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">instrument</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_&#39;</span> \
                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">session_identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.xml&#39;</span>
-                <span class="n">filename</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_path&#39;</span><span class="p">],</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_path&#39;</span><span class="p">],</span>
                                          <span class="s1">&#39;records&#39;</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span>
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
                 <span class="n">_pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -693,7 +688,7 @@
 <span class="sd">        A list of strings containing the files that would be included for the</span>
 <span class="sd">        record of this session (if it were not a dry run)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
                                           <span class="n">s</span><span class="o">.</span><span class="n">instrument</span><span class="o">.</span><span class="n">filestore_path</span><span class="p">))</span>
     <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Searching for files in &#39;</span>
                  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1"> between &#39;</span>
@@ -778,7 +773,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

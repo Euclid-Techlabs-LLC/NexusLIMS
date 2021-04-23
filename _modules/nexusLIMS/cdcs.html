@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.cdcs &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.cdcs &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -189,22 +187,25 @@
 <span class="c1">#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.</span>
 
 
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">_logging</span>
 <span class="kn">import</span> <span class="nn">os</span> <span class="k">as</span> <span class="nn">_os</span>
-<span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">_requests</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span> <span class="k">as</span> <span class="n">_glob</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span> <span class="k">as</span> <span class="n">_urljoin</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS._urls</span> <span class="kn">import</span> <span class="n">cdcs_url</span> <span class="k">as</span> <span class="n">_cdcs_url</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.harvester.sharepoint_calendar</span> <span class="kn">import</span> <span class="n">AuthenticationError</span> <span class="k">as</span> \
-    <span class="n">_authError</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">nexus_req</span> <span class="k">as</span> <span class="n">_nx_req</span>
+
+<span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">_requests</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">_tqdm</span>
-<span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">_logging</span>
+
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.harvester.sharepoint_calendar</span> <span class="kn">import</span> \
+    <span class="n">AuthenticationError</span> <span class="k">as</span> <span class="n">_authError</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">nexus_req</span> <span class="k">as</span> <span class="n">_nx_req</span>
 
 <span class="n">_logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">()</span>
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">_logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">_logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="get_workspace_id"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.cdcs.get_workspace_id">[docs]</a><span class="k">def</span> <span class="nf">get_workspace_id</span><span class="p">():</span>
@@ -219,7 +220,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># assuming there&#39;s only one workspace for this user (that is the public</span>
     <span class="c1"># workspace)</span>
-    <span class="n">_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span> <span class="s1">&#39;rest/workspace/read_access&#39;</span><span class="p">)</span>
+    <span class="n">_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span> <span class="s1">&#39;rest/workspace/read_access&#39;</span><span class="p">)</span>
     <span class="n">_r</span> <span class="o">=</span> <span class="n">_nx_req</span><span class="p">(</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">_requests</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">basic_auth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">_r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">_authError</span><span class="p">(</span><span class="s1">&#39;Could not authenticate to CDCS. Are the &#39;</span>
@@ -239,12 +240,14 @@
 <span class="sd">        The template ID</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># get the current template (XSD) id value:</span>
-    <span class="n">_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span> <span class="s1">&#39;rest/template-version-manager/global&#39;</span><span class="p">)</span>
+    <span class="n">_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span> <span class="s1">&#39;rest/template-version-manager/global&#39;</span><span class="p">)</span>
     <span class="n">_r</span> <span class="o">=</span> <span class="n">_nx_req</span><span class="p">(</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">_requests</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="n">basic_auth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">_r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">_authError</span><span class="p">(</span><span class="s1">&#39;Could not authenticate to CDCS. Are the &#39;</span>
                          <span class="s1">&#39;nexusLIMS_user and nexusLIMS_pass environment &#39;</span>
                          <span class="s1">&#39;variables set correctly?&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_r</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No template found in CDCS, is there any there?&quot;</span><span class="p">)</span>
     <span class="n">template_id</span> <span class="o">=</span> <span class="n">_r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;current&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">template_id</span></div>
 
@@ -268,7 +271,7 @@
 <span class="sd">    record_id : str</span>
 <span class="sd">        The id (on the server) of the record that was uploaded</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span> <span class="s1">&#39;rest/data/&#39;</span><span class="p">)</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span> <span class="s1">&#39;rest/data/&#39;</span><span class="p">)</span>
 
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="n">get_template_id</span><span class="p">(),</span>
@@ -286,9 +289,9 @@
 
     <span class="c1"># assign this record to the public workspace</span>
     <span class="n">record_id</span> <span class="o">=</span> <span class="n">post_r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-    <span class="n">record_url</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span>
+    <span class="n">record_url</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span>
                           <span class="sa">f</span><span class="s1">&#39;data?id=</span><span class="si">{</span><span class="n">record_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">wrk_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span>
+    <span class="n">wrk_endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span>
                             <span class="sa">f</span><span class="s1">&#39;rest/data/</span><span class="si">{</span><span class="n">record_id</span><span class="si">}</span><span class="s1">/assign/&#39;</span>
                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">get_workspace_id</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -313,7 +316,7 @@
 <span class="sd">        The REST response returned from the CDCS instance after attempting</span>
 <span class="sd">        the delete</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">_cdcs_url</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;rest/data/</span><span class="si">{</span><span class="n">record_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_urljoin</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;cdcs_url&quot;</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;rest/data/</span><span class="si">{</span><span class="n">record_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">_nx_req</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">_requests</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">basic_auth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">204</span><span class="p">:</span>
         <span class="c1"># anything other than 204 status means something went wrong</span>
@@ -423,7 +426,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

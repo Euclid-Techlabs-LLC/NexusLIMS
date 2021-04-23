@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NexusLIMS database &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NexusLIMS database &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -173,7 +172,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="nexuslims-database">
+  <section id="nexuslims-database">
 <h1>NexusLIMS database<a class="headerlink" href="#nexuslims-database" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div><p><cite>Last updated: February 26, 2020</cite></p>
@@ -205,7 +204,7 @@ the configuration changes in the future. These two sources of data are
 represented as two <cite>tables</cite> within the database named <cite>session_log</cite> and
 <cite>instruments</cite>, respectively. Specific documentation of each table and their
 data columns are provided below.</p>
-<div class="section" id="the-session-log-table">
+<section id="the-session-log-table">
 <h2>The <code class="docutils literal notranslate"><span class="pre">session_log</span></code> table<a class="headerlink" href="#the-session-log-table" title="Permalink to this headline">¶</a></h2>
 <p>As described above, the <code class="docutils literal notranslate"><span class="pre">session_log</span></code> table is where the instruments (and the
 NexusLIMS back-end) store information that is used to determine what records
@@ -324,8 +323,8 @@ across different instruments.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="the-instruments-table">
+</section>
+<section id="the-instruments-table">
 <span id="instr-table"></span><h2>The <code class="docutils literal notranslate"><span class="pre">instruments</span></code> table<a class="headerlink" href="#the-instruments-table" title="Permalink to this headline">¶</a></h2>
 <p>This table serves as the authoritative data source for the NexusLIMS back-end
 regarding information about the instruments in the Nexus Facility. By locating
@@ -336,15 +335,7 @@ SharePoint calendar system version was transitioned from 2010 to 2016, the
 calendar URLs changed, but after a simple update to the entries in this table,
 the existing back-end code continued working with no other changes needed.</p>
 <p><strong>Back-end implementation details</strong></p>
-<p>When the <a class="reference internal" href="api/nexusLIMS.html#module-nexusLIMS" title="nexusLIMS"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nexusLIMS</span></code></a> module is imported, one of the &quot;setup&quot; tasks
-performed is to load the <code class="docutils literal notranslate"><span class="pre">instruments</span></code> table from the database into a
-dictionary attribute named <a class="reference internal" href="api/nexusLIMS.html#nexusLIMS.instruments.instrument_db" title="nexusLIMS.instruments.instrument_db"><code class="xref py py-data docutils literal notranslate"><span class="pre">nexusLIMS.instruments.instrument_db</span></code></a>.
-This is done by querying the database specified in the environment variable
-<a class="reference internal" href="api/nexusLIMS.html#nexuslims-db-path"><span class="std std-ref">nexusLIMS_db_path</span></a> and creating a dictionary of
-<a class="reference internal" href="api/nexusLIMS.html#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instrument</span></code></a> objects that contain information
-about all of the instruments specified in the database. These objects are used
-widely throughout the code so that the database is only queried once at initial
-import, rather than every time information is needed.</p>
+<p><a class="reference internal" href="api/nexusLIMS.html#nexuslims-db-path"><span class="std std-ref">nexusLIMS_db_path</span></a> schema.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 27%" />
@@ -432,8 +423,8 @@ the instrument (e.g. 'M:/')</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -456,7 +447,7 @@ the instrument (e.g. 'M:/')</p></td>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

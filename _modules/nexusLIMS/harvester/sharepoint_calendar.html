@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.harvester.sharepoint_calendar &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.harvester.sharepoint_calendar &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -161,41 +159,14 @@
     <div class="body col-md-9 content" role="main">
       
   <h1>Source code for nexusLIMS.harvester.sharepoint_calendar</h1><div class="highlight"><pre>
-<span></span><span class="ch">#! /usr/bin/env python</span>
+<span></span><span class="c1"># This file has been co-edited by both Euclid Techlabs and NIST.</span>
+<span class="c1"># For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS</span>
 
-<span class="c1">#  NIST Public License - 2019</span>
-<span class="c1">#</span>
-<span class="c1">#  This software was developed by employees of the National Institute of</span>
-<span class="c1">#  Standards and Technology (NIST), an agency of the Federal Government</span>
-<span class="c1">#  and is being made available as a public service. Pursuant to title 17</span>
-<span class="c1">#  United States Code Section 105, works of NIST employees are not subject</span>
-<span class="c1">#  to copyright protection in the United States.  This software may be</span>
-<span class="c1">#  subject to foreign copyright.  Permission in the United States and in</span>
-<span class="c1">#  foreign countries, to the extent that NIST may hold copyright, to use,</span>
-<span class="c1">#  copy, modify, create derivative works, and distribute this software and</span>
-<span class="c1">#  its documentation without fee is hereby granted on a non-exclusive basis,</span>
-<span class="c1">#  provided that this notice and disclaimer of warranty appears in all copies.</span>
-<span class="c1">#</span>
-<span class="c1">#  THE SOFTWARE IS PROVIDED &#39;AS IS&#39; WITHOUT ANY WARRANTY OF ANY KIND,</span>
-<span class="c1">#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED</span>
-<span class="c1">#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY</span>
-<span class="c1">#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,</span>
-<span class="c1">#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION</span>
-<span class="c1">#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE</span>
-<span class="c1">#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,</span>
-<span class="c1">#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,</span>
-<span class="c1">#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,</span>
-<span class="c1">#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER</span>
-<span class="c1">#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND</span>
-<span class="c1">#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,</span>
-<span class="c1">#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.</span>
-<span class="c1">#</span>
 
 <span class="kn">import</span> <span class="nn">os</span> <span class="k">as</span> <span class="nn">_os</span>
 <span class="kn">import</span> <span class="nn">re</span> <span class="k">as</span> <span class="nn">_re</span>
 <span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">_logging</span>
 <span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">_requests</span>
-<span class="kn">import</span> <span class="nn">urllib</span> <span class="k">as</span> <span class="nn">_urllib</span>
 
 <span class="kn">import</span> <span class="nn">nexusLIMS</span>
 <span class="kn">from</span> <span class="nn">requests_ntlm</span> <span class="kn">import</span> <span class="n">HttpNtlmAuth</span> <span class="k">as</span> <span class="n">_HttpNtlmAuth</span>
@@ -207,19 +178,21 @@
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span> <span class="k">as</span> <span class="n">_timedelta</span>
 <span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span> <span class="k">as</span> <span class="n">_ConfigParser</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">Instrument</span> <span class="k">as</span> <span class="n">_Instrument</span>
-<span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">instrument_db</span> <span class="k">as</span> <span class="n">_instr_db</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">get_instrument_db</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.instruments</span> <span class="kn">import</span> <span class="n">get_instr_from_calendar_name</span> <span class="k">as</span> <span class="n">_from_cal</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">parse_xml</span> <span class="k">as</span> <span class="n">_parse_xml</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">nexus_req</span> <span class="k">as</span> <span class="n">_nexus_req</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">_get_timespan_overlap</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">get_nist_div_and_group</span>
 
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">_logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">XSLT_PATH</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;cal_parser.xsl&quot;</span><span class="p">)</span>
 <span class="n">CA_BUNDLE_PATH</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
                                <span class="s2">&quot;sharepoint_cert_bundle.pem&quot;</span><span class="p">)</span>
 <span class="n">INDENT</span> <span class="o">=</span> <span class="s1">&#39;  &#39;</span>
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AuthenticationError&#39;</span><span class="p">,</span> <span class="s1">&#39;get_auth&#39;</span><span class="p">,</span> <span class="s1">&#39;fetch_xml&#39;</span><span class="p">,</span> <span class="s1">&#39;get_div_and_group&#39;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AuthenticationError&#39;</span><span class="p">,</span> <span class="s1">&#39;get_auth&#39;</span><span class="p">,</span> <span class="s1">&#39;fetch_xml&#39;</span><span class="p">,</span>
            <span class="s1">&#39;get_events&#39;</span><span class="p">,</span> <span class="s1">&#39;_wrap_events&#39;</span><span class="p">,</span> <span class="s1">&#39;dump_calendars&#39;</span><span class="p">,</span> <span class="s1">&#39;CA_BUNDLE_PATH&#39;</span><span class="p">]</span>
 
 
@@ -372,35 +345,6 @@
                    <span class="p">(</span><span class="sa">f</span><span class="s1">&#39; for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">instrument</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instrument</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_div_and_group"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.sharepoint_calendar.get_div_and_group">[docs]</a><span class="k">def</span> <span class="nf">get_div_and_group</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Query the NIST active directory to get division and group information for a</span>
-<span class="sd">    user.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    username : str</span>
-<span class="sd">        a valid NIST username (the short format: e.g. &quot;ear1&quot;</span>
-<span class="sd">        instead of ernst.august.ruska@nist.gov).</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    div, group : str</span>
-<span class="sd">        The division and group numbers for the user (as strings)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">server</span> <span class="o">=</span> <span class="n">_ldap3</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">nexusLIMS</span><span class="o">.</span><span class="n">ldap_url</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">_ldap3</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">auto_bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-        <span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;ou=people,dc=ndir,dc=nist,dc=gov&#39;</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s1">&#39;(otherMailbox=</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">@email.nist.gov)&#39;</span><span class="p">,</span>
-                    <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">])</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="n">div</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">nistdivisionnumber</span><span class="o">.</span><span class="n">value</span>
-    <span class="n">group</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">nistgroupnumber</span><span class="o">.</span><span class="n">value</span>
-
-    <span class="k">return</span> <span class="n">div</span><span class="p">,</span> <span class="n">group</span></div>
-
-
 <div class="viewcode-block" id="get_auth"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.sharepoint_calendar.get_auth">[docs]</a><span class="k">def</span> <span class="nf">get_auth</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;credentials.ini&quot;</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set up NTLM authentication for the Microscopy Nexus using an account</span>
@@ -434,8 +378,8 @@
 <span class="sd">        the repository as an example.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_user&#39;</span><span class="p">]</span>
-        <span class="n">passwd</span> <span class="o">=</span> <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_pass&#39;</span><span class="p">]</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_user&#39;</span><span class="p">]</span>
+        <span class="n">passwd</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_pass&#39;</span><span class="p">]</span>
         <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Authenticating using environment variables&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="c1"># if absolute path was provided, use that, otherwise find filename in</span>
@@ -465,21 +409,19 @@
     <span class="n">path</span> <span class="o">=</span> <span class="n">domain</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">username</span>
 
     <span class="n">auth</span> <span class="o">=</span> <span class="n">_HttpNtlmAuth</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">auth</span> </div>
+
+    <span class="k">return</span> <span class="n">auth</span></div>
 
 
 <div class="viewcode-block" id="fetch_xml"><a class="viewcode-back" href="../../../api/nexusLIMS.harvester.html#nexusLIMS.harvester.sharepoint_calendar.fetch_xml">[docs]</a><span class="k">def</span> <span class="nf">fetch_xml</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">dt_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the XML responses from the Nexus Sharepoint calendar for one,</span>
-<span class="sd">    multiple, or all instruments.</span>
+<span class="sd">    Get the XML responses from the Nexus Sharepoint calendar for one instrument.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument`</span>
 <span class="sd">        As defined in :py:func:`~.get_events`,</span>
-<span class="sd">        one of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        one of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events</span>
 <span class="sd">    dt_from : :py:class:`~datetime.datetime` or None</span>
 <span class="sd">        A :py:class:`~datetime.datetime` object representing the start of a</span>
@@ -527,7 +469,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1"># try to convert from instrument PID string to actual instrument</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">instrument</span> <span class="o">=</span> <span class="n">_instr_db</span><span class="p">[</span><span class="n">instrument</span><span class="p">]</span>
+            <span class="n">instrument</span> <span class="o">=</span> <span class="n">get_instrument_db</span><span class="p">()[</span><span class="n">instrument</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Entered instrument string &quot;</span><span class="si">{}</span><span class="s1">&quot; could not be &#39;</span>
                            <span class="s1">&#39;parsed&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">instrument</span><span class="p">))</span>
@@ -644,8 +586,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument` or str</span>
-<span class="sd">        One of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events. If string,</span>
 <span class="sd">        value should be one of the instrument PIDs from the Nexus facility.</span>
 <span class="sd">    dt_from : :py:class:`~datetime.datetime` or None</span>
@@ -695,7 +636,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">division</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">group</span> <span class="ow">and</span> <span class="n">user</span><span class="p">:</span>
         <span class="n">_logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Querying LDAP for division and group info&#39;</span><span class="p">)</span>
-        <span class="n">division</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="n">get_div_and_group</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">division</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="n">get_nist_div_and_group</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
 
     <span class="c1"># parse the xml into a string, and then indent</span>
     <span class="c1"># date parsing is no longer necessary because fetch_xml should return</span>
@@ -750,8 +691,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    instrument : :py:class:`~nexusLIMS.instruments.Instrument` or str</span>
-<span class="sd">        One of the NexusLIMS instruments contained in the</span>
-<span class="sd">        :py:attr:`~nexusLIMS.instruments.instrument_db` database.</span>
+<span class="sd">        One of the NexusLIMS instruments contained in the database.</span>
 <span class="sd">        Controls what instrument calendar is used to get events. If value is</span>
 <span class="sd">        a string, it should be one of the instrument PIDs from the Nexus</span>
 <span class="sd">        facility</span>
@@ -821,12 +761,12 @@
 <span class="sd">        offset (for Eastern time, that&#39;s four hours during DST and 5 hours in</span>
 <span class="sd">        standard time)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s1">&#39;nexusLIMS_timezone&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;nexusLIMS_timezone&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;Please make sure the &quot;nexusLIMS_timezone&quot; &#39;</span>
                                <span class="s1">&#39;variable is set as part of your environment &#39;</span>
                                <span class="s1">&#39;before using this function&#39;</span><span class="p">)</span>
 
-    <span class="n">tz</span> <span class="o">=</span> <span class="n">_timezone</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_timezone&#39;</span><span class="p">])</span>
+    <span class="n">tz</span> <span class="o">=</span> <span class="n">_timezone</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_timezone&#39;</span><span class="p">])</span>
     <span class="n">dt_str</span> <span class="o">=</span> <span class="n">_pytz</span><span class="o">.</span><span class="n">utc</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dt_str</span>
@@ -843,7 +783,7 @@
 <span class="sd">    timezone : str or None</span>
 <span class="sd">        The timezone in tz database format</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cdcs_url</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">_urls</span><span class="o">.</span><span class="n">calendar_root_url</span>
+    <span class="n">cdcs_url</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;calendar_root_url&quot;</span><span class="p">]</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">_nexus_req</span><span class="p">(</span><span class="n">cdcs_url</span> <span class="o">+</span> <span class="s1">&#39;/_api/web/RegionalSettings/TimeZone&#39;</span><span class="p">,</span>
                    <span class="n">_requests</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
     <span class="n">et</span> <span class="o">=</span> <span class="n">_etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
@@ -883,7 +823,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

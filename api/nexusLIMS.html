@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS package &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>nexusLIMS package &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><span><img src="../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../session_logger_app.html">Session logging</a></li>
@@ -189,7 +188,7 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="module-nexusLIMS">
+  <section id="module-nexusLIMS">
 <span id="nexuslims-package"></span><h1>nexusLIMS package<a class="headerlink" href="#module-nexusLIMS" title="Permalink to this headline">¶</a></h1>
 <p>The NexusLIMS back-end software.</p>
 <p>This module contains the software required to monitor a database for sessions
@@ -238,7 +237,17 @@ information about the instruments in the Nexus Facility, as well as logs
 for the sessions created by users using the Session Logger Application.</p>
 </dd>
 </dl>
-<div class="section" id="subpackages">
+<dl class="py function">
+<dt id="nexusLIMS.get_config">
+<code class="sig-prename descclassname">nexusLIMS.</code><code class="sig-name descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS.html#get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.get_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nexusLIMS.validate_config">
+<code class="sig-prename descclassname">nexusLIMS.</code><code class="sig-name descname">validate_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS.html#validate_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.validate_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -262,6 +271,7 @@ for the sessions created by users using the Session Logger Application.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nexusLIMS.harvester.html">nexusLIMS.harvester package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nexusLIMS.harvester.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nexusLIMS.harvester.html#module-nexusLIMS.harvester.google_calendar">nexusLIMS.harvester.google_calendar module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nexusLIMS.harvester.html#module-nexusLIMS.harvester.sharepoint_calendar">nexusLIMS.harvester.sharepoint_calendar module</a></li>
 </ul>
 </li>
@@ -272,11 +282,11 @@ for the sessions created by users using the Session Logger Application.</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="submodules">
+</section>
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-nexusLIMS.cdcs">
+</section>
+<section id="module-nexusLIMS.cdcs">
 <span id="nexuslims-cdcs-module"></span><h2>nexusLIMS.cdcs module<a class="headerlink" href="#module-nexusLIMS.cdcs" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.cdcs.delete_record">
@@ -370,8 +380,8 @@ current directory will be used instead.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nexusLIMS.instruments">
+</section>
+<section id="module-nexusLIMS.instruments">
 <span id="nexuslims-instruments-module"></span><h2>nexusLIMS.instruments module<a class="headerlink" href="#module-nexusLIMS.instruments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
@@ -418,26 +428,48 @@ instrument (e.g. 'M:/')</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="nexusLIMS.instruments.get_instr_from_calendar_name">
-<code class="sig-prename descclassname">nexusLIMS.instruments.</code><code class="sig-name descname">get_instr_from_calendar_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cal_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/instruments.html#get_instr_from_calendar_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.instruments.get_instr_from_calendar_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Using the NexusLIMS database, get an instrument object by a given path.</p>
+<dt id="nexusLIMS.instruments.get_instr_from_api_url">
+<code class="sig-prename descclassname">nexusLIMS.instruments.</code><code class="sig-name descname">get_instr_from_api_url</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/instruments.html#get_instr_from_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.instruments.get_instr_from_api_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the NexusLIMS database, get an instrument object by a calendar API url.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cal_name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- A calendar name (e.g. &quot;<strong>REMOVED</strong>&quot;) that will be used to search
-for a matching instrument in the <code class="docutils literal notranslate"><span class="pre">api_url</span></code> values</p>
+<dd class="field-odd"><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The <strong>unique</strong> API url for the instrument calendar.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>instrument</strong> -- An <cite>_Instrument</cite> instance matching the path, or None if no match was
-found</p>
+<dd class="field-even"><p><strong>instrument</strong> -- An <cite>_Instrument</cite> instance matching the API url, or None if no match was found.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument">Instrument</a> or <a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inst</span> <span class="o">=</span> <span class="n">get_instr_from_calendar_name</span><span class="p">(</span><span class="s1">&#39;**REMOVED**&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inst</span> <span class="o">=</span> <span class="n">get_instr_from_api_url</span><span class="p">(</span><span class="s1">&#39;URL_FOR_YOUR_INSTRUMENT_CALENDAR&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
-<span class="go">&#39;**REMOVED** in **REMOVED**&#39;</span>
+<span class="go">&#39;JEOL_TEM_01 in Location_01&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nexusLIMS.instruments.get_instr_from_calendar_name">
+<code class="sig-prename descclassname">nexusLIMS.instruments.</code><code class="sig-name descname">get_instr_from_calendar_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cal_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/instruments.html#get_instr_from_calendar_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.instruments.get_instr_from_calendar_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using the NexusLIMS database, get an instrument object by a calendar name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cal_name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- A calendar name (e.g. &quot;<strong>REMOVED</strong>&quot;) that will be used to search
+for a matching instrument in the <code class="docutils literal notranslate"><span class="pre">api_url</span></code> values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>instrument</strong> -- An <cite>_Instrument</cite> instance matching the path, or None if no match was found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument">Instrument</a> or <a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inst</span> <span class="o">=</span> <span class="n">get_instr_from_calendar_name</span><span class="p">(</span><span class="s1">&#39;JEOL_TEM_01&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
+<span class="go">&#39;JEOL_TEM_01 in Location_01&#39;</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -469,8 +501,25 @@ found</p>
 </div>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nexusLIMS.utils">
+<dl class="py function">
+<dt id="nexusLIMS.instruments.get_instrument_db">
+<code class="sig-prename descclassname">nexusLIMS.instruments.</code><code class="sig-name descname">get_instrument_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/instruments.html#get_instrument_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.instruments.get_instrument_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the NexusLIMS database and get a list of all the instruments
+contained within.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>instrument_db</strong> -- A dictionary of <cite>Instrument</cite> instances that describe all the
+instruments that were found in the <code class="docutils literal notranslate"><span class="pre">instruments</span></code> table of the
+NexusLIMS database</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-nexusLIMS.utils">
 <span id="nexuslims-utils-module"></span><h2>nexusLIMS.utils module<a class="headerlink" href="#module-nexusLIMS.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nexusLIMS.utils.find_dirs_by_mtime">
@@ -521,6 +570,27 @@ time range provided (sorted by modification time)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nexusLIMS.utils.get_from_db">
+<code class="sig-prename descclassname">nexusLIMS.utils.</code><code class="sig-name descname">get_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/utils.html#get_from_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.utils.get_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get contents and column names from a table in the NexusLIMS database file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Query for the database. e.g. &quot;SELECT * from instruments</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>results</strong> (<em>list</em>) -- Fetched all (remaining) rows of a query result defined in the sqlite3's cursor. The list
+is empty if fetching failed.</p></li>
+<li><p><strong>col_names</strong> (<em>list</em>) -- A list of column names defined in the table. Note that the list is different from the
+7-tuple defined in the original cursor.description. Only the first item in the 7-tuple is
+saved in the list.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -599,6 +669,25 @@ value there, return the string <cite>&quot;not found&quot;</cite></p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="nexusLIMS.utils.get_nist_div_and_group">
+<code class="sig-prename descclassname">nexusLIMS.utils.</code><code class="sig-name descname">get_nist_div_and_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/utils.html#get_nist_div_and_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.utils.get_nist_div_and_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query the NIST active directory to get division and group information for a
+user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- a valid NIST username (the short format: e.g. &quot;ear1&quot;
+instead of <a class="reference external" href="mailto:ernst&#46;august&#46;ruska&#37;&#52;&#48;nist&#46;gov">ernst<span>&#46;</span>august<span>&#46;</span>ruska<span>&#64;</span>nist<span>&#46;</span>gov</a>).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>div, group</strong> -- The division and group numbers for the user (as strings)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="nexusLIMS.utils.gnu_find_files_by_mtime">
 <code class="sig-prename descclassname">nexusLIMS.utils.</code><code class="sig-name descname">gnu_find_files_by_mtime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">dt_from</span></em>, <em class="sig-param"><span class="n">dt_to</span></em>, <em class="sig-param"><span class="n">extensions</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/utils.html#gnu_find_files_by_mtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.utils.gnu_find_files_by_mtime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given two timestamps, find files under a path that were
@@ -659,11 +748,29 @@ with the root-level <code class="docutils literal notranslate"><span class="pre"
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_subpath</span><span class="p">(</span><span class="s1">&#39;/mnt/**REMOVED**_mmfnexus/Titan/**REMOVED**/190628 - **REMOVED** &#39;</span> <span class="o">+</span>
 <span class="gp">... </span>           <span class="s1">&#39;Training/6_28_2019 Box6 4S/4_330mm.dm3&#39;</span><span class="p">,</span>
-<span class="gp">... </span>           <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
+<span class="gp">... </span>           <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;mmfnexus_path&#39;</span><span class="p">],</span>
 <span class="gp">... </span>                        <span class="n">titan</span><span class="o">.</span><span class="n">filestore_path</span><span class="p">))</span>
 <span class="go">True</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nexusLIMS.utils.local_datetime">
+<code class="sig-prename descclassname">nexusLIMS.utils.</code><code class="sig-name descname">local_datetime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">tz</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/utils.html#local_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.utils.local_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an UTC datetime to a local datetime.
+:param dt: Datetime in the UTC timezone.
+:type dt: :py:class:~datetime.datetime
+:param tz: Local timezone information. e.g. &quot;America/Chicago&quot;.
+:type tz: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>local_dt</strong> -- New datetime in the local timezone.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>:py:class:~datetime.datetime</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -703,7 +810,7 @@ resources)</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xml</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) -- A string containing XML, such as that returned by <a class="reference internal" href="nexusLIMS.harvester.html#nexusLIMS.harvester.sharepoint_calendar.fetch_xml" title="nexusLIMS.harvester.sharepoint_calendar.fetch_xml"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_xml()</span></code></a></p></li>
 <li><p><strong>xslt_file</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.7/library/io.html#io.BytesIO" title="(in Python v3.7)"><em>io.BytesIO</em></a>) -- Path to the XSLT file to use for transformation</p></li>
-<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) -- Other keyword arguments are passed as parameters to the XSLT
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>optional</em>) -- Other keyword arguments are passed as parameters to the XSLT
 transformer. <code class="docutils literal notranslate"><span class="pre">None</span></code> values are converted to an empty string.</p></li>
 </ul>
 </dd>
@@ -711,7 +818,7 @@ transformer. <code class="docutils literal notranslate"><span class="pre">None</
 <dd class="field-even"><p><strong>simplified_dom</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree._XSLTResultTree</span></code></p>
+<dd class="field-odd"><p><a class="reference external" href="https://lxml.de/xpathxslt.html#xslt" title="(in lxml v4.5.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">lxml.etree._XSLTResultTree</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -775,8 +882,8 @@ error</p>
 </dl>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -799,7 +906,7 @@ error</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

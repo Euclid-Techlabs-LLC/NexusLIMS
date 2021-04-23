@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.utils &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.utils &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -161,44 +159,24 @@
     <div class="body col-md-9 content" role="main">
       
   <h1>Source code for nexusLIMS.utils</h1><div class="highlight"><pre>
-<span></span><span class="c1">#  NIST Public License - 2019</span>
-<span class="c1">#</span>
-<span class="c1">#  This software was developed by employees of the National Institute of</span>
-<span class="c1">#  Standards and Technology (NIST), an agency of the Federal Government</span>
-<span class="c1">#  and is being made available as a public service. Pursuant to title 17</span>
-<span class="c1">#  United States Code Section 105, works of NIST employees are not subject</span>
-<span class="c1">#  to copyright protection in the United States.  This software may be</span>
-<span class="c1">#  subject to foreign copyright.  Permission in the United States and in</span>
-<span class="c1">#  foreign countries, to the extent that NIST may hold copyright, to use,</span>
-<span class="c1">#  copy, modify, create derivative works, and distribute this software and</span>
-<span class="c1">#  its documentation without fee is hereby granted on a non-exclusive basis,</span>
-<span class="c1">#  provided that this notice and disclaimer of warranty appears in all copies.</span>
-<span class="c1">#</span>
-<span class="c1">#  THE SOFTWARE IS PROVIDED &#39;AS IS&#39; WITHOUT ANY WARRANTY OF ANY KIND,</span>
-<span class="c1">#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED</span>
-<span class="c1">#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY</span>
-<span class="c1">#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,</span>
-<span class="c1">#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION</span>
-<span class="c1">#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE</span>
-<span class="c1">#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,</span>
-<span class="c1">#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,</span>
-<span class="c1">#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,</span>
-<span class="c1">#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER</span>
-<span class="c1">#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND</span>
-<span class="c1">#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,</span>
-<span class="c1">#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.</span>
-<span class="c1">#</span>
+<span></span><span class="c1"># This file has been co-edited by both Euclid Techlabs and NIST.</span>
+<span class="c1"># For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS</span>
 
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span> <span class="k">as</span> <span class="n">_etree</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span> <span class="k">as</span> <span class="nn">sql3</span>
 <span class="kn">import</span> <span class="nn">certifi</span> <span class="k">as</span> <span class="nn">_certifi</span>
 <span class="kn">import</span> <span class="nn">tempfile</span> <span class="k">as</span> <span class="nn">_tempfile</span>
 <span class="kn">import</span> <span class="nn">os</span> <span class="k">as</span> <span class="nn">_os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">_sp</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span> <span class="k">as</span> <span class="n">_timedelta</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">getmtime</span> <span class="k">as</span> <span class="n">_getmtime</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">_logging</span>
 <span class="kn">import</span> <span class="nn">sys</span> <span class="k">as</span> <span class="nn">_sys</span>
+<span class="kn">import</span> <span class="nn">ldap3</span>
+
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
 
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">_logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">_logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
@@ -206,6 +184,29 @@
 <span class="c1"># hours to add to datetime objects (hack for poole testing -- should be -2 if</span>
 <span class="c1"># running tests from Mountain Time on files in Eastern Time)</span>
 <span class="n">tz_offset</span> <span class="o">=</span> <span class="n">_timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+
+<div class="viewcode-block" id="local_datetime"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.utils.local_datetime">[docs]</a><span class="k">def</span> <span class="nf">local_datetime</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">tz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an UTC datetime to a local datetime.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dt : :py:class:~datetime.datetime</span>
+<span class="sd">        Datetime in the UTC timezone.</span>
+
+<span class="sd">    tz : str</span>
+<span class="sd">        Local timezone information. e.g. &quot;America/Chicago&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    local_dt : :py:class:~datetime.datetime</span>
+<span class="sd">        New datetime in the local timezone.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">local_tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
+    <span class="n">iso_dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">local_dt</span> <span class="o">=</span> <span class="n">iso_dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">local_tz</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">local_dt</span></div>
 
 
 <div class="viewcode-block" id="setup_loggers"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.utils.setup_loggers">[docs]</a><span class="k">def</span> <span class="nf">setup_loggers</span><span class="p">(</span><span class="n">log_level</span><span class="p">):</span>
@@ -236,7 +237,7 @@
 <span class="sd">        A string containing XML, such as that returned by :py:func:`~.fetch_xml`</span>
 <span class="sd">    xslt_file : str or io.BytesIO</span>
 <span class="sd">        Path to the XSLT file to use for transformation</span>
-<span class="sd">    **kwargs : str, optional</span>
+<span class="sd">    **kwargs : dict, optional</span>
 <span class="sd">        Other keyword arguments are passed as parameters to the XSLT</span>
 <span class="sd">        transformer. ``None`` values are converted to an empty string.</span>
 <span class="sd">    Returns</span>
@@ -334,7 +335,7 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; is_subpath(&#39;/mnt/**REMOVED**_mmfnexus/Titan/**REMOVED**/190628 - **REMOVED** &#39; +</span>
 <span class="sd">    ...            &#39;Training/6_28_2019 Box6 4S/4_330mm.dm3&#39;,</span>
-<span class="sd">    ...            os.path.join(os.environ[&#39;mmfnexus_path&#39;],</span>
+<span class="sd">    ...            os.path.join(CONFIG[&#39;mmfnexus_path&#39;],</span>
 <span class="sd">    ...                         titan.filestore_path))</span>
 <span class="sd">    True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -346,6 +347,35 @@
                  <span class="k">for</span> <span class="n">subpath</span> <span class="ow">in</span> <span class="n">abs_of_paths</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="get_from_db"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.utils.get_from_db">[docs]</a><span class="k">def</span> <span class="nf">get_from_db</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get contents and column names from a table in the NexusLIMS database file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    query: str</span>
+<span class="sd">        Query for the database. e.g. &quot;SELECT * from instruments</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    results: list</span>
+<span class="sd">        Fetched all (remaining) rows of a query result defined in the sqlite3&#39;s cursor. The list</span>
+<span class="sd">        is empty if fetching failed.</span>
+<span class="sd">    col_names: list</span>
+<span class="sd">        A list of column names defined in the table. Note that the list is different from the</span>
+<span class="sd">        7-tuple defined in the original cursor.description. Only the first item in the 7-tuple is</span>
+<span class="sd">        saved in the list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># use contextlib to auto-close the connection and database cursors</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">sql3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">CONFIG</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_db_path&#39;</span><span class="p">]))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>  <span class="c1"># auto-commits</span>
+            <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">())</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>  <span class="c1"># auto-closes</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="n">col_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">col_names</span></div>
 
 
 <div class="viewcode-block" id="get_nested_dict_value"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.utils.get_nested_dict_value">[docs]</a><span class="k">def</span> <span class="nf">get_nested_dict_value</span><span class="p">(</span><span class="n">nested_dict</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">prepath</span><span class="o">=</span><span class="p">()):</span>
@@ -372,10 +402,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nested_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">prepath</span> <span class="o">+</span> <span class="p">(</span><span class="n">k</span><span class="p">,)</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>                                   <span class="c1"># found value</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>  <span class="c1"># found value</span>
             <span class="k">return</span> <span class="n">path</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">):</span>                        <span class="c1"># v is a dict</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">get_nested_dict_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>    <span class="c1"># recursive call</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">):</span>  <span class="c1"># v is a dict</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">get_nested_dict_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>  <span class="c1"># recursive call</span>
             <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">p</span></div>
 
@@ -404,10 +434,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nested_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">prepath</span> <span class="o">+</span> <span class="p">(</span><span class="n">k</span><span class="p">,)</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">key_to_find</span><span class="p">:</span>                                 <span class="c1"># found key</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">key_to_find</span><span class="p">:</span>  <span class="c1"># found key</span>
             <span class="k">return</span> <span class="n">path</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">):</span>                            <span class="c1"># v is a dict</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="n">get_nested_dict_key</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">key_to_find</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>    <span class="c1"># recursive call</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">):</span>  <span class="c1"># v is a dict</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">get_nested_dict_key</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">key_to_find</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>  <span class="c1"># recursive call</span>
             <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">p</span></div>
 
@@ -570,7 +600,7 @@
     <span class="n">dt_from</span> <span class="o">+=</span> <span class="n">tz_offset</span>
     <span class="n">dt_to</span> <span class="o">+=</span> <span class="n">tz_offset</span>
 
-    <span class="n">files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>    <span class="c1"># use a set here (faster and we won&#39;t have duplicates)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># use a set here (faster and we won&#39;t have duplicates)</span>
     <span class="c1"># for each of those directories, walk the file tree and inspect the</span>
     <span class="c1"># actual files:</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
@@ -650,13 +680,13 @@
     <span class="c1"># Actually run find command (ignoring mib files if specified by</span>
     <span class="c1"># environment variable):</span>
     <span class="n">filetype_regex</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extensions</span><span class="p">)</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;find </span><span class="si">{</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="o">+</span> \
+    <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;find </span><span class="si">{</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;-type f &#39;</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;-regextype posix-egrep &#39;</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;-regex &quot;.*</span><span class="se">\\</span><span class="s1">.(</span><span class="si">{</span><span class="n">filetype_regex</span><span class="si">}</span><span class="s1">)$&quot; &#39;</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;-newermt &quot;</span><span class="si">{</span><span class="n">dt_from</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot; &#39;</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">! -newermt &quot;</span><span class="si">{</span><span class="n">dt_to</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot; &#39;</span> <span class="o">+</span> \
-          <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">! -name &quot;*.mib&quot; &#39;</span> <span class="k">if</span> <span class="s1">&#39;ignore_mib&#39;</span> <span class="ow">in</span> <span class="n">_os</span><span class="o">.</span><span class="n">environ</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> \
+          <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">! -name &quot;*.mib&quot; &#39;</span> <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ignore_mib&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> \
           <span class="sa">f</span><span class="s1">&#39;-print0&#39;</span>
 
     <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Running via subprocess: &quot;</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
@@ -777,6 +807,41 @@
     <span class="n">overlap</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">delta</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">overlap</span>
+
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># NIST-specific area</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+
+
+<div class="viewcode-block" id="get_nist_div_and_group"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.utils.get_nist_div_and_group">[docs]</a><span class="k">def</span> <span class="nf">get_nist_div_and_group</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the NIST active directory to get division and group information for a</span>
+<span class="sd">    user.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    username : str</span>
+<span class="sd">        a valid NIST username (the short format: e.g. &quot;ear1&quot;</span>
+<span class="sd">        instead of ernst.august.ruska@nist.gov).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    div, group : str</span>
+<span class="sd">        The division and group numbers for the user (as strings)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">ldap3</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">nexusLIMS</span><span class="o">.</span><span class="n">ldap_url</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">ldap3</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">auto_bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;ou=people,dc=ndir,dc=nist,dc=gov&#39;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;(otherMailbox=</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s1">@email.nist.gov)&#39;</span><span class="p">,</span>
+                    <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">div</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">nistdivisionnumber</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">nistgroupnumber</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">div</span><span class="p">,</span> <span class="n">group</span></div>
 </pre></div>
 
     </div>
@@ -795,7 +860,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

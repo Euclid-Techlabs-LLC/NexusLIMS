@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.schemas.activity &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.schemas.activity &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session_logger_app.html">Session logging</a></li>
@@ -204,11 +202,13 @@
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span> <span class="k">as</span> <span class="n">_GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">LeaveOneOut</span> <span class="k">as</span> <span class="n">_LeaveOneOut</span>
 
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.extractors</span> <span class="kn">import</span> <span class="n">parse_metadata</span> <span class="k">as</span> <span class="n">_parse_metadata</span>
 <span class="kn">from</span> <span class="nn">nexusLIMS.extractors</span> <span class="kn">import</span> <span class="n">flatten_dict</span> <span class="k">as</span> <span class="n">_flatten_dict</span>
 
 <span class="n">_logger</span> <span class="o">=</span> <span class="n">_logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">_logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="cluster_filelist_mtimes"><a class="viewcode-back" href="../../../api/nexusLIMS.schemas.html#nexusLIMS.schemas.activity.cluster_filelist_mtimes">[docs]</a><span class="k">def</span> <span class="nf">cluster_filelist_mtimes</span><span class="p">(</span><span class="n">filelist</span><span class="p">):</span>
@@ -250,47 +250,49 @@
 <span class="sd">        A list of the `mtime` values that represent boundaries between</span>
 <span class="sd">        discrete Acquisition Activities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aa_boundaries</span> <span class="o">=</span><span class="p">[]</span>
     <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting clustering of file mtimes&#39;</span><span class="p">)</span>
     <span class="n">start_timer</span> <span class="o">=</span> <span class="n">_timer</span><span class="p">()</span>
-    <span class="n">mtimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filelist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mtimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">])</span>
 
-    <span class="c1"># remove duplicate file mtimes (since they cause errors below):</span>
-    <span class="n">mtimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)))</span>
-    <span class="n">m_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># remove duplicate file mtimes (since they cause errors below):</span>
+        <span class="n">mtimes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)))</span>
+        <span class="n">m_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># mtime_diff is a discrete differentiation to find the time gap between</span>
-    <span class="c1"># sequential files</span>
-    <span class="n">mtime_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mtimes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">mtimes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+        <span class="c1"># mtime_diff is a discrete differentiation to find the time gap between</span>
+        <span class="c1"># sequential files</span>
+        <span class="n">mtime_diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mtimes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">mtimes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
 
-    <span class="c1"># Bandwidth to use is uncertain, so do a grid search over possible values</span>
-    <span class="c1"># from smallest to largest sequential mtime difference (logarithmically</span>
-    <span class="c1"># biased towards smaller values). we do cross-validation using the Leave</span>
-    <span class="c1"># One Out strategy and using the total log-likelihood from the KDE as</span>
-    <span class="c1"># the score to maximize (goodness of fit)</span>
-    <span class="n">bandwidths</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">_math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mtime_diff</span><span class="p">)),</span>
-                              <span class="n">_math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">mtime_diff</span><span class="p">)),</span>
-                              <span class="mi">35</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">_math</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
-    <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;KDE bandwidth grid search&#39;</span><span class="p">)</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">_GridSearchCV</span><span class="p">(</span><span class="n">_KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">),</span>
-                         <span class="p">{</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">:</span> <span class="n">bandwidths</span><span class="p">},</span> <span class="n">cv</span><span class="o">=</span><span class="n">_LeaveOneOut</span><span class="p">(),</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">m_array</span><span class="p">)</span>
-    <span class="n">bw</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">best_params_</span><span class="p">[</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">]</span>
-    <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using bandwidth of </span><span class="si">{</span><span class="n">bw</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> minutes for KDE&#39;</span><span class="p">)</span>
+        <span class="c1"># Bandwidth to use is uncertain, so do a grid search over possible values</span>
+        <span class="c1"># from smallest to largest sequential mtime difference (logarithmically</span>
+        <span class="c1"># biased towards smaller values). we do cross-validation using the Leave</span>
+        <span class="c1"># One Out strategy and using the total log-likelihood from the KDE as</span>
+        <span class="c1"># the score to maximize (goodness of fit)</span>
+        <span class="n">bandwidths</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">_math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">mtime_diff</span><span class="p">)),</span>
+                                <span class="n">_math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">mtime_diff</span><span class="p">)),</span>
+                                <span class="mi">35</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">_math</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;KDE bandwidth grid search&#39;</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">_GridSearchCV</span><span class="p">(</span><span class="n">_KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">),</span>
+                            <span class="p">{</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">:</span> <span class="n">bandwidths</span><span class="p">},</span> <span class="n">cv</span><span class="o">=</span><span class="n">_LeaveOneOut</span><span class="p">(),</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">m_array</span><span class="p">)</span>
+        <span class="n">bw</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">best_params_</span><span class="p">[</span><span class="s1">&#39;bandwidth&#39;</span><span class="p">]</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using bandwidth of </span><span class="si">{</span><span class="n">bw</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> minutes for KDE&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Calculate AcquisitionActivity boundaries by &quot;clustering&quot; the timestamps</span>
-    <span class="c1"># using KDE using KDTree nearest neighbor estimates, and the previously</span>
-    <span class="c1"># identified &quot;optimal&quot; bandwidth</span>
-    <span class="n">kde</span> <span class="o">=</span> <span class="n">_KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span>
-                         <span class="n">bandwidth</span><span class="o">=</span><span class="n">bw</span><span class="p">)</span>
-    <span class="n">kde</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">m_array</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">m_array</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">m_array</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Calculate AcquisitionActivity boundaries by &quot;clustering&quot; the timestamps</span>
+        <span class="c1"># using KDE using KDTree nearest neighbor estimates, and the previously</span>
+        <span class="c1"># identified &quot;optimal&quot; bandwidth</span>
+        <span class="n">kde</span> <span class="o">=</span> <span class="n">_KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span>
+                            <span class="n">bandwidth</span><span class="o">=</span><span class="n">bw</span><span class="p">)</span>
+        <span class="n">kde</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">m_array</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">m_array</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">m_array</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">mtimes</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-    <span class="n">mins</span> <span class="o">=</span> <span class="n">_argrelextrema</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">less</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>      <span class="c1"># the minima indices</span>
-    <span class="n">aa_boundaries</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mins</span><span class="p">]</span>     <span class="c1"># the minima mtime values</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="n">_argrelextrema</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">less</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>      <span class="c1"># the minima indices</span>
+        <span class="n">aa_boundaries</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mins</span><span class="p">]</span>     <span class="c1"># the minima mtime values</span>
     <span class="n">end_timer</span> <span class="o">=</span> <span class="n">_timer</span><span class="p">()</span>
     <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Detected </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">aa_boundaries</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1"> activities in &#39;</span>
-                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">end_timer</span> <span class="o">-</span> <span class="n">start_timer</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
+                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">end_timer</span> <span class="o">-</span> <span class="n">start_timer</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">aa_boundaries</span></div>
 
@@ -368,9 +370,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">warnings</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">warnings</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="si">:</span><span class="s1">&lt;12</span><span class="si">}</span><span class="s1"> AcquisitionActivity; &#39;</span> <span class="o">+</span> \
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="si">:</span><span class="s1">&lt;12</span><span class="si">}</span><span class="s1"> &lt;AcquisitionActivity; &#39;</span> <span class="o">+</span> \
                <span class="sa">f</span><span class="s1">&#39;start: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1">; &#39;</span> <span class="o">+</span> \
-               <span class="sa">f</span><span class="s1">&#39;end: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+               <span class="sa">f</span><span class="s1">&#39;end: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span><span class="si">}</span><span class="s1"> AcquisitionActivity </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -603,7 +605,7 @@
                 <span class="n">f</span> <span class="o">=</span> <span class="n">escape</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
             <span class="c1"># build path to thumbnail</span>
-            <span class="n">rel_fname</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">rel_fname</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">rel_thumb_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">rel_fname</span><span class="si">}</span><span class="s1">.thumb.png&#39;</span>
 
             <span class="c1"># encode for safe URLs</span>
@@ -659,7 +661,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

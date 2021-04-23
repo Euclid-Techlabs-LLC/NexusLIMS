@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexusLIMS.instruments &#8212; nexusLIMS 0.0.0 documentation</title>
+    <title>nexusLIMS.instruments &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html"><span><img src="../../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,7 +61,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -131,7 +130,6 @@
 <ul class="globaltoc">
     <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../session_logger_app.html">Session logging</a></li>
@@ -161,33 +159,8 @@
     <div class="body col-md-9 content" role="main">
       
   <h1>Source code for nexusLIMS.instruments</h1><div class="highlight"><pre>
-<span></span><span class="c1">#  NIST Public License - 2019</span>
-<span class="c1">#</span>
-<span class="c1">#  This software was developed by employees of the National Institute of</span>
-<span class="c1">#  Standards and Technology (NIST), an agency of the Federal Government</span>
-<span class="c1">#  and is being made available as a public service. Pursuant to title 17</span>
-<span class="c1">#  United States Code Section 105, works of NIST employees are not subject</span>
-<span class="c1">#  to copyright protection in the United States.  This software may be</span>
-<span class="c1">#  subject to foreign copyright.  Permission in the United States and in</span>
-<span class="c1">#  foreign countries, to the extent that NIST may hold copyright, to use,</span>
-<span class="c1">#  copy, modify, create derivative works, and distribute this software and</span>
-<span class="c1">#  its documentation without fee is hereby granted on a non-exclusive basis,</span>
-<span class="c1">#  provided that this notice and disclaimer of warranty appears in all copies.</span>
-<span class="c1">#</span>
-<span class="c1">#  THE SOFTWARE IS PROVIDED &#39;AS IS&#39; WITHOUT ANY WARRANTY OF ANY KIND,</span>
-<span class="c1">#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED</span>
-<span class="c1">#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY</span>
-<span class="c1">#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,</span>
-<span class="c1">#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION</span>
-<span class="c1">#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE</span>
-<span class="c1">#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,</span>
-<span class="c1">#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,</span>
-<span class="c1">#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,</span>
-<span class="c1">#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER</span>
-<span class="c1">#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND</span>
-<span class="c1">#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,</span>
-<span class="c1">#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.</span>
-<span class="c1">#</span>
+<span></span><span class="c1"># This file has been co-edited by both Euclid Techlabs and NIST.</span>
+<span class="c1"># For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">**Attributes**</span>
 
@@ -201,12 +174,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">is_subpath</span> <span class="k">as</span> <span class="n">_is_subpath</span>
-<span class="kn">import</span> <span class="nn">sqlite3</span> <span class="k">as</span> <span class="nn">_sql3</span>
-<span class="kn">import</span> <span class="nn">contextlib</span> <span class="k">as</span> <span class="nn">_contextlib</span>
+<span class="kn">from</span> <span class="nn">nexusLIMS.utils</span> <span class="kn">import</span> <span class="n">get_from_db</span>
 <span class="kn">import</span> <span class="nn">os</span> <span class="k">as</span> <span class="nn">_os</span>
+<span class="kn">import</span> <span class="nn">nexusLIMS</span>
+
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="n">nexusLIMS</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">_get_instrument_db</span><span class="p">():</span>
+<div class="viewcode-block" id="get_instrument_db"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.instruments.get_instrument_db">[docs]</a><span class="k">def</span> <span class="nf">get_instrument_db</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Connect to the NexusLIMS database and get a list of all the instruments</span>
 <span class="sd">    contained within.</span>
@@ -218,26 +193,18 @@
 <span class="sd">        instruments that were found in the ``instruments`` table of the</span>
 <span class="sd">        NexusLIMS database</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * from instruments&quot;</span>
-    <span class="c1"># use contextlib to auto-close the connection and database cursors</span>
-    <span class="k">with</span> <span class="n">_contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">_sql3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;nexusLIMS_db_path&#39;</span><span class="p">]))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">conn</span><span class="p">:</span>  <span class="c1"># auto-commits</span>
-            <span class="k">with</span> <span class="n">_contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">())</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>  <span class="c1"># auto-closes</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-                <span class="n">col_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
-
+    <span class="n">results</span><span class="p">,</span> <span class="n">col_names</span> <span class="o">=</span> <span class="n">get_from_db</span><span class="p">(</span><span class="s2">&quot;SELECT * from instruments&quot;</span><span class="p">)</span>
     <span class="n">instr_db</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="n">this_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">col_names</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">col_names</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
             <span class="n">this_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 
         <span class="n">key</span> <span class="o">=</span> <span class="n">this_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;instrument_pid&#39;</span><span class="p">)</span>
         <span class="n">this_dict</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
         <span class="n">instr_db</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Instrument</span><span class="p">(</span><span class="o">**</span><span class="n">this_dict</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">instr_db</span>
+    <span class="k">return</span> <span class="n">instr_db</span></div>
 
 
 <div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.instruments.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
@@ -319,9 +286,6 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
 
 
-<span class="n">instrument_db</span> <span class="o">=</span> <span class="n">_get_instrument_db</span><span class="p">()</span>
-
-
 <div class="viewcode-block" id="get_instr_from_filepath"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.instruments.get_instr_from_filepath">[docs]</a><span class="k">def</span> <span class="nf">get_instr_from_filepath</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Using the NexusLIMS database, get an instrument object by a given path.</span>
@@ -346,8 +310,8 @@
 <span class="sd">    &gt;&gt;&gt; str(inst)</span>
 <span class="sd">    &#39;**REMOVED** in **REMOVED**&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">instrument_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">_is_subpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">get_instrument_db</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">_is_subpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">_os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">[</span><span class="s2">&quot;mmfnexus_path&quot;</span><span class="p">],</span>
                                            <span class="n">v</span><span class="o">.</span><span class="n">filestore_path</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">v</span>
 
@@ -356,7 +320,7 @@
 
 <div class="viewcode-block" id="get_instr_from_calendar_name"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.instruments.get_instr_from_calendar_name">[docs]</a><span class="k">def</span> <span class="nf">get_instr_from_calendar_name</span><span class="p">(</span><span class="n">cal_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Using the NexusLIMS database, get an instrument object by a given path.</span>
+<span class="sd">    Using the NexusLIMS database, get an instrument object by a calendar name.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -367,17 +331,48 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    instrument : Instrument or None</span>
-<span class="sd">        An `_Instrument` instance matching the path, or None if no match was</span>
-<span class="sd">        found</span>
+<span class="sd">        An `_Instrument` instance matching the path, or None if no match was found.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; inst = get_instr_from_calendar_name(&#39;**REMOVED**&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; inst = get_instr_from_calendar_name(&#39;JEOL_TEM_01&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; str(inst)</span>
-<span class="sd">    &#39;**REMOVED** in **REMOVED**&#39;</span>
+<span class="sd">    &#39;JEOL_TEM_01 in Location_01&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">instrument_db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">cal_name</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">api_url</span><span class="p">:</span>
+    <span class="c1"># To-do: calendar_name in Instrument class and the database is currently set to be the same as</span>
+    <span class="c1"># instrument_pid. This was inherited from the original NexusLIMS, but can be changed.</span>
+    <span class="c1"># In the SQLite, instrument_pid and api_url have to be unique, but calendar_name does not.</span>
+    <span class="c1"># If ones needs this function to do its job, then calendar_name needs to be unique,</span>
+    <span class="c1"># but it can be different from instrument_pid</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">get_instrument_db</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">cal_name</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">calendar_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_instr_from_api_url"><a class="viewcode-back" href="../../api/nexusLIMS.html#nexusLIMS.instruments.get_instr_from_api_url">[docs]</a><span class="k">def</span> <span class="nf">get_instr_from_api_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Using the NexusLIMS database, get an instrument object by a calendar API url.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The **unique** API url for the instrument calendar.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    instrument : Instrument or None</span>
+<span class="sd">        An `_Instrument` instance matching the API url, or None if no match was found.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; inst = get_instr_from_api_url(&#39;URL_FOR_YOUR_INSTRUMENT_CALENDAR&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; str(inst)</span>
+<span class="sd">    &#39;JEOL_TEM_01 in Location_01&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">get_instrument_db</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">url</span> <span class="o">==</span> <span class="n">v</span><span class="o">.</span><span class="n">api_url</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">v</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -399,7 +394,7 @@
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>

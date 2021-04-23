@@ -9,6 +9,14 @@ nexusLIMS.harvester package
 Submodules
 ----------
 
+nexusLIMS.harvester.google\_calendar module
+-------------------------------------------
+
+.. automodule:: nexusLIMS.harvester.google_calendar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 nexusLIMS.harvester.sharepoint\_calendar module
 -----------------------------------------------
 

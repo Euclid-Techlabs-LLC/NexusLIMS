@@ -4,8 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Developer documentation &#8212; nexusLIMS 0.0.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Developer documentation &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom-styles.css" />
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="index.html"><span><img src="_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -63,7 +64,6 @@
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -133,7 +133,6 @@
 <ul class="globaltoc">
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Package introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="get_started.html">Getting Started with NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_security.html">Data security in NexusLIMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database.html">NexusLIMS database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session_logger_app.html">Session logging</a></li>
@@ -177,12 +176,12 @@
       </div>
     <div class="body col-md-9 content" role="main">
       
-  <div class="section" id="developer-documentation">
+  <section id="developer-documentation">
 <h1>Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
 <p>If you are interested in learning about how the NexusLIMS back-end works or
 adding new features, these instructions should get you up and running with a
 development environment that will allow you to modify how the code operates.</p>
-<div class="section" id="development-environment-setup">
+<section id="development-environment-setup">
 <h2>Development environment setup<a class="headerlink" href="#development-environment-setup" title="Permalink to this headline">¶</a></h2>
 <p>NexusLIMS(Euclid) uses <code class="docutils literal notranslate"><span class="pre">conda</span></code> as environment management tool. To set up
 for development, we first install <code class="docutils literal notranslate"><span class="pre">miniconda</span></code> (a slimmed version of <code class="docutils literal notranslate"><span class="pre">conda</span></code>).</p>
@@ -232,8 +231,8 @@ create the environment. The installation of other dependency packages may
 </pre></div>
 </div>
 <p>For more conda usage, please refer to conda usage guide.</p>
-</div>
-<div class="section" id="installation">
+</section>
+<section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate ENV_NAME                                        <span class="c1"># activate conda environment</span>
 git clone https://github.com/YOUR_GITHUB_ACCOUNT/nexuslims.git <span class="c1"># clone repository</span>
@@ -244,8 +243,8 @@ pip install -r docs/requirements.txt                           <span class="c1">
 </div>
 <p>if <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">&quot;import</span> <span class="pre">nexusLIMS&quot;</span></code> successfully executed (no error),
 then <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> is installed correctly.</p>
-</div>
-<div class="section" id="set-nexuslims-environment-variables">
+</section>
+<section id="set-nexuslims-environment-variables">
 <h2>Set <code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> environment variables<a class="headerlink" href="#set-nexuslims-environment-variables" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">nexusLIMS</span></code> would require some environment variables set to run, an
 example would be like:</p>
@@ -270,8 +269,8 @@ example would be like:</p>
 <p>Environment variables in <code class="docutils literal notranslate"><span class="pre">env.sh/env.ps1</span></code> may contain credentials, DO NOT
 let git track its changes to avoid information leak!</p>
 </div>
-</div>
-<div class="section" id="building-new-records">
+</section>
+<section id="building-new-records">
 <h2>Building new records<a class="headerlink" href="#building-new-records" title="Permalink to this headline">¶</a></h2>
 <p>The most basic feature of the NexusLIMS back-end is to check the
 <a class="reference internal" href="database.html"><span class="doc">database</span></a> for any logs (inserted by the
@@ -283,8 +282,8 @@ let git track its changes to avoid information leak!</p>
 </div>
 <p>This command will find any records that need to be built, build the .xml file,
 and then upload it to the front-end CDCS instance.</p>
-</div>
-<div class="section" id="using-other-features-of-the-library">
+</section>
+<section id="using-other-features-of-the-library">
 <h2>Using other features of the library<a class="headerlink" href="#using-other-features-of-the-library" title="Permalink to this headline">¶</a></h2>
 <p>Once you are in a python interpreter (such as <code class="docutils literal notranslate"><span class="pre">python</span></code>, <code class="docutils literal notranslate"><span class="pre">ipython</span></code>,
 <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>, etc.) from the <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> environment, you can access the
@@ -299,8 +298,8 @@ FEI Quanta, run the following code using the
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">meta</span></code> variable will then contain a dictionary with the extracted
 metadata from the file.</p>
-</div>
-<div class="section" id="contributing">
+</section>
+<section id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
 <p>To contribute, please fork
 the repository, develop your addition on a
@@ -371,8 +370,8 @@ $ pipenv run pytest nexuslims/nexusLIMS/tests --cov<span class="o">=</span>nexus
 <span class="c1"># TOTAL                                                         2577      0   100%</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -395,7 +394,7 @@ $ pipenv run pytest nexuslims/nexusLIMS/tests --cov<span class="o">=</span>nexus
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Mar 19, 2021.<br/>
+      Last updated on Apr 23, 2021.<br/>
     </p>
   </div>
 </footer>
