@@ -16,24 +16,28 @@ expected (although not enforced):
   separated by commas as a string- e.g. '(12, 1024, 1024)'
 * ``'Instrument ID'`` - instrument PID pulled from the instrument database
 """
-import os as _os
-import shutil as _sh
+import collections as _collections
 import json as _json
+import logging as _logging
+import os as _os
 import pathlib as _pathlib
+import shutil as _sh
+
+import hyperspy.api_nogui as _hs
 import numpy as _np
-from .quanta_tif import get_quanta_metadata
+import nexusLIMS
+from nexusLIMS.instruments import get_instr_from_filepath as _get_instr
+
 from .digital_micrograph import get_dm3_metadata
 from .fei_emi import get_ser_metadata
-from .thumbnail_generator import sig_to_thumbnail as _s2thumb
+from .quanta_tif import get_quanta_metadata
 from .thumbnail_generator import down_sample_image as _down_sample
-from nexusLIMS.instruments import get_instr_from_filepath as _get_instr
-import hyperspy.api_nogui as _hs
-import logging as _logging
-import collections as _collections
+from .thumbnail_generator import sig_to_thumbnail as _s2thumb
 
 _logger = _logging.getLogger(__name__)
 PLACEHOLDER_PREVIEW = _os.path.join(_os.path.dirname(__file__),
                                     'extractor_error.png')
+CONFIG = nexusLIMS.get_config()
 
 extension_reader_map = {
     'dm3': get_dm3_metadata,
@@ -91,8 +95,8 @@ def parse_metadata(fname, write_output=True, generate_preview=True,
             nx_meta['nx_meta']['Data Type'] = 'Miscellaneous'
 
         if write_output:
-            out_fname = fname.replace(_os.environ["mmfnexus_path"],
-                                      _os.environ["nexusLIMS_path"]) + '.json'
+            out_fname = fname.replace(CONFIG["mmfnexus_path"],
+                                      CONFIG["nexusLIMS_path"]) + '.json'
             if not _os.path.isfile(out_fname) or overwrite:
                 # Create the directory for the metadata file, if needed
                 _pathlib.Path(_os.path.dirname(out_fname)).mkdir(parents=True,
@@ -110,8 +114,8 @@ def parse_metadata(fname, write_output=True, generate_preview=True,
                                indent=2, cls=_CustomEncoder)
 
     if generate_preview:
-        preview_fname = fname.replace(_os.environ["mmfnexus_path"],
-                                      _os.environ["nexusLIMS_path"]) + \
+        preview_fname = fname.replace(CONFIG["mmfnexus_path"],
+                                      CONFIG["nexusLIMS_path"]) + \
                         '.thumb.png'
         if extension == 'tif':
             instr = _get_instr(fname)
@@ -139,8 +143,8 @@ def parse_metadata(fname, write_output=True, generate_preview=True,
                 _logger.warning('Signal could not be loaded by HyperSpy. '
                                 'Using placeholder image for preview.')
                 preview_fname = fname.replace(
-                    _os.environ["mmfnexus_path"],
-                    _os.environ["nexusLIMS_path"]) + '.thumb.png'
+                    CONFIG["mmfnexus_path"],
+                    CONFIG["nexusLIMS_path"]) + '.thumb.png'
                 _sh.copyfile(PLACEHOLDER_PREVIEW, preview_fname)
                 return nx_meta, preview_fname
 
@@ -166,7 +170,7 @@ def parse_metadata(fname, write_output=True, generate_preview=True,
                 _pathlib.Path(_os.path.dirname(preview_fname)).mkdir(
                     parents=True, exist_ok=True)
                 # Generate the thumbnail
-                s.compute(progressbar=False)
+                s.compute(show_progressbar=False)
                 _s2thumb(s, out_path=preview_fname)
             else:
                 _logger.info(f'Preview already exists: {preview_fname}')

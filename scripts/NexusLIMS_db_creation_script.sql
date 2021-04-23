@@ -37,6 +37,7 @@ CREATE TABLE "nexuslims_db"."instruments"(
   CONSTRAINT "computer_ip_UNIQUE"
     UNIQUE("computer_ip")
 );
+-- Added by Weinan
 -- INSERT INTO "instruments"("instrument_pid","api_url","calendar_name","calendar_url","location","schema_name","property_tag","filestore_path","computer_name","computer_ip","computer_mount") VALUES('instrument_00', 'https://api_url/00', 'FEI HeliosDB',    'https://**REMOVED**/**REMOVED**/calendar.aspx',               '**REMOVED**', 'FEI Helios',      'property_tag_00', './Aphrodite', NULL, NULL, NULL);
 -- INSERT INTO "instruments"("instrument_pid","api_url","calendar_name","calendar_url","location","schema_name","property_tag","filestore_path","computer_name","computer_ip","computer_mount") VALUES('instrument_01', 'https://api_url/01', 'FEI Quanta200',  'https://**REMOVED**/**REMOVED**/calendar.aspx',     '**REMOVED**', 'FEI Quanta200',              'property_tag_01', './Quanta',    'computer_name_01', NULL, 'M:/');
 -- INSERT INTO "instruments"("instrument_pid","api_url","calendar_name","calendar_url","location","schema_name","property_tag","filestore_path","computer_name","computer_ip","computer_mount") VALUES('instrument_02', 'https://api_url/02', 'FEI Titan STEM', 'https://**REMOVED**/**REMOVED**/calendar.aspx',                 '**REMOVED**', 'FEI Titan STEM', 'property_tag_02', './643Titan',  'computer_name_02', NULL, 'X:/');

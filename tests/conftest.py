@@ -37,7 +37,6 @@ import nexusLIMS.utils
 
 from utils import tars, files
 
-
 # we don't want to mask both directories, because the record builder tests
 # need to look at the real files on cfs2e:
 # os.environ['nexusLIMS_path'] =os.path.join(os.path.dirname(__file__), 'files')
@@ -85,7 +84,8 @@ def pytest_sessionfinish(session, exitstatus):
     """
     for _, fn_list in files.items():
         for fn in fn_list:
-            os.remove(fn)
+            if os.path.exists(fn):
+                os.remove(fn)
 
 
 @pytest.fixture(scope='session')

@@ -149,15 +149,7 @@ the existing back-end code continued working with no other changes needed.
 
 **Back-end implementation details**
 
-When the :py:mod:`nexusLIMS` module is imported, one of the "setup" tasks
-performed is to load the ``instruments`` table from the database into a
-dictionary attribute named :py:data:`nexusLIMS.instruments.instrument_db`.
-This is done by querying the database specified in the environment variable
-:ref:`nexusLIMS_db_path <nexuslims-db-path>` and creating a dictionary of
-:py:class:`~nexusLIMS.instruments.Instrument` objects that contain information
-about all of the instruments specified in the database. These objects are used
-widely throughout the code so that the database is only queried once at initial
-import, rather than every time information is needed.
+:ref:`nexusLIMS_db_path <nexuslims-db-path>` schema.
 
 +--------------------+--------------+-----------------------------------------+
 |       Column       |  Data type   |               Description               |

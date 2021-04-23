@@ -1,38 +1,11 @@
-#! /usr/bin/env python
+# This file has been co-edited by both Euclid Techlabs and NIST.
+# For LICENSING information, please refer to the LICENSE file in the root directory of NexusLIMS
 
-#  NIST Public License - 2019
-#
-#  This software was developed by employees of the National Institute of
-#  Standards and Technology (NIST), an agency of the Federal Government
-#  and is being made available as a public service. Pursuant to title 17
-#  United States Code Section 105, works of NIST employees are not subject
-#  to copyright protection in the United States.  This software may be
-#  subject to foreign copyright.  Permission in the United States and in
-#  foreign countries, to the extent that NIST may hold copyright, to use,
-#  copy, modify, create derivative works, and distribute this software and
-#  its documentation without fee is hereby granted on a non-exclusive basis,
-#  provided that this notice and disclaimer of warranty appears in all copies.
-#
-#  THE SOFTWARE IS PROVIDED 'AS IS' WITHOUT ANY WARRANTY OF ANY KIND,
-#  EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED
-#  TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY
-#  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
-#  AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION
-#  WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE
-#  ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING,
-#  BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES,
-#  ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE,
-#  WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER
-#  OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND
-#  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,
-#  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
-#
 
 import os as _os
 import re as _re
 import logging as _logging
 import requests as _requests
-import urllib as _urllib
 
 import nexusLIMS
 from requests_ntlm import HttpNtlmAuth as _HttpNtlmAuth
@@ -44,19 +17,21 @@ from datetime import datetime as _datetime
 from datetime import timedelta as _timedelta
 from configparser import ConfigParser as _ConfigParser
 from nexusLIMS.instruments import Instrument as _Instrument
-from nexusLIMS.instruments import instrument_db as _instr_db
+from nexusLIMS.instruments import get_instrument_db
 from nexusLIMS.instruments import get_instr_from_calendar_name as _from_cal
 from nexusLIMS.utils import parse_xml as _parse_xml
 from nexusLIMS.utils import nexus_req as _nexus_req
 from nexusLIMS.utils import _get_timespan_overlap
+from nexusLIMS.utils import get_nist_div_and_group
 
 _logger = _logging.getLogger(__name__)
 XSLT_PATH = _os.path.join(_os.path.dirname(__file__), "cal_parser.xsl")
 CA_BUNDLE_PATH = _os.path.join(_os.path.dirname(__file__),
                                "sharepoint_cert_bundle.pem")
 INDENT = '  '
+CONFIG = nexusLIMS.get_config()
 
-__all__ = ['AuthenticationError', 'get_auth', 'fetch_xml', 'get_div_and_group',
+__all__ = ['AuthenticationError', 'get_auth', 'fetch_xml',
            'get_events', '_wrap_events', 'dump_calendars', 'CA_BUNDLE_PATH']
 
 
@@ -209,35 +184,6 @@ class CalendarEvent:
                    (f' for {self.instrument.name}' if self.instrument else '')
 
 
-def get_div_and_group(username):
-    """
-    Query the NIST active directory to get division and group information for a
-    user.
-
-    Parameters
-    ----------
-    username : str
-        a valid NIST username (the short format: e.g. "ear1"
-        instead of ernst.august.ruska@nist.gov).
-
-    Returns
-    -------
-    div, group : str
-        The division and group numbers for the user (as strings)
-    """
-    server = _ldap3.Server(nexusLIMS.ldap_url)
-    with _ldap3.Connection(server, auto_bind=True) as conn:
-        conn.search('ou=people,dc=ndir,dc=nist,dc=gov',
-                    f'(otherMailbox={username}@email.nist.gov)',
-                    attributes=['*'])
-        res = conn.entries[0]
-
-    div = res.nistdivisionnumber.value
-    group = res.nistgroupnumber.value
-
-    return div, group
-
-
 def get_auth(filename="credentials.ini", basic=False):
     """
     Set up NTLM authentication for the Microscopy Nexus using an account
@@ -271,8 +217,8 @@ def get_auth(filename="credentials.ini", basic=False):
         the repository as an example.
     """
     try:
-        username = _os.environ['nexusLIMS_user']
-        passwd = _os.environ['nexusLIMS_pass']
+        username = CONFIG['nexusLIMS_user']
+        passwd = CONFIG['nexusLIMS_pass']
         _logger.info("Authenticating using environment variables")
     except KeyError:
         # if absolute path was provided, use that, otherwise find filename in
@@ -302,21 +248,19 @@ def get_auth(filename="credentials.ini", basic=False):
     path = domain + '\\' + username
 
     auth = _HttpNtlmAuth(path, passwd)
-    
-    return auth 
+
+    return auth
 
 
 def fetch_xml(instrument, dt_from=None, dt_to=None):
     """
-    Get the XML responses from the Nexus Sharepoint calendar for one,
-    multiple, or all instruments.
+    Get the XML responses from the Nexus Sharepoint calendar for one instrument.
 
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument`
         As defined in :py:func:`~.get_events`,
-        one of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        one of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events
     dt_from : :py:class:`~datetime.datetime` or None
         A :py:class:`~datetime.datetime` object representing the start of a
@@ -364,7 +308,7 @@ def fetch_xml(instrument, dt_from=None, dt_to=None):
     if isinstance(instrument, str):
         # try to convert from instrument PID string to actual instrument
         try:
-            instrument = _instr_db[instrument]
+            instrument = get_instrument_db()[instrument]
         except KeyError:
             raise KeyError('Entered instrument string "{}" could not be '
                            'parsed'.format(instrument))
@@ -481,8 +425,7 @@ def get_events(instrument=None,
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument` or str
-        One of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        One of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events. If string,
         value should be one of the instrument PIDs from the Nexus facility.
     dt_from : :py:class:`~datetime.datetime` or None
@@ -532,7 +475,7 @@ def get_events(instrument=None,
 
     if not division and not group and user:
         _logging.info('Querying LDAP for division and group info')
-        division, group = get_div_and_group(user)
+        division, group = get_nist_div_and_group(user)
 
     # parse the xml into a string, and then indent
     # date parsing is no longer necessary because fetch_xml should return
@@ -587,8 +530,7 @@ def dump_calendars(instrument=None, user=None, dt_from=None, dt_to=None,
     Parameters
     ----------
     instrument : :py:class:`~nexusLIMS.instruments.Instrument` or str
-        One of the NexusLIMS instruments contained in the
-        :py:attr:`~nexusLIMS.instruments.instrument_db` database.
+        One of the NexusLIMS instruments contained in the database.
         Controls what instrument calendar is used to get events. If value is
         a string, it should be one of the instrument PIDs from the Nexus
         facility
@@ -658,12 +600,12 @@ def _get_sharepoint_date_string(dt):
         offset (for Eastern time, that's four hours during DST and 5 hours in
         standard time)
     """
-    if 'nexusLIMS_timezone' not in _os.environ:
+    if 'nexusLIMS_timezone' not in CONFIG:
         raise EnvironmentError('Please make sure the "nexusLIMS_timezone" '
                                'variable is set as part of your environment '
                                'before using this function')
 
-    tz = _timezone(_os.environ['nexusLIMS_timezone'])
+    tz = _timezone(CONFIG['nexusLIMS_timezone'])
     dt_str = _pytz.utc.localize(dt).astimezone(tz).strftime('%Y-%m-%dT%H:%M:%S')
 
     return dt_str
@@ -680,7 +622,7 @@ def _get_sharepoint_tz():
     timezone : str or None
         The timezone in tz database format
     """
-    cdcs_url = nexusLIMS._urls.calendar_root_url
+    cdcs_url = CONFIG["calendar_root_url"]
     r = _nexus_req(cdcs_url + '/_api/web/RegionalSettings/TimeZone',
                    _requests.get)
     et = _etree.fromstring(r.text.encode())

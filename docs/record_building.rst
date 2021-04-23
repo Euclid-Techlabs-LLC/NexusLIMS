@@ -65,9 +65,9 @@ immediately calls
 :py:func:`~nexusLIMS.builder.record_builder.build_new_session_records`, which in
 turn uses :py:func:`~nexusLIMS.db.session_handler.get_sessions_to_build` to
 query the NexusLIMS database for sessions awaiting processing (the database
-location can be referenced within the code using the environment variable
-:ref:`nexusLIMS_db_path <nexusLIMS-db-path>` (`e.g.`
-``os.environ["nexusLIMS_db_path"]``. This method interrogates the database for
+location can be referenced within the code using the configuration variable
+:ref:`nexusLIMS_db_path <nexusLIMS-db-path>`.
+This method interrogates the database for
 session logs with a status of ``TO_BE_BUILT`` using the SQL query:
 
 .. code-block:: sql

@@ -105,9 +105,9 @@ div.toctree-wrapper > p.caption > span.caption-text {
 }
 
 /* Hide value of the instrument_db attribute */
-dt#nexusLIMS\.instruments\.instrument_db > em {
+/* dt#nexusLIMS\.instruments\.instrument_db > em {
     display: none;
-}
+} */
 
 /* Make blockquotes same size as other text */
 blockquote {

@@ -39,14 +39,15 @@ coverage.xml
 .pytest_cache/
 
 # Build and docs folder/files
-build/*
-dist/*
+build/
+dist/
 sdist/*
 docs/api/*
 docs/_rst/*
 docs/_build/*
 cover/*
 MANIFEST
+**/*.spec
 
 # Per-project virtualenvs
 .venv*/

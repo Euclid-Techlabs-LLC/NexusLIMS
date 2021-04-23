@@ -41,11 +41,13 @@ from scipy.signal import argrelextrema as _argrelextrema
 from sklearn.model_selection import GridSearchCV as _GridSearchCV
 from sklearn.model_selection import LeaveOneOut as _LeaveOneOut
 
+import nexusLIMS
 from nexusLIMS.extractors import parse_metadata as _parse_metadata
 from nexusLIMS.extractors import flatten_dict as _flatten_dict
 
 _logger = _logging.getLogger(__name__)
 _logger.setLevel(_logging.INFO)
+CONFIG = nexusLIMS.get_config()
 
 
 def cluster_filelist_mtimes(filelist):
@@ -87,47 +89,49 @@ def cluster_filelist_mtimes(filelist):
         A list of the `mtime` values that represent boundaries between
         discrete Acquisition Activities
     """
+    aa_boundaries =[]
     _logger.info('Starting clustering of file mtimes')
     start_timer = _timer()
-    mtimes = sorted([_os.path.getmtime(f) for f in filelist])
+    if len(filelist) > 1:
+        mtimes = sorted([_os.path.getmtime(f) for f in filelist])
 
-    # remove duplicate file mtimes (since they cause errors below):
-    mtimes = sorted(list(set(mtimes)))
-    m_array = _np.array(mtimes).reshape(-1, 1)
+        # remove duplicate file mtimes (since they cause errors below):
+        mtimes = sorted(list(set(mtimes)))
+        m_array = _np.array(mtimes).reshape(-1, 1)
 
-    # mtime_diff is a discrete differentiation to find the time gap between
-    # sequential files
-    mtime_diff = [j - i for i, j in zip(mtimes[:-1], mtimes[1:])]
+        # mtime_diff is a discrete differentiation to find the time gap between
+        # sequential files
+        mtime_diff = [j - i for i, j in zip(mtimes[:-1], mtimes[1:])]
 
-    # Bandwidth to use is uncertain, so do a grid search over possible values
-    # from smallest to largest sequential mtime difference (logarithmically
-    # biased towards smaller values). we do cross-validation using the Leave
-    # One Out strategy and using the total log-likelihood from the KDE as
-    # the score to maximize (goodness of fit)
-    bandwidths = _np.logspace(_math.log(min(mtime_diff)),
-                              _math.log(max(mtime_diff)),
-                              35, base=_math.e)
-    _logger.info('KDE bandwidth grid search')
-    grid = _GridSearchCV(_KernelDensity(kernel='gaussian'),
-                         {'bandwidth': bandwidths}, cv=_LeaveOneOut(), n_jobs=-1)
-    grid.fit(m_array)
-    bw = grid.best_params_['bandwidth']
-    _logger.info(f'Using bandwidth of {bw:.3f} minutes for KDE')
+        # Bandwidth to use is uncertain, so do a grid search over possible values
+        # from smallest to largest sequential mtime difference (logarithmically
+        # biased towards smaller values). we do cross-validation using the Leave
+        # One Out strategy and using the total log-likelihood from the KDE as
+        # the score to maximize (goodness of fit)
+        bandwidths = _np.logspace(_math.log(min(mtime_diff)),
+                                _math.log(max(mtime_diff)),
+                                35, base=_math.e)
+        _logger.info('KDE bandwidth grid search')
+        grid = _GridSearchCV(_KernelDensity(kernel='gaussian'),
+                            {'bandwidth': bandwidths}, cv=_LeaveOneOut(), n_jobs=-1)
+        grid.fit(m_array)
+        bw = grid.best_params_['bandwidth']
+        _logger.info(f'Using bandwidth of {bw:.3f} minutes for KDE')
 
-    # Calculate AcquisitionActivity boundaries by "clustering" the timestamps
-    # using KDE using KDTree nearest neighbor estimates, and the previously
-    # identified "optimal" bandwidth
-    kde = _KernelDensity(kernel='gaussian',
-                         bandwidth=bw)
-    kde = kde.fit(m_array)
-    s = _np.linspace(m_array.min(), m_array.max(), num=len(mtimes)*10)
-    e = kde.score_samples(s.reshape(-1, 1))
+        # Calculate AcquisitionActivity boundaries by "clustering" the timestamps
+        # using KDE using KDTree nearest neighbor estimates, and the previously
+        # identified "optimal" bandwidth
+        kde = _KernelDensity(kernel='gaussian',
+                            bandwidth=bw)
+        kde = kde.fit(m_array)
+        s = _np.linspace(m_array.min(), m_array.max(), num=len(mtimes)*10)
+        e = kde.score_samples(s.reshape(-1, 1))
 
-    mins = _argrelextrema(e, _np.less)[0]      # the minima indices
-    aa_boundaries = [s[m] for m in mins]     # the minima mtime values
+        mins = _argrelextrema(e, _np.less)[0]      # the minima indices
+        aa_boundaries = [s[m] for m in mins]     # the minima mtime values
     end_timer = _timer()
     _logger.info(f'Detected {len(aa_boundaries) + 1} activities in '
-                 f'{end_timer - start_timer:.2f} seconds')
+                 f'{end_timer - start_timer:.3f} seconds')
 
     return aa_boundaries
 
@@ -205,9 +209,9 @@ class AcquisitionActivity:
         self.warnings = [] if warnings is None else warnings
 
     def __repr__(self):
-        return f'{self.mode:<12} AcquisitionActivity; ' + \
+        return f'{self.mode:<12} <AcquisitionActivity; ' + \
                f'start: {self.start.isoformat()}; ' + \
-               f'end: {self.end.isoformat()}'
+               f'end: {self.end.isoformat()}>'
 
     def __str__(self):
         return f'{self.start.isoformat()} AcquisitionActivity {self.mode}'
@@ -440,7 +444,7 @@ class AcquisitionActivity:
                 f = escape(f)
 
             # build path to thumbnail
-            rel_fname = f.replace(_os.environ["mmfnexus_path"], '')
+            rel_fname = f.replace(CONFIG["mmfnexus_path"], '')
             rel_thumb_name = f'{rel_fname}.thumb.png'
 
             # encode for safe URLs

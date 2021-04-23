@@ -22,8 +22,8 @@
     <month month-number="12">December</month>
   </xsl:variable>
   <xsl:key name="lookup.date.month" match="month" use="@month-number"/>
-  
-  <!-- This lookup table assigns a color to each instrument's badge so they can be visually distinguished 
+
+  <!-- This lookup table assigns a color to each instrument's badge so they can be visually distinguished
        on the list page -->
   <xsl:variable name="instr-color-dictionary">
     <instr instr-PID="**REMOVED**">#ff7f0e</instr>
@@ -36,6 +36,8 @@
     <instr instr-PID="**REMOVED**">#bcbd22</instr>
     <instr instr-PID="**REMOVED**">#bebada</instr>
     <instr instr-PID="**REMOVED**">#b3de69</instr>
+    <instr instr-PID="euclid_pid_00">#b3de69</instr>
+    <instr instr-PID="WeinanMBP">#ff7f0e</instr>
   </xsl:variable>
   <xsl:key name="lookup.instr.color" match="instr" use="@instr-PID"/>
 
@@ -76,11 +78,11 @@
         </xsl:with-param>
       </xsl:call-template>
     </xsl:variable>
-    
+
     <style>
       .tooltip {
       z-index: 20000;
-      position: fixed; 
+      position: fixed;
       }
     </style>
     <div class='a-result'>
@@ -162,7 +164,7 @@
           </div>
         </xsl:when>
       </xsl:choose>
-     
+
         <!-- Javascript which supports some capabilities on the generated page -->
         <script language="javascript">
             <![CDATA[
@@ -170,7 +172,7 @@
                 window.location = $(this).find('a').attr('href');
                 return false;
             });
-            
+
             // Shepherd tutorial code
             function create_tour() {
                 var topScrollHandler = function(element){
@@ -194,27 +196,27 @@
                         scrollToHandler: topScrollHandler
                     }
                 });
-            
+
                 showStepNumber = () => {
                     $("<span style='font-size: small'></span>")
                         .insertAfter('.shepherd-footer .btn-default')
                         .html(`${list_tour.steps.indexOf(list_tour.currentStep) + 1}/${list_tour.steps.length}`);
                 }
-                
+
                 end_button = {
                     text: 'End',
                     classes: 'btn btn-danger',
                     action: list_tour.next,
                     label: 'End'
                 }
-                
+
                 next_button = {
                     text: 'Next <i class="fa fa-arrow-right menu-fa"></i>',
                     classes: 'btn btn-primary',
                     action: list_tour.next,
                     label: 'Next'
                 }
-                
+
                 var back_button = (enabled) => {
                     return {
                         text: '<i class="fa fa-arrow-left menu-fa"></i> Back',
@@ -223,7 +225,7 @@
                         action: list_tour.back,
                         label: 'Back'}
                 }
-            
+
                 list_tour.addStep({
                     id: 'tut-welcome',
                     title: 'This is the record explorer page',
@@ -233,7 +235,7 @@
                         next_button
                     ],
                 });
-            
+
                 list_tour.addStep({
                     id: 'tut-search-field',
                     title: 'The search bar',
@@ -247,7 +249,7 @@
                         next_button
                     ],
                 });
-            
+
                 list_tour.addStep({
                     id: 'tut-example-record',
                     title: 'An example record listing',
@@ -262,9 +264,9 @@
                         next_button
                     ],
                 });
-            
-                
-            
+
+
+
                 list_tour.addStep({
                     id: 'tut-result-button-filter',
                     title: 'Record sorting',
@@ -288,7 +290,7 @@
                         }]
                     }
                 });
-            
+
                 if ( $('.pagination-container').length > 0 ) {
                     list_tour.addStep({
                         id: 'tut-pagination-container',
@@ -305,26 +307,26 @@
                         ]
                     });
                 }
-            
+
                 var scroll_to_start = function() {
                     $('html, body').animate(
-                        {scrollTop: cur_pos}, 
+                        {scrollTop: cur_pos},
                         {duration: 500}
                     );
                 }
-            
+
                 let cur_pos = $(document).scrollTop();
                 list_tour.on('complete', scroll_to_start)
                 list_tour.on('cancel', scroll_to_start)
                 list_tour.on('hide', scroll_to_start)
                 $('.shepherd-modal-overlay-container').on('click', () => list_tour.cancel());
                 list_tour.start()
-            }              
+            }
 
             $( document ).ready(function() {
                 $('[data-toggle="tooltip"]').tooltip(
                     {container:'body'}); // toggle all tooltips with default
-              
+
                 // add IDs for use with intro.js
                 $('.a-result').first().attr('id', 'example-record');
                 $('input#id_keywords ~ ul').attr('id', 'search-field');
@@ -515,7 +517,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template name="extensions-to-badges">
     <xsl:param name="input"/>
     <xsl:choose>
@@ -563,5 +565,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
 </xsl:stylesheet>

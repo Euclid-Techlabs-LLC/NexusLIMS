@@ -4,7 +4,7 @@
     version="1.0">
     <xsl:output method="html" indent="yes" encoding="UTF-8"/>
 
-    
+
     <xsl:param name="xmlName" select="''"/>
 
     <xsl:variable name="datasetBaseUrl">https://url.to.data.webserver/</xsl:variable>
@@ -26,8 +26,8 @@
         <month month-number="12">December</month>
     </xsl:variable>
     <xsl:key name="lookup.date.month" match="month" use="@month-number"/>
-    
-    <!-- This lookup table assigns a color to each instrument's badge so they can be visually distinguished 
+
+    <!-- This lookup table assigns a color to each instrument's badge so they can be visually distinguished
        on the list page -->
     <xsl:variable name="instr-color-dictionary">
         <instr instr-PID="**REMOVED**">#ff7f0e</instr>
@@ -40,9 +40,11 @@
         <instr instr-PID="**REMOVED**">#bcbd22</instr>
         <instr instr-PID="**REMOVED**">#bebada</instr>
         <instr instr-PID="**REMOVED**">#b3de69</instr>
+        <instr instr-PID="euclid_pid_00">#b3de69</instr>
+        <instr instr-PID="WeinanMBP">#ff7f0e</instr>
     </xsl:variable>
     <xsl:key name="lookup.instr.color" match="instr" use="@instr-PID"/>
-    
+
     <xsl:variable name="sharepoint-instrument-dictionary">
         <instr display-name="FEI Helios">**REMOVED**/</instr>
         <instr display-name="FEI Quanta200">**REMOVED**/</instr>
@@ -54,6 +56,8 @@
         <instr display-name="JEOL JSM7100">**REMOVED**/</instr>
         <instr display-name="Philips CM30">**REMOVED**/</instr>
         <instr display-name="Philips EM400">**REMOVED**/</instr>
+        <instr display-name="Euclid Schema">https://carlendar/00/</instr>
+        <instr display-name="Weinan MacBookPro">https://carlendar/01/</instr>
     </xsl:variable>
     <xsl:key name="lookup.instrument.url" match="instr" use="@display-name"/>
 
@@ -94,23 +98,23 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:variable>
-        <div style="width:95%;">        
-            <!-- ============ CSS Styling ============ --> 
+        <div style="width:95%;">
+            <!-- ============ CSS Styling ============ -->
             <style>
                 .scrollDisabled { /* class to prevent scrolling when modal is shown */
-                    position: fixed; 
+                    position: fixed;
                     width: 100%;
                     overflow-y:scroll;
                 }
-                
+
                 .main, .sidebar { /* Set the font style for the page */
                     /*font-family: "Lato", sans-serif;*/
                 }
-                
+
                 #nav { /* Make sure top nav does not get overlayed */
                     z-index: 100000 !important;
                 }
-                
+
                 /* Link colors */
                 a:link {
                     color: #3865a3;
@@ -121,42 +125,42 @@
                 a:hover {
                     color: #5e7ca3;
                 }
-                
-                button { 
+
+                button {
                     cursor: pointer; /* Changes cursor type when hovering over a button */
                     font-size: 12px;
                 }
-                
+
                 /* Override bootstrap button outline styling */
                 .btn:focus,.btn:active {
                     outline: none !important;
                     box-shadow: none;
                     background-color: #ccc;
                 }
-                
+
                 th,td {
                     font-size: 14px;
                 }
-                
+
                 .aa_header {
                     font-size: 19px;
                     text-decoration: none;
                     color: black;
                 }
-                
+
                 .aa_header:hover {
                     cursor: default;
                     color: black;
                 }
-                
-                /* makes it so link does not get hidden behind the header */ 
-                a.aa_anchor { 
+
+                /* makes it so link does not get hidden behind the header */
+                a.aa_anchor {
                     display: block;
                     position: relative;
                     top: -3.5em;
-                    visibility: hidden; 
+                    visibility: hidden;
                 }
-                
+
                 /* Hide for mobile, show later */
                 .sidebar {
                   display: block;
@@ -184,7 +188,7 @@
                          /* border-right: 1px solid #eee; */
                     }
                 }
-                
+
                 .sidebar.side-expanded {
                     left: 0;
                     padding: 20px;
@@ -192,44 +196,44 @@
                     z-index: 100;
                     border: 1px solid #eee;
                 }
-                
+
                 .sidebar {
-                    visibility: hidden; /* Make hidden, to be revealed when jQuery is done paginating results */    
+                    visibility: hidden; /* Make hidden, to be revealed when jQuery is done paginating results */
                 }
-                
+
                 .sidebar::-webkit-scrollbar { /* WebKit */
                     width: 0px;
                 }
-                
+
                 /* Parameters for the acquisition activity links and headers within the sidebar */
-                .sidebar a, .sidebar h1 { 
+                .sidebar a, .sidebar h1 {
                     text-decoration: none;
                     font-weight: bold;
                 }
-                
+
                 .sidebar .pagination > li > a, .pagination > li > span {
                     padding: 6px 10px;
                 }
-                
+
                 /* for sidenav table paginator */
                 .sidebar .cdatatableDetails {
                     float: left;
                     margin: 0 0.5em;
                 }
-                
+
                 .sidebar div.dataTables_paginate {
                     text-align: center !important;
                 }
-                
+
                 .sidebar div { /* Parameters for other text found in the sidebar (e.g. start time) */
                     font-size: 12px;
                 }
-                
+
                 /* Make rows of sidebar nav table appear as links */
                 #nav-table tbody tr {
                     cursor: pointer;
                 }
-                
+
                 #close-accords-btn, #open-accords-btn, #to-top-btn {
                     margin: 0.5em auto;
                     display: block;
@@ -237,7 +241,7 @@
                     font-size: 12px;
                     z-index: 101;
                 }
-                
+
                 #to-top-btn { /* Parameters for the button which jumps to the top of the page when clicked */
                     visibility: hidden; /* Set button to hidden on default so that it will appear when the page is scrolled */
                     opacity: 0;
@@ -246,17 +250,17 @@
                     -o-transition: visibility 0.25s linear, opacity 0.25s linear;
                     transition: visibility 0.25s linear, opacity 0.25s linear;
                 }
-                
+
                 .slide {
                     display: none;
                 }
-                
+
                 .slideshow-container {
                     position: relative;
                     margin: auto;
                     margin-bottom: 2em;
                 }
-                
+
                 img.nx-img {
                    max-height: 500px;
                    max-width: 100%;
@@ -264,21 +268,21 @@
                    margin-right: auto;
                    display: block;
                 }
-                
+
                 img.nx-img.aa-img {
                     display: block;
                     width: 400px;
                 }
-                
+
                 img.nx-img.aa-img.hidden {
                     display: none;
                 }
-                
-                
+
+
                 .gal-nav { /* Parameters for the 'next' and 'prev' buttons on the slideshow gallery */
-                
+
                 }
-                
+
                 div#img_gallery { /* make entire gallery unselectable to prevent highlighting when clicking nav buttons */
                   -webkit-touch-callout: none;
                   -webkit-user-select: none;
@@ -287,7 +291,7 @@
                   -ms-user-select: none;
                   user-select: none;
                 }
-                
+
                 div#img_gallery .fa-stack-2x{
                     color: #aaa;
                     -webkit-transition: color 0.25s linear;
@@ -295,30 +299,30 @@
                     -o-transition: color 0.25s linear;
                     transition: color 0.25s linear;
                 }
-                
+
                 div#img_gallery:hover .fa-stack-2x {
                     color: #337ab7;
                 }
-                
+
                 div#img_gallery .fa-stack:hover .fa-stack-2x {
                     color: #23527c;
                 }
-                
+
                 .gal-prev:hover, .gal-next:hover { /* Have a background appear when the prev/next buttons are hovered over */
                 }
-                
+
                 .no-top-padding { /* class to remove padding and margin from bootstrap columns */
                     padding-top: 0 !important;
                     margin-top: 0 !important;
                 }
-                
+
                 .nx-caption .row {
                     margin: 0;
                 }
                 .nx-caption .row > * {
                     padding: 0;
                 }
-                
+
                 .nx-caption { /* Parameters for the caption text displayed in the image gallery */
                     color: black;
                     font-size: 14px;
@@ -328,13 +332,13 @@
                     margin-top: -1em;
                     line-height: 150%;
                 }
-                
+
                 .aa_header_row {
                     /* width: 95%; */
                     margin-bottom: .5em;
                     margin-top: -35px;
                 }
-                
+
                 .accordion { /* Parameters for accordions used to hide parameter / metadata tables */
                     background-color: #eee;
                     color: #444;
@@ -350,11 +354,11 @@
                     -o-transition: 0.4s;
                     transition: 0.4s;
                 }
-                
+
                 .active-accordian, .accordion:hover { /* Change color of the accordion when it is active or hovered over */
                     background-color: #ccc;
                 }
-                
+
                 .accordion:after { /* Parameters for the accordion header while it is open */
                     content: '\002B';
                     color: #777;
@@ -362,22 +366,22 @@
                     float: right;
                     margin-left: 5px;
                 }
-                
+
                 .active-accordion:after {
                     content: '\2212';
                 }
-                
+
                 .panel { /* Parameters for the contents of the accordion */
                     background-color: white;
                     max-height: 0;
                     overflow: hidden;
-                    -webkit-transition: max-height 0.2s ease-out; 
-                    -moz-transition: max-height 0.2s ease-out; 
+                    -webkit-transition: max-height 0.2s ease-out;
+                    -moz-transition: max-height 0.2s ease-out;
                     -o-transition: max-height 0.2s ease-out;
                     transition: max-height 0.2s ease-out;
                     width: 95%;
                 }
-                
+
                 img.dataset-preview-img {
                     display: block;
                     width: 100%;
@@ -385,7 +389,7 @@
                     max-height: 400px;
                     max-width: 400px;
                 }
-                
+
                 .modal { /* Parameters for modal boxes */
                     display: block;
                     position: fixed;
@@ -404,7 +408,7 @@
                     visibility: hidden;
                     opacity: 0;
                 }
-                
+
                 .modal-content { /* Parameters for content within modal boxes */
                     background-color: #fefefe;
                     margin: auto;
@@ -412,32 +416,32 @@
                     border: 1px solid #888;
                     width: max-content;
                 }
-                
+
                 .close-modal { /* Parameters for 'X' used to close the modal box */
                     color: #000;
                     float: right;
                     font-size: 28px;
                     font-weight: bold;
                 }
-                
+
                 .close-modal:hover, /* Changes color of close button and cursor type when hovering over it */
                 .close-modal:focus {
                     color: #525252;
                     text-decoration: none;
                     cursor: pointer;
                 }
-                
+
                 #filelist-modal .modal-body .filelist-header-row {
-                    
+
                 }
-                
+
                 .help-filelist-modal {
                     font-size: 20px;
                     font-weight: bold;
                     margin-top: 4.5px;
                     vertical-align: top;
                 }
-                
+
                 i.help-filelist-modal ~ div.tooltip.in {
                     opacity: 1;
                 }
@@ -456,28 +460,28 @@
                     text-align: justify;
                     width: 500px;
                 }
-                
+
                 .modal-expTitle {
                     font-size: smaller;
                     font-weight: normal;
                 }
-                
+
                 .modal-expDate {
                     font-size: smaller;
                     font-style: oblique;
                 }
-                
+
                 code {
                     font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
                     font-size: small;
                 }
-                
+
                 /* Datatables selected row background) */
                 table.filelist-table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
                 background-color: #e5ecf6;
                 }
                 /* Datatables selected row text color (gray, same as normal) */
-                table.filelist-table.dataTable tbody tr.selected, table.dataTable tbody th.selected, 
+                table.filelist-table.dataTable tbody tr.selected, table.dataTable tbody th.selected,
                 table.filelist-table.dataTable tbody td.selected {
                     color: #474747;
                 }
@@ -504,7 +508,7 @@
                     color: #3865a3;
                 }
                 /* Datatables download button color */
-                
+
                 /* Filelisting modal table info styling */
                 div#filelist-table_info {
                     font-size: smaller;
@@ -526,12 +530,12 @@
                     padding-top: 4px;
                     padding-bottom: 4px;
                 }
-                
+
                 #filelist-json_dl-col,
                 #filelist-data_dl-col {
                     padding-right: 5px;
                 }
-                
+
                 #download-result {
                     font-size: small;
                     padding: 0px 10px;
@@ -564,12 +568,12 @@
                     -o-transition: width .1s ease;
                     -o-transition: width .1s ease;
                 }
-                
-                
+
+
                 /*
                 * Main content
                 */
-                
+
                 .main {
                     padding: 20px;
                     -webkit-transition: padding 0.5s ease-in-out 0s;
@@ -588,67 +592,67 @@
                     margin-top: 0;
                     border-bottom: none;`
                 }
-                
-                
+
+
                 .main h1 {
                     font-size: 1.5em;
                 }
-                
+
                 .main h3 {
                     font-size: 1.1em;
                     margin-bottom: 0.1em;
                 }
-                
+
                 table.meta-table,
                 table.filelist-table {
                     min-width: 25vw;
                 }
-                
+
                 table#summary-table > tbody > tr > * {
                     border: 0;
                     padding: 1px;
                     line-height: 1.25;
                 }
-                
+
                 table.preview-and-table {
                     margin: 2em auto;
                 }
-                
+
                 table.preview-and-table td {
                     vertical-align: middle;
                     font-size: 0.9em;
                 }
-                
-                table.meta-table, 
+
+                table.meta-table,
                 table.aa-table,
                 table.filelist-table {
                     border-collapse: collapse;
-                
+
                 }
-                
-                table.meta-table td, table.meta-table th, 
+
+                table.meta-table td, table.meta-table th,
                 table.aa-table td, table.aa-table th,
                 table.filelist-table td, table.filelist-table th{
                     padding: 0.3em;
                 }
-                
-                table.meta-table th, 
+
+                table.meta-table th,
                 table.aa-table th,
                 table.filelist-table th{
                     background-color: #3a65a2;
                     border-color: black;
                     color: white;
                 }
-                
+
                 th.parameter-name {
                     font-weight: bold;
                 }
-                
+
                 td.aa-meta-col {
                     white-space: nowrap;
                 }
-                
-                /* Fix for margins getting messed up inside the AA panels */ 
+
+                /* Fix for margins getting messed up inside the AA panels */
                 .main .dataTables_wrapper .row {
                     margin: 0;
                     /*display: flex;*/
@@ -661,16 +665,16 @@
                 .main .dataTables_wrapper ul.pagination > li > a {
                     padding: 0px 8px;
                     }
-                
+
                 .main .dataTables_wrapper label {
                     font-size: smaller;
                 }
-                
+
                 .modal div.dataTables_wrapper div.dataTables_paginate ul.pagination {
                     margin-left: 1em;
                     white-space: nowrap;
                 }
-                
+
                 .modal table{
                   margin: 0 auto;
                   width: auto;
@@ -679,7 +683,7 @@
                   table-layout: fixed;
                   word-wrap: break-word;
                 }
-                
+
                 /* For loading screen */
                 #loading {
                     visibility: visible;
@@ -692,7 +696,7 @@
                     height: 100vh;
                     background: #f7f7f7 url(static/img/bg01.png);
                 }
-                
+
                 #loading img {
                     position: absolute;
                     top: 50%;
@@ -702,7 +706,7 @@
                     margin-left: -200px;
                     animation: spinner 1.5s ease infinite;
                 }
-                
+
                 @media screen and (max-width: 680px) {
                 #loading img {
                     width: 200px;
@@ -710,20 +714,20 @@
                     margin-left:-100px;
                 }
                 }
-                
+
                 @keyframes spinner {
                 to {transform: rotate(360deg);}
                 }
-                
+
                 .xslt_render {
                     visibility: hidden;
                     opacity: 0;
                 }
-                
+
                 /* Fix spacing between components */
                 .main .row {
                 }
-                
+
                 .motivation-text, #session_info_column {
                     margin-top: -40px;
                 }
@@ -761,7 +765,7 @@
                 }
                 .tooltip {
                     z-index: 100001;
-                    position: fixed; 
+                    position: fixed;
                     -webkit-touch-callout: none;
                     -webkit-user-select: none;
                     -khtml-user-select: none;
@@ -811,44 +815,44 @@
                     opacity: 1;
                 }
                 }
-                
+
                 .slideshow-col {
                     padding: 0;
                 }
-                
+
                 .badge a {
                     color: #fff;
                 }
-                
+
                 .help-tip {
                     color: #eee;
                 }
                 .help-tip:hover {
                     color: #aaa;
                 }
-                
+
                 .warning-tip {
                     color: #f5c636;
                 }
                 .warning-tip:hover {
-                
+
                 }
-                
+
                 td.has-warning {
                     color:  #a3a3a3;
                 }
-                
+
                 .no-cal-warning {
                     color: #a94442;
                     font-style: italic;
                 }
                 .sup-link {
-                    font-size: 0.5em; 
+                    font-size: 0.5em;
                     top: -1em;
                 }
-                
+
                 i.param-button {
-                    margin-left: 0.5em; 
+                    margin-left: 0.5em;
                     font-size: medium;
                     color: #aaa;
                     border: solid 0.1em #eee;
@@ -858,19 +862,19 @@
                     transition: color 0.25s linear, border 0.25s linear, background 0.25s linear;
                 }
                 i.param-button:hover {
-                   margin-left: 0.5em; 
+                   margin-left: 0.5em;
                    font-size: medium;
                    color: #5e7ca3;
                    border: solid 0.1em #999;
                    background: #eee;
                 }
-                
+
                 .row.vertical-align {
                     display: flex;
                     align-items: center;
                     width: 100%;
                 }
-                
+
                 .dataTables_paginate {
                     font-size: 14px;
                 }
@@ -909,54 +913,54 @@
                     </xsl:for-each>
                     </tbody>
                     </table>
-            
+
                     <!--
                     <button id="open-accords-btn" class="btn btn-default" onclick="openAccords()">
                         <i class="fa fa-plus-square-o"></i> Expand All Panels
                     </button>
-                    
+
                     <button id="close-accords-btn" class="btn btn-default" onclick="closeAccords()">
                         <i class="fa fa-minus-square-o"></i> Collapse All Panels
                     </button>-->
-            
+
                     <!-- Create button which jumps to the top of the page when clicked -->
                     <button id="to-top-btn" type="button" class="btn btn-primary" value="Top" onclick="toTop()">
                         <i class="fa fa-arrow-up"></i> Scroll to Top
                     </button>
             </div>
-            <div id="btn-sidebar" data-toggle="tooltip" data-placement="right" 
+            <div id="btn-sidebar" data-toggle="tooltip" data-placement="right"
                  title="Click to explore record contents">
                 <a><i class="fa fa-toggle-right"></i></a>
             </div>
-    
+
             <div class="main col-md-push-2" style="padding: 0;" id="top-button-div">
                 <button id="btn-edit-record" type="button" class="btn btn-default pull-right btn-top-group"
-                        data-toggle="tooltip" data-placement="top" 
+                        data-toggle="tooltip" data-placement="top"
                         title="Manually edit the contents of this record (login required)">
                     <i class="fa fa-file-text menu-fa"></i> Edit this record
                 </button>
                 <button id="btn-xml-dl" type="button" class="btn btn-default pull-right btn-top-group"
-                    data-toggle="tooltip" data-placement="top" 
+                    data-toggle="tooltip" data-placement="top"
                     title="Download metadata contents of this record as XML">
                     <i class="fa fa-code menu-fa"></i> Download XML
                 </button>
                 <button id="btn-filelisting" type="button" class="btn btn-default pull-right btn-top-group"
-                        data-toggle="tooltip" data-placement="top" 
+                        data-toggle="tooltip" data-placement="top"
                         title="View a file listing (and download the files) of this record"
                         onclick="openModal('filelist-modal');">
                     <i class="fa fa-cloud-download menu-fa"></i> Download files
                 </button>
                 <button id="btn-previous-page" type="button" class="btn btn-default pull-right btn-top-group"
-                        data-toggle="tooltip" data-placement="top" 
+                        data-toggle="tooltip" data-placement="top"
                         title="Go back to the previous page">
                     <i class="fa fa-arrow-left menu-fa"></i> Back to previous
                 </button>
             </div>
-            
+
             <!-- Main content -->
             <span id='xmlName' style='visibility:hidden;'><xsl:value-of select="$xmlName"/></span>
-            
-            <div class="main col-sm-pull-10" id="main-column">                        
+
+            <div class="main col-sm-pull-10" id="main-column">
                 <xsl:variable name="expTitle">
                     <xsl:choose>
                         <xsl:when test="$title = 'No matching calendar event found'">
@@ -1025,7 +1029,7 @@
                                                 <xsl:with-param name="instrument" select="summary/instrument"></xsl:with-param>
                                             </xsl:call-template></xsl:attribute>
                                         <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
-                                        <xsl:attribute name="data-placement">bottom</xsl:attribute> 
+                                        <xsl:attribute name="data-placement">bottom</xsl:attribute>
                                         <xsl:attribute name="title">Click to view this instrument on the Sharepoint calendar</xsl:attribute>
                                         <xsl:value-of select="summary/instrument"/>
                                     </xsl:element>
@@ -1034,7 +1038,7 @@
                                     **REMOVED** instrument
                                 </xsl:otherwise>
                             </xsl:choose>
-                            
+
                         </span>
                         <span class="badge list-record-badge">
                             <xsl:element name="a">
@@ -1045,7 +1049,7 @@
                                     openModal('filelist-modal');
                                 </xsl:attribute>
                                 <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
-                                <xsl:attribute name="data-placement">bottom</xsl:attribute> 
+                                <xsl:attribute name="data-placement">bottom</xsl:attribute>
                                 <xsl:attribute name="title">Click to view a file listing of this record</xsl:attribute>
                                 <xsl:value-of select="count(//dataset)"/> data file<xsl:if test="count(//dataset)>1">s</xsl:if> in <xsl:value-of select="count(//acquisitionActivity)"/> activit<xsl:choose>
                                     <xsl:when test="count(//acquisitionActivity) = 1">y</xsl:when>
@@ -1076,7 +1080,7 @@
                     </div>
                     <div class="row">
                             <div class="motivation-text">
-                               
+
                                     <xsl:choose>
                                         <xsl:when test="summary/motivation/text()">
                                             <span style="font-style:italic;">Motivation: </span><xsl:value-of select="summary/motivation"/>
@@ -1089,20 +1093,20 @@
                                             </xsl:call-template>
                                         </xsl:otherwise>
                                     </xsl:choose>
-                                
+
                             </div>
-                    </div>           
+                    </div>
                 </div>
-                <div class="row">    
+                <div class="row">
                     <div class="col-md-6 no-top-padding" id="session_info_column">
                         <span style='line-height: 0.5em;'><br/></span>
-                        <h3 id="res-info-header">Session Summary 
+                        <h3 id="res-info-header">Session Summary
                         <xsl:call-template name="help-tip">
                             <xsl:with-param name="tip-text">Summary information is extracted from the Sharepoint calendar reservation associated with this record</xsl:with-param>
                         </xsl:call-template></h3>
                         <!-- Display summary information (date, time, instrument, and id) -->
-    
-                        <table class="table table-condensed" id="summary-table" 
+
+                        <table class="table table-condensed" id="summary-table"
                                style="border-collapse:collapse;width:80%;">
                             <xsl:if test="summary/reservationStart/text()">
                                 <tr>
@@ -1163,7 +1167,7 @@
                                 <tr>
                                     <th align="left" class="col-sm-4 parameter-name">Sample name: </th>
                                     <td align="left" class="col-sm-8"> <xsl:value-of select="sample/name"/></td>
-                                </tr>    
+                                </tr>
                             </xsl:if>
                             <xsl:if test="acquisitionActivity[@seqno=0]/sampleID/text()">
                                 <tr>
@@ -1187,9 +1191,9 @@
                                 </tr>
                             </xsl:if>
                         </table>
-                        
+
                         <xsl:if test="project/*/text()">
-                          <h3 id="res-info-header">Project Information 
+                          <h3 id="res-info-header">Project Information
                               <xsl:call-template name="help-tip">
                                   <xsl:with-param name="tip-text">Project information is extracted from the user's division and group, as well as the Sharepoint calendar reservation associated with this record</xsl:with-param>
                               </xsl:call-template>
@@ -1197,7 +1201,7 @@
                                   <xsl:text> </xsl:text>
                                   <sup>
                                       <xsl:element name="a">
-                                          <xsl:attribute name="href"><xsl:value-of select="project/ref"/></xsl:attribute>    
+                                          <xsl:attribute name="href"><xsl:value-of select="project/ref"/></xsl:attribute>
                                           <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
                                           <xsl:attribute name="data-placement">top</xsl:attribute>
                                           <xsl:attribute name="title">Link to this project's reference</xsl:attribute>
@@ -1206,8 +1210,8 @@
                                   </sup>
                               </xsl:if>
                           </h3>
-                          
-                          <table class="table table-condensed" id="summary-table" 
+
+                          <table class="table table-condensed" id="summary-table"
                               style="border-collapse:collapse;width:80%;">
                               <xsl:if test="project/name/text()">
                                   <tr>
@@ -1244,7 +1248,7 @@
                           </table>
                         </xsl:if>
                     </div>
-                    
+
                     <!-- Image gallery showing images from every dataset of the session -->
                     <div class="col-md-6 slideshow-col">
                         <div id="img_gallery">
@@ -1256,7 +1260,7 @@
                                         <div class="row">
                                             <div class="col-xs-offset-1 col-xs-1" style="margin-top:0.2em;">
                                             <a  class="gal-nav" onclick="plusSlide(-1); disable_gallery_tooltips();"
-                                                data-toggle="tooltip" data-placement="left" 
+                                                data-toggle="tooltip" data-placement="left"
                                                 title="The left/right arrow keys can also be used to navigate the image gallery">
                                                 <span class="fa-stack fa-lg">
                                                     <i class="fa fa-circle fa-stack-2x"></i>
@@ -1269,13 +1273,13 @@
                                             <span style="margin-left:0.9em;">Activity <xsl:value-of select="$aa_num"/> of <xsl:value-of select="count(//acquisitionActivity)"/></span>
                                             <xsl:text> </xsl:text>
                                             <sup>
-                                                <a  href="#{generate-id(..)}" 
+                                                <a  href="#{generate-id(..)}"
                                                     data-toggle='tooltip' data-placement='bottom'
                                                     title='Jump to activity {$aa_num} in record'><i class='fa fa-link'/></a>
                                             </sup></div>
                                             <div class='col-xs-1' style="margin-top:0.2em;">
                                                 <a  class="gal-nav" onclick="plusSlide(1); disable_gallery_tooltips();"
-                                                data-toggle="tooltip" data-placement="right" 
+                                                data-toggle="tooltip" data-placement="right"
                                                 title="The left/right arrow keys can also be used to navigate the image gallery">
                                                 <span class="fa-stack fa-lg">
                                                     <i class="fa fa-circle fa-stack-2x"></i>
@@ -1290,7 +1294,7 @@
                     </div>
                 </div>
                 <hr/>
-                
+
                 <!-- Loop through each acquisition activity -->
                 <xsl:for-each select="acquisitionActivity">
                     <div class="row aa_header_row">
@@ -1300,16 +1304,16 @@
                                     <xsl:attribute name="style">margin-top: -20px;</xsl:attribute>
                                 </xsl:if>
                                 <div class="col-md-6">
-                                    <!-- Generate name id which corresponds to the link associated with the acquisition activity --> 
+                                    <!-- Generate name id which corresponds to the link associated with the acquisition activity -->
                                     <a class="aa_anchor" name="{generate-id(current())}"/>
                                     <span class="aa_header"><b>Experiment activity <xsl:value-of select="@seqno+1"/></b><xsl:text> </xsl:text></span>
-                                    
+
                                     <a href='javascript:void(0)' onclick="$(this).blur(); openModal('{generate-id(current())}-modal');"
                                        data-toggle='tooltip' data-placement='right'
                                        title="Click to view this activity's setup parameters">
                                        <i class='fa fa-tasks fa-border param-button'/>
                                     </a>
-                                    <div style="font-size:15px">Activity contents: 
+                                    <div style="font-size:15px">Activity contents:
                                         <i>
                                             <xsl:call-template name="parse-activity-contents"></xsl:call-template>
                                         </i>
@@ -1345,13 +1349,13 @@
                                 <div class="col-lg-5 aa-img-col">
                                     <!-- likely better to load and hide each image first rather than change img src dynamically -->
                                     <xsl:for-each select="dataset[1]">
-                                        <img class="nx-img aa-img visible" id="{generate-id()}-aa-img"><xsl:attribute name="src"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="preview"/></xsl:attribute></img>        
+                                        <img class="nx-img aa-img visible" id="{generate-id()}-aa-img"><xsl:attribute name="src"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="preview"/></xsl:attribute></img>
                                     </xsl:for-each>
                                     <xsl:for-each select="dataset[position() > 1]">
                                         <img class="nx-img aa-img hidden" id="{generate-id()}-aa-img"><xsl:attribute name="src"><xsl:value-of select="$previewBaseUrl"/><xsl:value-of select="preview"/></xsl:attribute></img>
-                                    </xsl:for-each>                                    
+                                    </xsl:for-each>
                                 </div>
-                                
+
                                 <!-- dataset listing column -->
                                 <div class="col-lg-7 aa-table-col">
                                     <table class="table table-condensed table-hover aa-table compact wrap" border="1" style="width:100%; border-collapse:collapse;">
@@ -1464,7 +1468,7 @@
                                                                             <b><xsl:value-of select="name"/></b><br/>
                                                                             <xsl:choose>
                                                                                 <xsl:when test="description/text()">
-                                                                                    <div style="font-size:15px">Dataset description: 
+                                                                                    <div style="font-size:15px">Dataset description:
                                                                                         <i>
                                                                                             <xsl:value-of select="description"/>
                                                                                         </i>
@@ -1472,10 +1476,10 @@
                                                                                 </xsl:when>
                                                                             </xsl:choose>
                                                                         </div>
-                                                                        
+
                                                                         <div class="col-xs-1">
                                                                             <i class="close-modal fa fa-close" onclick="closeModal('{generate-id(current())}-modal')"/>
-                                                                        </div> 
+                                                                        </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class='col-xs-12' style="padding-top: 10px;">
@@ -1535,7 +1539,7 @@
                                                                                         </tr>
                                                                                     </xsl:for-each>
                                                                                 </tbody>
-                                                                            </table>   
+                                                                            </table>
                                                                         </div>
                                                                     </div>
                                                                     <div class='row'>
@@ -1587,14 +1591,14 @@
                                         <div class="col-med-11">
                                             <b>Experiment activity <xsl:value-of select="@seqno+1"/></b><br/>
                                         </div>
-                                        
+
                                         <div class="col-med-1 pull-right">
                                             <i class="close-modal fa fa-close" onclick="closeModal('{generate-id(current())}-modal')"/>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class='col-xs-12' style='padding-top: 0.25em;'>
-                                            <div style="font-size:15px">Activity contents: 
+                                            <div style="font-size:15px">Activity contents:
                                                 <i>
                                                     <xsl:call-template name="parse-activity-contents"></xsl:call-template>
                                                 </i>
@@ -1664,7 +1668,7 @@
                                                         </tr>
                                                     </xsl:for-each>
                                                 </tbody>
-                                            </table>   
+                                            </table>
                                         </div>
                                     </div>
                                     <div class='row'>
@@ -1694,13 +1698,13 @@
                                         <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
                                         <xsl:attribute name="data-placement">bottom</xsl:attribute>
                                         <xsl:attribute name="title">
-<!-- Do not indent this text, as it affects the tooltip display -->                                            
+<!-- Do not indent this text, as it affects the tooltip display -->
 This window shows all the datasets identified as part of this record.
-                                            
+
 Rows of the table can be selected using the mouse, holding down Ctrl or Shift to select multiple rows.
-                                            
+
 The files (and metadata) associated with the selected datasets can be downloaded by clicking on the "Download selected" or "Download all" button (warning, this may take some time for large amounts of data). You can close this dialoge (but not the browser tab!) while the download is processing without interrupting its progress. Do not navigate away from the page, or the download will cancel!
-                                            
+
 The textual data from the selected rows (not the actual files) can also be exported to the clipboard, a CSV file, an Excel file, or printed to PDF by using the respective buttons as well.
                                         </xsl:attribute>
                                     </i>
@@ -1742,8 +1746,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                             <div id='btn-cancel-row' class='row'>
                                 <div class='col-xs-12'>
                                     <button id="btn-cancel-dl" class="btn btn-danger" type="button"
-                                            data-toggle="tooltip" data-placement="right" 
-                                            title="Canceling the download through the browser will not work, so be sure to use this button to actually stop the file transfer"><i class='fa fa-ban menu-fa' aria-hidden="true"/><span>Cancel download</span></button> 
+                                            data-toggle="tooltip" data-placement="right"
+                                            title="Canceling the download through the browser will not work, so be sure to use this button to actually stop the file transfer"><i class='fa fa-ban menu-fa' aria-hidden="true"/><span>Cancel download</span></button>
                                 </div>
                             </div>
                             <!-- Download result text row (hidden by default by jQuery) -->
@@ -1761,8 +1765,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                             <div class="row">
                                 <div class='col-xs-12' style="padding-top: 5px;">
                                     <!-- Generate the table with setup conditions for each acquisition activity -->
-                                    <table id="filelist-table" 
-                                           class="table table-condensed table-hover filelist-table compact" 
+                                    <table id="filelist-table"
+                                           class="table table-condensed table-hover filelist-table compact"
                                            border="1" style="">
                                         <thead>
                                             <tr>
@@ -1830,7 +1834,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                                                         </code>
                                                     </td>
                                                     <td>
-                                                        
+
                                                     </td>
                                                     <xsl:variable name="dataset-type">
                                                         <xsl:choose>
@@ -1878,7 +1882,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                                                 </tr>
                                             </xsl:for-each>
                                         </tbody>
-                                    </table>   
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1889,13 +1893,13 @@ The textual data from the selected rows (not the actual files) can also be expor
             <!-- Javascript which supports some capabilities on the generated page -->
             <script language="javascript">
                 <![CDATA[
-                
+
                 // Detect browser type:
                 // Opera 8.0+
                 var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
                 // Firefox 1.0+
                 var isFirefox = typeof InstallTrigger !== 'undefined';
-                // Safari 3.0+ "[object HTMLElementConstructor]" 
+                // Safari 3.0+ "[object HTMLElementConstructor]"
                 var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
                 // Internet Explorer 6-11
                 var isIE = /*@cc_on!@*/false || !!document.documentMode;
@@ -1907,7 +1911,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                 var isEdgeChromium = isChrome && (navigator.userAgent.indexOf("Edg") != -1);
                 // Blink engine detection
                 var isBlink = (isChrome || isOpera) && !!window.CSS;
-                                
+
                 // Function to find common path from list of paths (https://www.rosettacode.org/wiki/Find_common_directory_path#JavaScript)
                 //
                 // Given an array of strings, return an array of arrays, containing the
@@ -1917,7 +1921,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                 // @returns {!Array<!Array<string>>}
                 //
                 const splitStrings = (a, sep = '/') => a.map(i => i.split(sep));
-                 
+
                 //
                  // Given an index number, return a function that takes an array and returns the
                  // element at the given index
@@ -1925,7 +1929,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                  // @return {function(!Array<*>): *}
                  //
                 const elAt = i => a => a[i];
-                 
+
                 //
                  // Transpose an array of arrays:
                  // Example:
@@ -1935,7 +1939,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                  // @return {!Array<!Array<*>>}
                  //
                 const rotate = a => a[0].map((e, i) => a.map(elAt(i)));
-                 
+
                 //
                  // Checks of all the elements in the array are the same.
                  // @param {!Array<*>} arr
@@ -1945,7 +1949,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                 function commonPath(input, sep = '/') {
                     return rotate(splitStrings(input, sep)).filter(allElementsEqual).map(elAt(0)).join(sep);
                  }
-                 
+
                 // functions to cacluate array average and sum:
                 const arrSum = arr => arr.reduce((a, b) => a + b, 0)
                 const arrAvg = arr => arrSum(arr) / arr.length
@@ -1954,78 +1958,78 @@ The textual data from the selected rows (not the actual files) can also be expor
                 var $body = $('body'),
                     scrollDisabled = false,
                     scrollTop;
-                    
+
                 function scrollDisable() {
                     if (scrollDisabled) {
                         return;
                     }
-               
+
                     scrollTop = $(window).scrollTop();
-               
+
                     $body.addClass('scrollDisabled').css({
                        top: -1 * scrollTop
                     });
-               
+
                     scrollDisabled = true;
                 }
-            
+
                 function scrollEnable() {
                     if (!scrollDisabled) {
                         return;
                     }
-                
+
                     $body.removeClass('scrollDisabled');
                     $(window).scrollTop(scrollTop);
-                
+
                     scrollDisabled = false;
                 }
-                
+
                 //Function which scrolls to the top of the page
                 function toTop(){
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
-                }               
-            
+                }
+
                 //Function checks where the page is scrolled to and either shows or hides the button which jumps to the top.
                 //If the page is scrolled within 30px of the top, the button is hidden (it is hidden when the page loads).
                 window.onscroll = function() {showButtonOnScroll()};
-                
+
                 function showButtonOnScroll() {
                     var header_pos = $('.list-record-experimenter').first().position()['top'];
                     if (document.body.scrollTop > header_pos || document.documentElement.scrollTop > header_pos) {
                         document.getElementById("to-top-btn").style.visibility = "visible";
                         document.getElementById("to-top-btn").style.opacity = 1;
-                    } 
+                    }
                     else {
                         document.getElementById("to-top-btn").style.visibility = "hidden";
                         document.getElementById("to-top-btn").style.opacity = 0;
                     }
                 }
-            
+
                 //Function to open a modal box with id 'name' and prevent scrolling while the box is open
                 function openModal(name){
-                    var modal = document.getElementById(name); 
+                    var modal = document.getElementById(name);
                     modal.style.opacity = 1;
                     modal.style.visibility = "visible";
-                    
+
                     scrollDisable();
-                    
+
                     window.onclick = function(event) {
                         if (event.target == modal) {
                             closeModal(name);
                         }
                     };
                 }
-            
+
                 //Function to close a modal box with id 'name' and re-allow page scrolling
                 function closeModal(name){
-                    var modal = document.getElementById(name); 
+                    var modal = document.getElementById(name);
                     modal.style.opacity = 0;
                     modal.style.visibility = "hidden";
-                    
-                    scrollEnable();                
+
+                    scrollEnable();
                 }
-                
-                // Function to get width of scrollbar for padding offset above 
+
+                // Function to get width of scrollbar for padding offset above
                 // (from https://stackoverflow.com/a/13382873/1435788)
                 function getScrollbarWidth() {
                   // Creating invisible container
@@ -2034,30 +2038,30 @@ The textual data from the selected rows (not the actual files) can also be expor
                   outer.style.overflow = 'scroll'; // forcing scrollbar to appear
                   outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
                   document.body.appendChild(outer);
-                
+
                   // Creating inner element and placing it in the container
                   const inner = document.createElement('div');
                   outer.appendChild(inner);
-                
+
                   // Calculating difference between container's full width and the child width
                   const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
-                
+
                   // Removing temporary elements from the DOM
                   outer.parentNode.removeChild(outer);
-                
+
                   return scrollbarWidth;
                 }
-                
+
                 //Handler for accordions used to hide parameter and metadata tables
                 var acc = document.getElementsByClassName("accordion");
                 var i;
-            
+
                 for (i = 0; i < acc.length; i++) {
                     acc[i].addEventListener("click", function() {
                         togglePanel($(this));
                     });
                 }
-            
+
                 // Function to close an accordion panel
                 function closePanel(acc) {
                     // acc is a jquery object
@@ -2065,7 +2069,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                     acc.removeClass("active-accordion");
                     panel.css('maxHeight', 0);
                 }
-            
+
                 // Function to open an accordion panel
                 function openPanel(acc) {
                     // acc is a jquery object
@@ -2073,7 +2077,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                     acc.addClass("active-accordion");
                     panel.css('maxHeight', panel.prop('scrollHeight') + "px");
                 }
-            
+
                 // Function to toggle an accordion panel
                 function togglePanel(acc) {
                     // acc is a jquery object
@@ -2083,55 +2087,55 @@ The textual data from the selected rows (not the actual files) can also be expor
                         openPanel(acc);
                     }
                 }
-            
+
                 //Function to close all open accordions
                 function closeAccords() {
                     $('button[id*=idm]').each(function(){
                         toggleAA($(this).prop('id'), force_open=false, force_close=true);
                     });
                 }
-            
-                //Function to open all accordions 
+
+                //Function to open all accordions
                 function openAccords() {
                    $('button[id*=idm]').each(function(){
                         toggleAA($(this).prop('id'), force_open=true, force_close=false);
                     });
                 }
-            
+
                 // Function to toggle an aquisition activity section
                 function toggleAA(btn_id, force_open=false, force_close=false) {
                     // btn_id is like "idm45757030174584-btn"
-                    
+
                     // strings
                     var collapse_str = "<i class='fa fa-minus-square-o'></i> Collapse Activity"
                     var expand_str = "<i class='fa fa-plus-square-o'></i> Expand Activity"
-            
+
                     // get jquery object
                     var btn = $('#' + btn_id);
-                    
+
                     // determine what to do
                     var action_is_expand = btn.text().includes('Expand');
                     if ( force_close ) {
                         action_is_expand = false;
                     }
-            
+
                     // get list of accordions to toggle
                     var acc = btn.parents().eq(2).nextUntil('.container-fluid').filter('.accordion');
-                    
+
                     // loop through all accordions, and toggle
                     acc.each(function( index ) {
                         var panel = $(this).next();
-                        if (action_is_expand || force_open) {   
+                        if (action_is_expand || force_open) {
                             // expand panel
                             openPanel($(this));
-            
+
                             // change button to collapse
                             btn.html(collapse_str)
                             btn.addClass('btn-danger')
                             btn.removeClass('btn-success')
                         } else if (!(action_is_expand) || force_close) { // collapse
                             closePanel($(this));
-            
+
                             // change button to expand
                             btn.html(expand_str)
                             btn.addClass('btn-success')
@@ -2139,59 +2143,59 @@ The textual data from the selected rows (not the actual files) can also be expor
                         }
                     });
                 };
-                
+
                 //Handler for moving through an image gallery
                 var slideIndex = 1;
                 showSlides(slideIndex);
-                
+
                 function plusSlide(n) {
                     showSlides(slideIndex += n);
                 }
-                
+
                 function currentSlide(n) {
                     showSlides(slideIndex = n);
                 }
-                
+
                 function showSlides(n) {
                     var i;
                     var slides = document.getElementsByClassName("slide");
                     if (slides.length === 0) {
                         document.getElementById('img_gallery').remove()
                     } else {
-                        if (n > slides.length) {slideIndex = 1}    
+                        if (n > slides.length) {slideIndex = 1}
                         if (n < 1) {slideIndex = slides.length}
                         for (i = 0; i < slides.length; i++) {
-                            slides[i].style.display = "none";  
+                            slides[i].style.display = "none";
                         }
                         slides[slideIndex-1].style.display = "block";
                     }
                 }
-            
+
                 //Function which adds a new slide to the overall image gallery for each dataset [WAITING ON THUMBNAILS TO BE ABLE TO TEST]
                 function addSlide(source) {
                     var slide = document.createElement("div");
-                    slide.class = "slide";                    
+                    slide.class = "slide";
                     var image = document.createElement("img");
                     image.src = source;
                     var text = document.createElement("div");
                     text.class = "text"
                     text.innerHTML = source;
-                    
+
                     slide.innerHTML = image + source;
-                    
+
                     document.getElementById("img_gallery").appendChild(slide);
                 }
-                
+
                 // Function to disable gallery tooltips
                 function disable_gallery_tooltips() {
                     $('#img_gallery a.gal-nav[data-toggle=tooltip]').tooltip('disable');
                 }
-                
+
                 function activate_metadata_tooltips(){
                     // activate tooltips (on demand)
-                    $('table.meta-table [data-toggle="tooltip"]').tooltip({trigger: 'hover'}); 
+                    $('table.meta-table [data-toggle="tooltip"]').tooltip({trigger: 'hover'});
                 }
-            
+
                 // Key handlers
                 document.onkeydown = function(evt) {
                     evt = evt || window.event;
@@ -2226,19 +2230,19 @@ The textual data from the selected rows (not the actual files) can also be expor
                         }
                     }
                 }
-            
-                // Prevent buttons from getting focus property when clicking 
-                // https://stackoverflow.com/a/30949767/1435788 
-                $('button').on('mousedown', 
-                    // @param {!jQuery.Event} event 
+
+                // Prevent buttons from getting focus property when clicking
+                // https://stackoverflow.com/a/30949767/1435788
+                $('button').on('mousedown',
+                    // @param {!jQuery.Event} event
                     function(event) {
                         event.preventDefault();
                     }
                 );
-            
+
                 // Shepherd tutorial code
                 function create_detail_tour() {
-                    
+
                     // check if any modals are visible, and if so close them and
                     // remember it to reopen at the end
                     var already_open_modal = false;
@@ -2248,7 +2252,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             already_open_modal = val.id;
                         }
                     })
-                
+
                     var topScrollHandler = function (element, offset) {
                         if (!offset) {
                             offset = 75;
@@ -2264,7 +2268,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             });
                         }
                     };
-                
+
                     var detail_tour = new Shepherd.Tour({
                         useModalOverlay: true,
                         // keyboard navigation is taken care of by the keyboard
@@ -2283,27 +2287,27 @@ The textual data from the selected rows (not the actual files) can also be expor
                             canClickTarget: false,
                         }
                     });
-                
+
                     showStepNumber = () => {
                         $("<span style='font-size: small'></span>")
                             .insertBefore('.shepherd-footer .btn-primary')
                             .html(`${detail_tour.steps.indexOf(detail_tour.currentStep) + 1}/${detail_tour.steps.length}`);
                     }
-                
+
                     end_button = {
                         text: 'End',
                         classes: 'btn btn-danger',
                         action: detail_tour.next,
                         label: 'End'
                     }
-                
+
                     next_button = {
                         text: 'Next <i class="fa fa-arrow-right menu-fa"></i>',
                         classes: 'btn btn-primary',
                         action: detail_tour.next,
                         label: 'Next'
                     }
-                
+
                     var back_button = (enabled) => {
                         return {
                             text: '<i class="fa fa-arrow-left menu-fa"></i> Back',
@@ -2313,7 +2317,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             label: 'Back'
                         }
                     }
-                
+
                     var stacked_aa_row = $('.aa_header_row .aa-img-col').position().top !== $('.aa_header_row .aa-table-col').position().top;
 
                     // add steps to tour
@@ -2326,7 +2330,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             next_button
                         ],
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-record-header',
                         title: 'The record header',
@@ -2348,7 +2352,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-session_info_column',
                         title: 'Session summary information',
@@ -2371,7 +2375,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-img_gallery',
                         title: 'Image gallery',
@@ -2394,7 +2398,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-aa',
                         title: 'Acquisition activities',
@@ -2409,7 +2413,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         ],
                         scrollToHandler: (element) => {topScrollHandler(element, -1 * $(element).height() + 75)},
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-setup-params',
                         title: 'Setup parameters',
@@ -2422,7 +2426,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             back_button(true),
                             next_button
                         ],
-                        scrollTo: false,     
+                        scrollTo: false,
                         canClickTarget: false,
                         modalOverlayOpeningPadding: 15,
                         popperOptions: {
@@ -2434,7 +2438,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                    
+
                     detail_tour.addStep({
                         id: 'tut-aa-gallery',
                         title: 'Activity image gallery',
@@ -2449,7 +2453,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             next_button
                         ]
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-aa-table',
                         title: 'Activity dataset table',
@@ -2464,7 +2468,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             next_button
                         ]
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-aa-meta',
                         title: 'Metadata viewer/downloader',
@@ -2488,7 +2492,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     detail_tour.addStep({
                         id: 'tut-aa-dl',
                         title: 'Individual file downloader',
@@ -2512,13 +2516,13 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     var sidebar_vis = $('.sidebar').position()['left'] === 0;
                     var sidebar_text = "The sidebar provides an easy way to navigate through the different activities in the record, and also provides a button to return to the top of the page.";
                     if (!sidebar_vis) {
                         sidebar_text += " If the window is too narrow, the sidebar is hidden from view. Clicking this button will show it.";
                     }
-                
+
                     detail_tour.addStep({
                         id: 'tut-sidebar',
                         title: 'Record navigation sidebar',
@@ -2533,7 +2537,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             next_button
                         ]
                     });
-                    
+
                     detail_tour.addStep({
                         id: 'tut-filelisting',
                         title: 'Record file listing and downloader',
@@ -2557,7 +2561,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                    
+
                     detail_tour.addStep({
                         id: 'tut-xml-dl',
                         title: 'Record exporter',
@@ -2581,7 +2585,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                    
+
                     detail_tour.addStep({
                         id: 'tut-edit-record',
                         title: 'Record editor',
@@ -2605,14 +2609,14 @@ The textual data from the selected rows (not the actual files) can also be expor
                             }]
                         }
                     });
-                
+
                     let cur_pos = $(document).scrollTop();
-                    
+
                     function clean_up_on_exit(modal_to_open) {
                         // return to initial position on page if we're not there,
                         // otherwise just re-open the modal if needed
                         if ( $(document).scrollTop() === cur_pos ) {
-                            if (modal_to_open) { openModal(modal_to_open) } 
+                            if (modal_to_open) { openModal(modal_to_open) }
                         } else {
                             $('html, body').animate({
                                 scrollTop: cur_pos
@@ -2623,16 +2627,16 @@ The textual data from the selected rows (not the actual files) can also be expor
                             });
                         }
                     }
-                    
+
                     // set clean up function to trigger when tutorial is closed
                     detail_tour.on('complete', () => clean_up_on_exit(already_open_modal));
                     detail_tour.on('cancel', () => clean_up_on_exit(already_open_modal));
                     detail_tour.on('hide', () => clean_up_on_exit(already_open_modal));
-                    
+
                     $('.shepherd-modal-overlay-container').on('click', () => detail_tour.cancel());
                     detail_tour.start()
                 }
-            
+
                 // Things to do when document is ready
                 $(document).ready(function(){
                     // make each row in nav-table clickable as the header link
@@ -2660,9 +2664,9 @@ The textual data from the selected rows (not the actual files) can also be expor
                                             },
                                         "bInfo" : false,
                                         responsive: true,
-                                        altEditor: false,    
+                                        altEditor: false,
                                         drawCallback: function(){
-                                            $('.paginate_button.next', this.api().table().container())          
+                                            $('.paginate_button.next', this.api().table().container())
                                                 .on('click', function(){
                                                 var info = navTable.page.info();
                                                     $('.cdatatableDetails').remove();
@@ -2671,8 +2675,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                                                     class:'cdatatableDetails'
                                                     }));
                                                 $('.sidebar .pagination').first().addClass('vertical-align');
-                                                });    
-                                                $('.paginate_button.previous', this.api().table().container())          
+                                                });
+                                                $('.paginate_button.previous', this.api().table().container())
                                                 .on('click', function(){
                                                 var info = navTable.page.info();
                                                     $('.cdatatableDetails').remove();
@@ -2681,19 +2685,19 @@ The textual data from the selected rows (not the actual files) can also be expor
                                                     class:'cdatatableDetails'
                                                     }));
                                                     $('.sidebar .pagination').first().addClass('vertical-align');
-                                                }); 
+                                                });
                                         },
                                         ordering: false,
                                         "dom": 'pt'
                                     });
-                                    
+
                     var info = navTable.page.info();
                     $('.sidebar .paginate_button.next').before($('<span>',{
                         'text':' Page '+ (info.page+1) +' of '+info.pages + ' ' ,
                         class:'cdatatableDetails'
                     }));
                     $('.sidebar .pagination').first().addClass('vertical-align');
-            
+
                     // Make dataset metadata tables DataTables
                     $('.meta-table').each(function() {
                         $(this).DataTable({
@@ -2715,14 +2719,14 @@ The textual data from the selected rows (not the actual files) can also be expor
                             ordering: false,
                             dom: "<'row'<'col-sm-6'f><'col-sm-6'p>><'row'<'col-sm-12't>>",
                             drawCallback: function(){
-                                            $('.paginate_button.next', this.api().table().container())          
-                                                .on('click', activate_metadata_tooltips());    
-                                                $('.paginate_button.previous', this.api().table().container())          
-                                                .on('click', activate_metadata_tooltips()); 
+                                            $('.paginate_button.next', this.api().table().container())
+                                                .on('click', activate_metadata_tooltips());
+                                                $('.paginate_button.previous', this.api().table().container())
+                                                .on('click', activate_metadata_tooltips());
                                         },
                         });
                     });
-                    
+
                     // Make AA filelist tables DataTables
                     $('.aa-table').each(function() {
                         var this_table = $(this).DataTable({
@@ -2744,7 +2748,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             ordering: false,
                             dom: "<'row table-row't><'row pager-row'<'col-xs-12 pager-col text-right'p>>",
                         });
-                        
+
                         // controls to reveal appropriate image on row hover
                         $(this).on('mouseenter', '> tbody > tr', function() {
                             // get the id of the correct image by looking at the row's img-id attribute
@@ -2759,12 +2763,12 @@ The textual data from the selected rows (not the actual files) can also be expor
                             img_to_show.addClass('visible');
                             img_to_show.removeClass('hidden');
                         });
-                        
+
                         var new_container = $(this).closest('.aa-content-row').next('.dt_paginate_container');
                         var to_move = $(this).closest('.table-row').next('.pager-row').find('.pager-col');
                         new_container.append(to_move);
                     });
-                    
+
                     const addEndingSlash = function(str){
                         if (! (str.charAt(str.length -  1) === '/')){
                             return str + '/';
@@ -2789,24 +2793,24 @@ The textual data from the selected rows (not the actual files) can also be expor
                         $(this).attr("href", $(this).attr("href") + rootPath + newText);
                         $(this).text(decodeURIComponent(newText));
                       });
-                      
+
                       rootPath = addEndingSlash(rootPath);
                       // put root path text into modal header link
                       $('code#filelist-rootpath > a').each(function() {
                         $(this).text(decodeURIComponent(rootPath));
                         $(this).attr("href", $(this).attr("href") + rootPath);
                       });
-                      
+
                       window.rootPath = rootPath;
-                      
+
                     });
-                    
+
                     // Helper functions for messaging and progress:
                     //
                     // * Reset the message.
                     //
                     function resetMessage () {
-                        $result = $("#download-result"); 
+                        $result = $("#download-result");
                         if (! $result.is(':visible') ) {
                             $result.closest('.row').slideDown();
                         }
@@ -2829,7 +2833,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         // table doesn't get rendered quite fast enough, so make
                         // sure width is at least 500 px
                         let w = Math.max($('#filelist-table').width(), 500);
-                        
+
                         $("#download-extra").closest('.row').slideDown();
                         $("#download-extra")
                         .removeClass('alert-warning alert-success alert-info alert-danger')
@@ -2861,7 +2865,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                     //
                     function updatePercent(percent) {
                         $("#progress_bar").addClass('active')
-                        
+
                         $("#progress_bar").closest('.row').slideDown()
                         .find(".progress-bar")
                         .attr("aria-valuenow", percent)
@@ -2871,9 +2875,9 @@ The textual data from the selected rows (not the actual files) can also be expor
                             width : percent + "%",
                             'min-width' : "5%"
                         }).text(percent + '%');
-                    
+
                     }
-                    
+
                     function updateProgressBar(bytesDownloaded, totalToDownload) {
                         let percent = (bytesDownloaded / totalToDownload * 100)|0;
                         $("#progress_bar").addClass('active')
@@ -2889,19 +2893,19 @@ The textual data from the selected rows (not the actual files) can also be expor
                         }).text(percent + '%');
                         updateProgressMessage(bytesDownloaded, totalToDownload);
                     }
-                    
+
                     function updateProgressMessage(bytesDownloaded, totalToDownload) {
                         if (bytesDownloaded === '0 B') {
                             var msg = "Download is starting, please be patient..."
                         } else {
-                            var msg = "Downloaded " + 
-                                      humanFileSize(bytesDownloaded) + 
-                                      ' out of ' + 
+                            var msg = "Downloaded " +
+                                      humanFileSize(bytesDownloaded) +
+                                      ' out of ' +
                                       humanFileSize(totalToDownload) + '.';
                         }
                         showMessage(msg, 'info');
                     }
-                    
+
                     function errorProgress() {
                         updatePercent(100);
                         $("#progress_bar")
@@ -2922,7 +2926,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         .addClass('progress-bar-success')
                         .text('Finished!');
                     }
-                    
+
                     //
                     // initiate download of files with their metadata
                     // @param {Array} data_urls : the URLs of the data files to include in zip
@@ -2944,7 +2948,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         resetMessage();
                         updatePercent(0);
 
-                        // go through data_urls to check for .ser files and 
+                        // go through data_urls to check for .ser files and
                         // add the auxillary .emi files if needed
                         let aux_urls = data_urls.map(getEmiName);
 
@@ -2965,9 +2969,9 @@ The textual data from the selected rows (not the actual files) can also be expor
                         // array of total zip sizes
                         let zip_total_sizes = [];
                         let indiv_dl_sizes = [];
-                        // array of arrays listing which urls are in each zip 
+                        // array of arrays listing which urls are in each zip
                         let zip_url_listing = [];
-                        // array of arrays listing the filepaths in each zip 
+                        // array of arrays listing the filepaths in each zip
                         let zip_path_listing = [];
                         let cur_zip_idx = 0;
                         let this_zip_size = 0;
@@ -2982,10 +2986,10 @@ The textual data from the selected rows (not the actual files) can also be expor
                         var individual_files = [];
                         // Allocate each url to a particular zip based on size:
                         // this_aux_url will be null if there's no auxiliary file
-                        // present, but sometimes .emi files are missing, and 
+                        // present, but sometimes .emi files are missing, and
                         // we already checked for that when checking file sizes,
-                        // so if aux_url is not null, check window.file_sizes. 
-                        // The value for that url will be NaN if it wasn't 
+                        // so if aux_url is not null, check window.file_sizes.
+                        // The value for that url will be NaN if it wasn't
                         // found on the server
                         for (var index = 0; index < loopLength; index += 1) {
                           let this_path = null;
@@ -3074,7 +3078,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             continue;
                           }
 
-                          // If this is the first file (i.e. zip size == 0), 
+                          // If this is the first file (i.e. zip size == 0),
                           // create new zip object and add it to array
                           if (this_zip_size === 0) {
                             zips.push({});
@@ -3116,7 +3120,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                           zip_path_listing[cur_zip_idx].push(full_json_path);
                           // only add zip file if we have a size for it
                           if (! isNaN(window.file_sizes[this_aux_url])) {
-                            // multiple ser files could have the same emi, so 
+                            // multiple ser files could have the same emi, so
                             // check to make sure we do not add it twice
                             if (! zip_url_listing[cur_zip_idx].includes(this_aux_url)){
                               zip_url_listing[cur_zip_idx].push(this_aux_url);
@@ -3150,7 +3154,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                           showExtraMessage(msg, 'warning');
                         }
 
-                        // an array to hold async zip promises so we can do 
+                        // an array to hold async zip promises so we can do
                         // something after they all complete with Promise.all
                         promList = [];
                         // an array to hold each zip's percentage complete
@@ -3372,7 +3376,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         });
                       }
                     };
-                    
+
                     // https://stackoverflow.com/a/14919494/1435788
                     function humanFileSize(bytes, si) {
                         var thresh = si ? 1000 : 1024;
@@ -3389,7 +3393,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         } while(Math.abs(bytes) >= thresh && u < units.length - 1);
                         return bytes.toFixed(1)+' '+units[u];
                     }
-                    
+
                     //
                     // get the size of a download for a url
                     // @param {String} url : the URLs of the data file to query
@@ -3405,7 +3409,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                           return {'url': url, 'size': NaN}
                         }
                     }
-                    
+
                     window.file_sizes = {};
                     //
                     // get the size of a group of URLs and display it to user
@@ -3415,12 +3419,12 @@ The textual data from the selected rows (not the actual files) can also be expor
                     //
                     function showDownloadSize(data_urls, json_urls, type) {
                         resetMessage();
-                        showMessage('Calculating download size...', 'info');   
-                        
-                        // go through data_urls to check for .ser files and 
+                        showMessage('Calculating download size...', 'info');
+
+                        // go through data_urls to check for .ser files and
                         // add the auxillary .emi files if needed
                         let aux_urls = data_urls.map(getEmiName);
-                        
+
                         // combinedObject will have items [data_url, json_url, null]
                         // the third item is for any auxillary files (such as .emi metadata files that should be included in download)
                         var combinedObject = data_urls.map(function(e, i) {
@@ -3430,7 +3434,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         var combinedArray = $.map(combinedObject, function(value, index) {
                             return [value];
                         });
-                                                
+
                         var total_size = 0;
                         promList = [];
                         sizeList = [];
@@ -3504,19 +3508,19 @@ The textual data from the selected rows (not the actual files) can also be expor
                                       name: res.url,
                                       size: res.size
                                     });
-                                  } 
+                                  }
                                 })
                             }
-                          } 
+                          }
                         });
-                        
+
                         Promise.all(promList).then(function() {
                             var human_dl_size = humanFileSize(total_size);
                             window.total_size = total_size;
                             window.human_dl_size = human_dl_size;
                             sizeList.map(function(v, i){
                                 window.file_sizes[v['name']] = v['size']})
-                            // if this is the initial run, update the filelisting table with sizes:    
+                            // if this is the initial run, update the filelisting table with sizes:
                             if ( type === 'initial' ) {
                                 filelist_dt.rows().every( function (rowIdx,tableLoop,rowLoop) {
                                     var d = this.data();
@@ -3526,10 +3530,10 @@ The textual data from the selected rows (not the actual files) can also be expor
                                     this.cell(rowIdx, 'size:name').data(humanFileSize(window.file_sizes[url]));
                                 });
                             }
-                            let msg = (type === 'initial' ? 
+                            let msg = (type === 'initial' ?
                                        'Total size of all datasets: ' :
                                        'Total download size: ')
-                           
+
                             showMessage(msg + human_dl_size + (
                                 aux_urls.toArray().some((obj) => obj !== null) ?
                                 ' (includes some auxillary data files not explicitly listed below).'
@@ -3539,7 +3543,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                     }
 
 
-                    
+
                     var d = new Date($('span.list-record-date').text());
                     var ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
                     var mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d);
@@ -3547,10 +3551,10 @@ The textual data from the selected rows (not the actual files) can also be expor
                     var record_title = $('span#xmlName').text();
                     var zip_title = record_title.replace('.xml', '.zip');
                     var record_header = 'NexusLIMS Experiment: ' + $('span.list-record-title').text() + '\n' +
-                                        'Instrument: ' + $('span#instr-badge').text() + '\n' + 
-                                        'Experimenter: ' + $('span.list-record-experimenter').text() + '\n' + 
+                                        'Instrument: ' + $('span#instr-badge').text() + '\n' +
+                                        'Experimenter: ' + $('span.list-record-experimenter').text() + '\n' +
                                         'Date: ' + $('span.list-record-date').text();
-                    
+
                     var getEmiName = (serName) => {
                         let re = /(.*)_[0-9]+\.ser/;
                         let match = re.exec(serName);
@@ -3561,18 +3565,18 @@ The textual data from the selected rows (not the actual files) can also be expor
                             return match[1] + '.emi'
                         }
                     }
-                    
+
                     // DataTables for filelist-modal table
                     var filelist_dt = $('table#filelist-table').DataTable({
                         dom: "<'row'<'col-sm-6'f><'col-sm-6'p>><'row'<'#button-col.col-sm-12 text-center'B>><'row'<'col-sm-12't>><'#filelist_info_row.row'<'col-sm-12'i>>",
                         ordering: false,
                         buttons: [
-                            { 
+                            {
                                 extend: 'selectAll',
                                 className: 'btn-select-all dl-btns',
                                 text: "<i class='fa fa-check-square menu-fa'/> Select all"
                             },
-                            { 
+                            {
                                 extend: 'selectNone',
                                 className: 'btn-select-none dl-btns',
                                 text: "<i class='fa fa-square-o menu-fa'/> Select none"
@@ -3582,8 +3586,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                                 className: 'btn-dl-all dl-btns',
                                 action: function ( e, dt, node, config ) {
                                     var data_urls = dt.rows().data().map(x => $(x.data_dl).attr('href'));
-                                    var json_urls = dt.rows().data().map(x => $(x.json_dl).attr('href'));                                    
-                                    var paths = dt.rows().data().map(x => $(x.path).text());  
+                                    var json_urls = dt.rows().data().map(x => $(x.json_dl).attr('href'));
+                                    var paths = dt.rows().data().map(x => $(x.path).text());
                                     $('button.dl-btns').addClass('disabled');
                                     filelist_dt.select.style('api');
                                     downloadFn(data_urls, json_urls, paths, zip_title);
@@ -3607,11 +3611,11 @@ The textual data from the selected rows (not the actual files) can also be expor
                                 className: 'btn-dl-selected dl-btns',
                                 action: function ( e, dt, node, config ) {
                                     var data_urls = dt.rows({selected:true}).data().map(x => $(x.data_dl).attr('href'));
-                                    var json_urls = dt.rows({selected:true}).data().map(x => $(x.json_dl).attr('href'));                                    
-                                    var paths = dt.rows({selected:true}).data().map(x => $(x.path).text());  
+                                    var json_urls = dt.rows({selected:true}).data().map(x => $(x.json_dl).attr('href'));
+                                    var paths = dt.rows({selected:true}).data().map(x => $(x.path).text());
                                     $('button.dl-btns').addClass('disabled');
                                     filelist_dt.select.style('api');
-                                    downloadFn(data_urls, json_urls, 
+                                    downloadFn(data_urls, json_urls,
                                                paths, zip_title);
                                 }
                             }],
@@ -3619,7 +3623,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             style:    'os',
                             //selector: 'td:first-child'
                         },
-                        columnDefs: [ 
+                        columnDefs: [
                             { data: 'checkbox', orderable: false, width: '1em',
                               className: 'select-checkbox', targets: 0 },
                             // give each column a "data" attribute so we can reference them by name
@@ -3651,11 +3655,11 @@ The textual data from the selected rows (not the actual files) can also be expor
                         filelist_dt.rows().data().map(x => $(x.json_dl).attr('href')),
                         'initial'
                     );
-                    
+
                     // check to see if we have any .ser files; if so, display warning
-                    let haveSers = filelist_dt.rows().data().map(x => 
+                    let haveSers = filelist_dt.rows().data().map(x =>
                                      $(x.data_dl).attr('href')).toArray().some(x => x.endsWith('.ser'))
-                    
+
                     // Event listener to calculate download size on selection
                     filelist_dt.on( 'select', function ( e, dt, items ) {
                         var data_urls = dt.rows({selected:true}).data().map(x => $(x.data_dl).attr('href'));
@@ -3667,8 +3671,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                         var json_urls = dt.rows({selected:true}).data().map(x => $(x.json_dl).attr('href'));
                         showDownloadSize(data_urls, json_urls, 'select');
                     });
-                   
-                                        
+
+
                     var buttonCommon = {
                         exportOptions: {
                             format: {
@@ -3684,8 +3688,8 @@ The textual data from the selected rows (not the actual files) can also be expor
                                 }
                             }
                         }
-                    };                                        
-                                        
+                    };
+
                     // Add second group of buttons for export
                     new $.fn.dataTable.Buttons( filelist_dt, {
                         buttons: [
@@ -3721,7 +3725,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                             })
                         ]
                     });
-                    
+
                     // Explicitly insert a row containing the second group after the first group's row:
                     var first_btn_row = filelist_dt.buttons( 0, null ).container().closest('.row');
                     first_btn_row.after(
@@ -3730,26 +3734,26 @@ The textual data from the selected rows (not the actual files) can also be expor
                     filelist_dt.buttons( 1, null ).container().appendTo(
                         $('#second-btn-group')
                     );
-                    
+
                     // move progressbar row and dl-results row to after buttons
                     $('#progressbar-row').detach().insertAfter($('#second-btn-group').closest('.row'));
                     $('#dl-result-row').detach().insertAfter($('#progressbar-row'));
                     $('#dl-extra-row').detach().insertBefore($('#dl-result-row'));
                     $('#btn-cancel-row').detach().insertBefore($('#progressbar-row'));
-                    
+
                     // hide these rows by default
                     $('#progressbar-row').hide();
                     $('#dl-result-row').hide();
                     $('#dl-extra-row').hide();
-                    $('#btn-cancel-row').hide();       
-                    
+                    $('#btn-cancel-row').hide();
+
                     if (haveSers){
                         let msg = 'At least one .ser file was detected in this record. While not listed in this table, any associated .emi metadata file will be added to the downloaded .zip archive and download size estimate.';
                         showExtraMessage(msg , 'warning');
-                    }     
-                    
-                    // function to "prettify" XML export response using regex (from https://stackoverflow.com/a/49458964/1435788)                    
-                    function formatXml(xml, tab) { 
+                    }
+
+                    // function to "prettify" XML export response using regex (from https://stackoverflow.com/a/49458964/1435788)
+                    function formatXml(xml, tab) {
                          var formatted = '', indent= '';
                          tab = tab || '\t';
                          xml.split(/>\s*</).forEach(function(node) {
@@ -3761,17 +3765,17 @@ The textual data from the selected rows (not the actual files) can also be expor
                          formatted = formatted.split('  ').join(' ');
                          return formatted.substring(1, formatted.length-3);
                      }
-                    
+
                     // function to do XML export download
                     const downloadXML = function() {
                         let id = new URLSearchParams(window.location.search).get('id');
                         let xml_url = '/rest/data/download/' + id + '/';
-                        
+
                         fetch(xml_url)
                         .then(resp => resp.text())
                         // get text of response from CDCS API, run it through
                         // prettifier, and then return a blob so we can download it
-                        .then(text => 
+                        .then(text =>
                             new Blob([formatXml(text)], {type:'text/xml'}))
                         // save blob to disk
                         .then(blob => {
@@ -3782,18 +3786,18 @@ The textual data from the selected rows (not the actual files) can also be expor
                             a.download = $('#xmlName').text();
                             document.body.appendChild(a);
                             a.click();
-                            window.URL.revokeObjectURL(url); 
+                            window.URL.revokeObjectURL(url);
                         });
                     }
-                    $("#btn-xml-dl").on('click', downloadXML);                    
+                    $("#btn-xml-dl").on('click', downloadXML);
                     $('a#menu-tutorial').on('click', () => create_detail_tour());
-                    
+
                     // Make sidebar visible after everything is done loading:
                     $('.sidebar').first().css('visibility', 'visible');
                     // Fade out the loading screen
                     $('#loading').fadeOut('slow');
                 });
-            
+
                 ]]>
             </script>
         </div>
@@ -3815,7 +3819,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                 <xsl:with-param name="i" select="2"/>
             </xsl:call-template>
         </xsl:variable>
-        
+
         <!-- The 'for-each document' bit is required because keys only work in the context of the current
                  document in XSLT 1.0 (see https://stackoverflow.com/a/35327827/1435788) -->
         <xsl:for-each select="document('')">
@@ -3853,7 +3857,7 @@ The textual data from the selected rows (not the actual files) can also be expor
       <xsl:param name="i" select="1"/>
 
       <xsl:choose>
-      
+
         <!-- we want the first element; we can deliver it  -->
         <xsl:when test="$i=1">
           <xsl:choose>
@@ -3880,10 +3884,10 @@ The textual data from the selected rows (not the actual files) can also be expor
             <xsl:with-param name="i" select="$i - 1"/>
           </xsl:call-template>
         </xsl:otherwise>
-        
+
       </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="get-file-extension">
         <xsl:param name="path"/>
         <xsl:choose>
@@ -3902,10 +3906,10 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="TEMP">
         <xsl:param name="x"/>
-        
+
         <xsl:choose>
             <xsl:when test="contains($x, '.')">
                 <xsl:call-template name="TEMP">
@@ -3919,7 +3923,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="dedup-list">
         <!-- Cribbed from https://www.oxygenxml.com/archives/xsl-list/200412/msg00888.html -->
         <xsl:param name="input"/>
@@ -3929,7 +3933,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             <xsl:when test="contains($input, ' ')">
                 <!-- Value to test is substring-before -->
                 <xsl:variable name="firstWord" select="substring-before($input, ' ')"/>
-                
+
                 <xsl:choose>
                     <xsl:when test="not(contains($to-keep, $firstWord))">
                         <xsl:variable name="newString">
@@ -3978,7 +3982,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="extensions-to-badges">
         <xsl:param name="input"/>
         <xsl:param name="global-count" select="'false'"/>
@@ -4022,7 +4026,7 @@ The textual data from the selected rows (not the actual files) can also be expor
                         <!-- count the number of dataset locations that end with this extension -->
                         <xsl:choose>
                             <xsl:when test="$global-count = 'true'">
-                                <xsl:value-of select="count(//dataset/location[$input = substring(., string-length() - string-length($input) + 1)])"/>                                
+                                <xsl:value-of select="count(//dataset/location[$input = substring(., string-length() - string-length($input) + 1)])"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of select="count(dataset/location[$input = substring(., string-length() - string-length($input) + 1)])"/>
@@ -4036,11 +4040,11 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="substring-after-last">
         <xsl:param name="string"/>
         <xsl:param name="char"/>
-        
+
         <xsl:choose>
             <xsl:when test="contains($string, $char)">
                 <xsl:call-template name="substring-after-last">
@@ -4053,7 +4057,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="get-path-of-file">
         <xsl:param name="absolute_filename"/>
         <xsl:variable name="just-filename">
@@ -4062,10 +4066,10 @@ The textual data from the selected rows (not the actual files) can also be expor
                 <xsl:with-param name="string"><xsl:value-of select="$absolute_filename"/></xsl:with-param>
             </xsl:call-template>
         </xsl:variable>
-        
+
         <xsl:value-of select="substring($absolute_filename, 0, string-length($absolute_filename) - string-length($just-filename))"/>
     </xsl:template>
-    
+
     <xsl:template name="help-tip">
         <xsl:param name="tip-text"/>
         <xsl:param name="tip-placement" select='"right"'></xsl:param>
@@ -4077,7 +4081,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             <i class='fa fa-question-circle'/>
         </xsl:element>
     </xsl:template>
-    
+
     <xsl:template name="warning-tip">
         <xsl:param name="tip-text"/>
         <xsl:param name="tip-placement" select='"right"'></xsl:param>
@@ -4089,14 +4093,14 @@ The textual data from the selected rows (not the actual files) can also be expor
             <i class='fa fa-exclamation-triangle'/>
         </xsl:element>
     </xsl:template>
-    
+
     <xsl:template name="get-calendar-link">
         <xsl:param name="instrument"/>
         <xsl:for-each select="document('')">
             <xsl:value-of select="$sharepointBaseUrl"/>
             <xsl:value-of select="key('lookup.instrument.url', $instrument)"/>calendar.aspx</xsl:for-each>
     </xsl:template>
-    
+
     <xsl:template name="get-calendar-event-link">
         <xsl:param name="instrument"/>
         <xsl:param name="event-id"></xsl:param>
@@ -4104,7 +4108,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             <xsl:value-of select="$sharepointBaseUrl"/>
             <xsl:value-of select="key('lookup.instrument.url', $instrument)"/>DispForm.aspx?ID=<xsl:value-of select="$event-id"/></xsl:for-each>
     </xsl:template>
-    
+
     <xsl:template name="parse-activity-contents">
         <xsl:choose>
             <xsl:when test="setup/param[@name='Data Type']">
@@ -4140,7 +4144,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <!-- Taken from http://geekswithblogs.net/Erik/archive/2008/04/01/120915.aspx -->
     <xsl:template name="string-replace-all">
         <xsl:param name="text" />
@@ -4162,7 +4166,7 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="strip-tags">
         <xsl:param name="text"/>
         <xsl:comment>From https://ehikioya.com/remove-html-tags-xsl-value/</xsl:comment>
@@ -4178,5 +4182,5 @@ The textual data from the selected rows (not the actual files) can also be expor
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
 </xsl:stylesheet>

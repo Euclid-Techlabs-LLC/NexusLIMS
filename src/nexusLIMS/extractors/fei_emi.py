@@ -25,21 +25,23 @@
 #  WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,
 #  OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
 
-from hyperspy.io import load as _hs_load
-from hyperspy.signal import BaseSignal as _BaseSignal
-import numpy as _np
 import logging as _logging
 import os as _os
 from datetime import datetime as _dt
 
+import nexusLIMS
+import numpy as _np
+from hyperspy.io import load as _hs_load
+from hyperspy.signal import BaseSignal as _BaseSignal
 from nexusLIMS.instruments import get_instr_from_filepath as _get_instr
-from nexusLIMS.utils import _remove_dtb_element
+from nexusLIMS.utils import _remove_dtb_element, _sort_dict
 from nexusLIMS.utils import get_nested_dict_key as _get_nest_dict_key
-from nexusLIMS.utils import get_nested_dict_value_by_path as \
-    _get_nest_dict_val_by_path
+from nexusLIMS.utils import \
+    get_nested_dict_value_by_path as _get_nest_dict_val_by_path
 from nexusLIMS.utils import set_nested_dict_value as _set_nest_dict_val
 from nexusLIMS.utils import try_getting_dict_value as _try_get_dict_val
-from nexusLIMS.utils import _sort_dict
+
+CONFIG = nexusLIMS.get_config()
 _logger = _logging.getLogger(__name__)
 
 
@@ -142,7 +144,7 @@ def get_ser_metadata(filename):
     # if we successfully found the .emi file, add it to the metadata
     if emi_filename:
         rel_emi_fname = emi_filename.replace(
-            _os.environ["mmfnexus_path"] + '/', '') if emi_filename else None
+            CONFIG["mmfnexus_path"] + '/', '') if emi_filename else None
         metadata['nx_meta']['emi Filename'] = rel_emi_fname
     else:
         metadata['nx_meta']['emi Filename'] = None

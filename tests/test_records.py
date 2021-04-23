@@ -4,7 +4,7 @@ from functools import partial
 import shutil
 
 from nexusLIMS import cdcs
-from nexusLIMS.instruments import instrument_db
+from nexusLIMS.instruments import get_instrument_db
 from nexusLIMS.builder import record_builder as _rb
 from nexusLIMS.schemas import activity
 from nexusLIMS.db import session_handler
@@ -21,6 +21,8 @@ from nexusLIMS.harvester.sharepoint_calendar import AuthenticationError
 import pytest
 
 from utils import files
+
+CONFIG = nexusLIMS.get_config()
 
 
 # class TestRecordBuilder:
@@ -45,7 +47,7 @@ from utils import files
 #             # noinspection PyTypeChecker
 #             assert len(found_files) == ans
 
-#         assert f'{os.environ["mmfnexus_path"]}' \
+#         assert f'{CONFIG["mmfnexus_path"]}' \
 #                f'/Titan/**REMOVED**/200204 - NbN-Gr-SiC - **REMOVED** **REMOVED** ' \
 #                f'- Titan/15 - 620k.dm3' in file_list_list[5]
 
@@ -198,7 +200,7 @@ from utils import files
 #         def mock_get_sessions():
 #             return [session_handler.Session(
 #                 session_identifier='1c3a6a8d-9038-41f5-b969-55fd02e12345',
-#                 instrument=instrument_db['**REMOVED**'],
+#                 instrument=get_instrument_db()['**REMOVED**'],
 #                 dt_from=_dt.fromisoformat('2020-02-04T09:00:00.000'),
 #                 dt_to=_dt.fromisoformat('2020-02-04T12:00:00.000'),
 #                 user='None')]
@@ -214,7 +216,7 @@ from utils import files
 #         assert "Could not validate record, did not write to disk" in caplog.text
 
 #     def test_dump_record(self, monkeypatch, fix_mountain_time):
-#         out_fname = _rb.dump_record(instrument_db['**REMOVED**'],
+#         out_fname = _rb.dump_record(get_instrument_db()['**REMOVED**'],
 #                                     dt_from=_dt.fromisoformat('2020-02-04T'
 #                                                               '09:00:00.000'),
 #                                     dt_to=_dt.fromisoformat('2020-02-04T'
@@ -232,7 +234,7 @@ from utils import files
 
 # @pytest.fixture(scope='module')
 # def gnu_find_activities(fix_mountain_time):
-#     instr = instrument_db['**REMOVED**']
+#     instr = get_instrument_db()['**REMOVED**']
 #     dt_from = _dt.fromisoformat('2018-11-13T13:00:00.000')
 #     dt_to = _dt.fromisoformat('2018-11-13T16:00:00.000')
 #     activities_str, activities_list = _rb.build_acq_activities(
@@ -269,7 +271,7 @@ from utils import files
 #             self.activities_str_python_find
 
 #     def test_activity_repr(self, gnu_find_activities):
-#         if 'is_mountain_time' in os.environ:    # pragma: no cover
+#         if CONFIG.get('is_mountain_time'):    # pragma: no cover
 #             expected = '             AcquisitionActivity; ' \
 #                        'start: 2018-11-13T11:01:28.179682; ' \
 #                        'end: 2018-11-13T11:19:14.635522'
@@ -281,7 +283,7 @@ from utils import files
 #             expected
 
 #     def test_activity_str(self, gnu_find_activities):
-#         if 'is_mountain_time' in os.environ:    # pragma: no cover
+#         if CONFIG.get('is_mountain_time'):    # pragma: no cover
 #             expected = '2018-11-13T11:01:28.179682 AcquisitionActivity '
 #         else:                                   # pragma: no cover
 #             expected = '2018-11-13T13:01:28.179682 AcquisitionActivity '
@@ -330,7 +332,7 @@ from utils import files
 #     def test_session_repr(self):
 #         s = session_handler.Session(
 #                 session_identifier='1c3a6a8d-9038-41f5-b969-55fd02e12345',
-#                 instrument=instrument_db['**REMOVED**'],
+#                 instrument=get_instrument_db()['**REMOVED**'],
 #                 dt_from=_dt.fromisoformat('2020-02-04T09:00:00.000'),
 #                 dt_to=_dt.fromisoformat('2020-02-04T12:00:00.000'),
 #                 user='None')
