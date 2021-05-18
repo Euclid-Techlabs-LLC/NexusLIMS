@@ -2,12 +2,25 @@ import getpass
 import json
 import os
 import pathlib
-import shutil
 import sys
 import tkinter as tk
 
 from db_logger_gui import MainApp, ScreenRes, check_singleton
 from make_db_entry import DBSessionLogger
+
+
+class _Config(dict):
+    """subclass `dict`, get keys from environment first."""
+
+    def __getitem__(self, k):
+        if k in os.environ:
+            return os.getenv(k)
+        return super().__getitem__(k)
+
+    def get(self, k):
+        if k in os.environ:
+            return os.getenv(k)
+        return super().get(k)
 
 
 def validate_config(config):
@@ -24,8 +37,9 @@ def validate_config(config):
 
     return True
 
+
 def main():
-    # check singleton
+    ### check singleton
     try:
         sing = check_singleton()
     except OSError as e:
@@ -44,28 +58,19 @@ def main():
         sys.exit(0)
 
 
-    # config
-    config_dir = os.path.join(pathlib.Path.home(), ".nexuslims", "gui")
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
+    ### config
+    # The setting config will look for settings from environment variable first.
+    # If not exist, it will read from `$HOME/nexuslims/gui/config.json` as fallback.
 
-    config_fn = os.path.join(config_dir, "config.json")
-    if not os.path.isfile(config_fn):
-        # default config
-        default_fn = os.path.abspath(__file__)
-        default_fn = default_fn.replace(os.path.basename(__file__), "config.json")
-        shutil.copy(default_fn, config_fn)
-
-        msg = ("No config file found, the default config is copied to %s. "
-               "Modify the configuration appropiately and run the application again.") % config_fn
-        root = tk.Tk()
-        root.title("Error")
-        root.withdraw()
-        tk.messagebox.showerror(parent=root, title="Error", message=msg)
-        sys.exit(0)
+    config = _Config()
 
     try:
-        config = json.loads(open(config_fn).read())
+        config_fn = os.path.join(pathlib.Path.home(), "nexuslims", "gui", "config.json")
+        config.update(json.loads(open(config_fn).read()))
+    except:
+        pass
+
+    try:
         validate_config(config)
     except Exception as e:
         root = tk.Tk()
@@ -74,12 +79,14 @@ def main():
         tk.messagebox.showerror(parent=root, title="Error", message=str(e))
         sys.exit(0)
 
-    # user
+    ### user
     login = getpass.getuser()
 
+    ### logger window
     dbdl = DBSessionLogger(config=config, user=login, verbosity=2)
     sres = ScreenRes(dbdl)
 
+    ### main app
     root = MainApp(dbdl, screen_res=sres)
     root.protocol("WM_DELETE_WINDOW", root.on_closing)
     root.mainloop()

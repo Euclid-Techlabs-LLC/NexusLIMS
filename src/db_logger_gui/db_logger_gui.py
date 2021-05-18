@@ -200,13 +200,14 @@ class MainApp(Tk):
         self.style = ttk.Style()
         if sys.platform == "win32":
             self.style.theme_use('winnative')
-        self.style.configure('.', font="TkDefaultFont")
+        self.style.configure('.', font=("TkDefaultFont", 20, "bold"))  # Jie is it working??
 
         self.tooltip_font = "TkDefaultFont"
-        self.geometry(self.screen_res.get_center_geometry_string(350, 600))
+        self.info_font = 'TkDefaultFont 16 bold'
+        self.geometry(self.screen_res.get_center_geometry_string(350, 530))
         self.minsize(1, 1)
         self.maxsize(3840, 1170)
-        self.resizable(0, 0)
+        self.resizable(1, 1)
         self.title("NexusLIMS Session Logger")
         self.configure(highlightcolor="black")
 
@@ -250,7 +251,7 @@ class MainApp(Tk):
         self.loading_status_text.set('Initiating session logger...')
         self.loading_status_Label = Label(self.setup_frame,
                                           foreground="#777",
-                                          font='TkDefaultFont 8 italic',
+                                          font='TkDefaultFont 10 italic',
                                           anchor='center',
                                           justify='center',
                                           wraplength="250",
@@ -263,7 +264,8 @@ class MainApp(Tk):
                                      justify='center',
                                      wraplength="250",
                                      text="A new session has been started "
-                                          "for the")
+                                          "for the",
+                                     font=self.info_font)
         self.instr_string = StringVar()
         self.instr_string.set("$INSTRUMENT")
         self.instrument_label = Label(self.running_frame,
@@ -271,12 +273,14 @@ class MainApp(Tk):
                                       anchor='center',
                                       justify='center',
                                       wraplength="250",
-                                      textvariable=self.instr_string)
+                                      textvariable=self.instr_string,
+                                      font=self.info_font)
         self.running_Label_2 = Label(self.running_frame,
                                      anchor='center',
                                      justify='center',
                                      wraplength="250",
-                                     text="at")
+                                     text="at",
+                                     font='TkDefaultFont 16 bold')
         self.datetime_string = StringVar()
         self.datetime_string.set('$DATETIME')
         self.datetime_label = Label(self.running_frame,
@@ -284,17 +288,16 @@ class MainApp(Tk):
                                     anchor='center',
                                     justify='center',
                                     wraplength="250",
-                                    textvariable=self.datetime_string)
+                                    textvariable=self.datetime_string,
+                                    font=self.info_font)
         self.running_Label_3 = Label(self.running_frame,
                                      anchor='center',
-                                     justify='center',
+                                     justify='left',
                                      wraplength="250",
+                                     fg='#a30019',
                                      text="Leave this window open while you "
-                                          "work!\n\n"
-                                          "To end the session (after all data "
-                                          "has been saved to the network "
-                                          "share), click the \"End session\" "
-                                          "button below or close this window")
+                                          "work! Copy data before you end this session.",
+                                     font=self.info_font)
 
         # Buttons at bottom
 
@@ -303,12 +306,12 @@ class MainApp(Tk):
         self.end_button = Button(self.button_frame,
                                  # takefocus="",
                                  text="End session",
-                                 padx=15, pady=15,
+                                 padx=10, pady=10,
                                  state=DISABLED,
                                  compound=LEFT,
                                  command=self.session_end,
                                  image=self.end_icon)
-        self.end_button.config(fg='black', font='-weight bold')
+        self.end_button.config(fg='black', font=('kDefaultFont',16,'bold'), relief=RAISED)
         ToolTip(self.end_button,
                 self.tooltip_font,
                 "Ending the session will close this window and start the record"
@@ -318,20 +321,33 @@ class MainApp(Tk):
                 delay=0.00)
         self.log_icon = PhotoImage(file=resource_path('file.png'))
         self.log_button = Button(self.button_frame,
-                                 text="Show debug log",
+                                 text="  Show Debug Log  ",
                                  command=lambda: LogWindow(parent=self),
-                                 padx=5, pady=5,
+                                 padx=5, pady=10,
                                  compound=LEFT,
                                  image=self.log_icon)
+        self.log_button.config(fg='black', font=('kDefaultFont',12,'bold'), relief=RAISED)
+        #Jie -- Add button for logging session note by user
+        self.note_icon = PhotoImage(file=resource_path('note.png'))
+        self.note_button = Button(self.button_frame,
+                                 text="Add Session Note",
+                                 command=lambda: NoteWindow(parent=self),
+                                 padx=5, pady=10,
+                                 compound=LEFT,
+                                 image=self.note_icon)
 
+        self.note_button.config(fg='black', font=('kDefaultFont',12,'bold'), relief=RAISED)
+        self.copy_icon =PhotoImage(file=resource_path('copy.png'))
         self.copydata_button = Button(
             self.button_frame,
-            text="Copy data",
-            padx=5, pady=5,
+            text=" Copy Data ",
+            padx=10, pady=10,
             state=DISABLED,
             compound=LEFT,
-            command=self.db_logger.copydata
+            command=self.db_logger.copydata,
+            image=self.copy_icon
         )
+        self.copydata_button.config(fg='black', font=('kDefaultFont',16,'bold'),relief=RAISED)
 
         # grid the Toplevel window contents
         self.logo_label.grid(row=0, column=0, sticky=N, pady=(15, 0))
@@ -343,17 +359,18 @@ class MainApp(Tk):
         self.loading_status_Label.grid(row=2, column=0)
 
         # grid the button_frame contents
-        self.button_frame.grid(row=3, column=0, sticky=S, pady=(0, 15))
-        self.end_button.grid(row=0, column=0, sticky=N, pady=5)
-        self.log_button.grid(row=1, column=0, sticky=S, pady=5)
-        self.copydata_button.grid(row=2, column=0, sticky=S, pady=5)
+        self.button_frame.grid(row=3, column=0, sticky=S, pady=(15, 5))
+        self.end_button.grid(row=0, column=1, sticky=S, pady=5)
+        self.log_button.grid(row=1, column=1, sticky=S, pady=5)
+        self.note_button.grid(row=1, column=0, sticky=S, pady=5)  #Jie added button, also changed the arrangements
+        self.copydata_button.grid(row=0, column=0, sticky=S, pady=5)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.setup_frame.rowconfigure(0, weight=1)
         self.db_logger.log('(GUI) Created the top level window', 1)
-
         self.session_startup()
+
 
     def session_startup(self):
         self.startup_thread = threading.Thread(
@@ -603,7 +620,7 @@ class PauseOrEndDialogue(Toplevel):
 
         self.top_label = Label(self.label_frame,
                                text="Are you sure?",
-                               font=("TkDefaultFont", 12, "bold"),
+                               font=("TkDefaultFont", 14, "bold"),
                                wraplength=250,
                                anchor='w',
                                justify='left')
@@ -659,7 +676,7 @@ class PauseOrEndDialogue(Toplevel):
         self.top_label.grid(row=0, column=0, padx=10, pady=0, sticky=(W,S))
         self.warn_label.grid(row=1, column=0, padx=10, pady=(5,0))
 
-        self.button_frame.grid(row=1, column=0, ipadx=10, ipady=5)
+        self.button_frame.grid(row=1, column=1, ipadx=10, ipady=5) #Jie
         self.end_button.grid(row=0, column=0,  padx=10)
         if db_logger.session_started:
             self.pause_button.grid(row=0, column=1, padx=10)
@@ -746,7 +763,7 @@ class HangingSessionDialog(Toplevel):
 
         self.top_label = Label(self.label_frame,
                                text="Warning!",
-                               font=("TkDefaultFont", 12, "bold"),
+                               font=("TkDefaultFont", 14, "bold"),
                                wraplength=250,
                                anchor='w',
                                justify='left',
@@ -790,7 +807,7 @@ class HangingSessionDialog(Toplevel):
         self.top_label.grid(row=0, column=0, padx=10, pady=0, sticky=(W,S))
         self.warn_label.grid(row=1, column=0, padx=10, pady=(5,0))
 
-        self.button_frame.grid(row=1, column=0,
+        self.button_frame.grid(row=1, column=1,
                                sticky=S, ipadx=10, ipady=5)
         self.continue_button.grid(row=0, column=0, sticky=E, padx=15)
         self.new_button.grid(row=0, column=1, sticky=W, padx=15)
@@ -951,6 +968,154 @@ class LogWindow(Toplevel):
 
         self.update()
 
+#Jie -- Open window to add user note --
+class NoteWindow(Toplevel):
+    def __init__(self, parent, is_error=False):
+        """
+        Create and raise a window showing a text input field so users can add
+        session note to the current session; the last saved session note will
+        gets written to the session log database when user ends the current
+        session
+
+        Parameters
+        ----------
+        parent : MainApp
+            The MainApp (or other widget) this NoteWindow is associated with
+        is_error : bool
+            If True, closing the Note window will close the whole application
+        """
+        self.screen_res = parent.screen_res
+        Toplevel.__init__(self, padx=3, pady=3)
+        self.transient(parent)
+        self.grab_set()
+        self.tooltip_font = "TkDefaultFont"
+        self.geometry(self.screen_res.get_center_geometry_string(450, 450))
+        self.title('Add Note to the Current Session')
+        self.parent = parent
+
+        # prepare some variables
+        self.old_note = self.parent.db_logger.session_note
+        self.old_note = self.old_note.replace("''", "'")
+        self.note = StringVar()
+        self.note.set(self.old_note)
+
+        self.session_note = Text(self, width=40, height=10, wrap='word', font=("TkDefaultFont", 16))
+        self.s_v = ttk.Scrollbar(self,
+                                 orient=VERTICAL,
+                                 command=self.session_note.yview)
+        self.s_h = ttk.Scrollbar(self,
+                                 orient=HORIZONTAL,
+                                 command=self.session_note.xview)
+
+        self.session_note['yscrollcommand'] = self.s_v.set
+        self.session_note['xscrollcommand'] = self.s_h.set
+        self.session_note.insert("1.0", self.old_note)
+
+        # add functional buttons
+        self.button_frame = Frame(self, padx=15, pady=10)
+
+        self.save_icon = PhotoImage(file=resource_path('save.png'))
+        self.clear_icon = PhotoImage(file=resource_path('clear.png'))
+        self.close_icon = PhotoImage(file=resource_path('window-close.png'))
+
+        self.clear_button = Button(self.button_frame,
+                                  text='Clear',  # clear saved note',
+                                  command= self.delete_note,
+                                  padx=10, pady=5, width=60,
+                                  compound="left", image=self.clear_icon)
+
+        self.save_button = Button(self.button_frame,
+                                  text='Save',  # log to clipboard',
+                                  command=self.save_note,
+                                  padx=10, pady=5, width=60,
+                                  compound="left", image=self.save_icon)
+        ToolTip(self.save_button,
+                self.tooltip_font,
+                "Save session note before closing this window", delay=0.25)
+
+        def _close_cmd():
+            """Fix for LogWindow preventing app from closing if there was an
+            error"""
+            parent.notes = self.old_note
+            parent.db_logger.umount_network_share()
+            self.destroy()
+            parent.destroy()
+            sys.exit(1)
+        self.close_button = Button(self.button_frame,
+                                   text='Close',  # window',
+                                   command=self.destroy if not is_error else
+                                   _close_cmd,
+                                   padx=10, pady=5, width=60,
+                                   compound=LEFT, image=self.close_icon)
+        # Make close window button do same thing as regular close button
+        self.protocol("WM_DELETE_WINDOW",
+                      self.destroy if not is_error else lambda: sys.exit(1))
+
+        ToolTip(self.close_button,
+                self.tooltip_font,
+                "Close this window" if not is_error else
+                "Close the application; make sure to copy the log if you "
+                "need!", delay=0.25)
+
+        # self.text_label.grid(column=0, row=0, sticky=(S, W))
+        self.session_note.grid(column=0, row=1, sticky=(N, S, E, W))
+        self.s_v.grid(column=1, row=1, sticky=(N, S))
+        self.s_h.grid(column=0, row=2, sticky=(E, W))
+        self.button_frame.grid(row=3, column=0, sticky=(S), ipadx=10)
+        self.clear_button.grid(row=0, column=1, sticky=E, padx=10)
+        self.save_button.grid(row=0, column=0, sticky=E, padx=10)
+        self.close_button.grid(row=0, column=2, sticky=W, padx=10)
+
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.focus_force()
+        if is_error:
+            time_left = 3
+            self.change_close_button(3, DISABLED)
+            # self.after(1000, lambda: self.change_close_button(4))
+            # self.after(2000, lambda: self.change_close_button(3))
+            self.after(1000, lambda: self.change_close_button(2))
+            self.after(2000, lambda: self.change_close_button(1))
+            self.after(3000, lambda: self.change_close_button(0, ACTIVE))
+
+    def save_note(self):
+            #Save the current session note in the text box, overwrite previous saved note
+            self.note = self.session_note.get("1.0", END)
+            #escape single quote by doubling it so it won't cause issues with sql insert_statement
+            self.note = self.note.replace("'", "''")
+            if not (self.note == self.old_note):
+                    self.old_note = self.note
+                    #self.parent.notes = self.note
+                    self.parent.db_logger.session_note = self.note
+
+    def delete_note(self):
+            #delete the current session note in the text box
+            self.session_note.delete("1.0", END)
+
+    def change_close_button(self, num_to_show, state=DISABLED):
+        if num_to_show == 0:
+            self.close_button.configure(text='Close', state=state)
+        else:
+            self.close_button.configure(text='Close ({})'.format(
+                num_to_show), state=state)
+        self.close_button.grid(row=0, column=1, sticky=W, ipadx=10, padx=10)
+
+    def copy_text_to_clipboard(self):
+        text_content = self.text.get('1.0', 'end')
+        self.clipboard_clear()
+        if sys.platform == 'win32':
+            text_content = text_content.replace('\n', '\r\n')
+
+        # put some text on clipboard
+        # https://stackoverflow.com/a/4203897
+        r = Tk()
+        r.withdraw()
+        r.clipboard_clear()
+        r.clipboard_append(text_content)
+        r.update()
+        r.destroy()
+
+        self.update()
 
 class ToolTip(Toplevel):
     """

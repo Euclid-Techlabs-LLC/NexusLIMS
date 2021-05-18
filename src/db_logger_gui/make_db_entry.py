@@ -133,6 +133,7 @@ class DBSessionLogger:
         self.last_session_row_number = None
         self.last_session_ts = None
         self.progress_num = 0
+        self.session_note = ''  # Jie
 
         self.db_path = str(pathlib.Path(config["database_relpath"]))
         self.password = config["networddrive_password"] if config["networddrive_password"] else None
@@ -526,10 +527,11 @@ class DBSessionLogger:
         Returns True if successful, False if not
         """
         insert_statement = "INSERT INTO session_log (instrument, " \
-                           " event_type, session_identifier" + \
+                           " event_type, session_identifier, session_note" + \
                            (", user) " if self.user else ") ") + \
                            "VALUES ('{}', 'START', ".format(self.instr_pid) + \
                            "'{}'".format(self.session_id) + \
+                           ", '{}'".format(self.session_note) + \
                            (", '{}');".format(self.user) if self.user else ");")
 
         self.log('insert_statement: {}'.format(insert_statement), 2)
@@ -589,11 +591,12 @@ class DBSessionLogger:
 
         insert_statement = "INSERT INTO session_log " \
                            "(instrument, event_type, " \
-                           "record_status, session_identifier" + \
+                           "record_status, session_identifier, session_note" + \
                            (", user) " if self.user else ") ") + \
                            "VALUES ('{}',".format(self.instr_pid) + \
                            "'END', 'TO_BE_BUILT', " + \
                            "'{}'".format(self.session_id) + \
+                           ", '{}'".format(self.session_note) + \
                            (", '{}');".format(self.user) if self.user else ");")
 
         # Get the most 'START' entry for this instrument and session id

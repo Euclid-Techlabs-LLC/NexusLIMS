@@ -103,7 +103,6 @@ import json
 import logging
 import os
 import pathlib
-import shutil
 import sys
 
 
@@ -129,6 +128,20 @@ logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 
+class _Config(dict):
+    '''subclass `dict`, get keys from environment first.
+    '''
+    def __getitem__(self, k):
+        if k in os.environ:
+            return os.getenv(k)
+        return super().__getitem__(k)
+
+    def get(self, k):
+        if k in os.environ:
+            return os.getenv(k)
+        return super().get(k)
+
+
 def validate_config(config):
     keys_non_null = [
         "mmfnexus_path",
@@ -145,22 +158,21 @@ def validate_config(config):
 
 
 def get_config():
-    config_dir = os.path.join(pathlib.Path.home(), ".nexuslims")
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
+    """return a setting configuration customed dict.
 
-    config_fn = os.path.join(config_dir, "config.json")
-    if not os.path.isfile(config_fn):
-        # default config
-        default_fn = os.path.abspath(__file__)
-        default_fn = default_fn.replace(os.path.basename(__file__), "config.json")
-        shutil.copy(default_fn, config_fn)
+    The setting config will look for settings from environment variable first.
+    If not exist, it will read from `$HOME/nexuslims/config.json` as fallback.
+    """
 
-        logger.warning(f"No `config.json` found in {config_dir}, a default copy is created.")
-        logger.warning(json.dumps(json.loads(open(config_fn).read())))
+    config = _Config()
 
     try:
-        config = json.loads(open(config_fn).read())
+        config_fn = os.path.join(pathlib.Path.home(), "nexuslims", "config.json")
+        config.update(json.loads(open(config_fn).read()))
+    except:
+        pass
+
+    try:
         validate_config(config)
     except Exception as e:
         logger.exception(str(e))
