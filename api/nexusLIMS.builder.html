@@ -4,9 +4,9 @@
 <html lang="python">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>nexusLIMS.builder package &#8212; nexusLIMS 0.0.post0.dev1+g901db65 documentation</title>
+    <title>nexusLIMS.builder package &#8212; nexusLIMS 0.0.post0.dev1+g1ee343b documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom-styles.css" />
@@ -25,9 +25,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
@@ -43,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="../index.html"><span><img src="../_static/logo_horizontal.png"></span>
            </a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g901db65</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.post0.dev1+g1ee343b</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -199,7 +199,7 @@
 <dd><p>The path to <code class="docutils literal notranslate"><span class="pre">cal_events_to_nx_record.xsl</span></code>, which is used to translate
 the calender event response XML to a format compatible with the Nexus Schema</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
 </dd>
 </dl>
@@ -214,7 +214,7 @@ associated with each dataset obtained during a microscopy session. Unique
 AcquisitionActivities are delimited via clustering of file collection
 time to detect &quot;long&quot; breaks during a session.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>instrument</strong> (<a class="reference internal" href="nexusLIMS.html#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instrument</span></code></a>) -- One of the NexusLIMS instruments contained in the database.
 Controls what instrument calendar is used to get events.</p></li>
@@ -226,7 +226,7 @@ which files should be associated with this record</p></li>
 <li><p><strong>generate_previews</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Whether or not to create the preview thumbnail images</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>acq_activities</strong> (<em>str</em>) -- A string representing the XML output for each AcquisitionActivity
 associated with a given reservation/experiment on a microscope.</p></li>
@@ -247,11 +247,11 @@ those records using
 <a class="reference internal" href="#nexusLIMS.builder.record_builder.build_record" title="nexusLIMS.builder.record_builder.build_record"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_record()</span></code></a> (saving to the NexusLIMS folder), and returns a
 list of resulting .xml files to be uploaded to CDCS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xml_files</strong> -- A list of record files that were successfully built and saved to
 centralized storage</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of str</p>
 </dd>
 </dl>
@@ -264,7 +264,7 @@ centralized storage</p>
 directory containing microscopy data files. For calendar parsing,
 currently no logic is implemented for a query that returns multiple records</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>instrument</strong> (<a class="reference internal" href="nexusLIMS.html#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instrument</span></code></a>) -- One of the NexusLIMS instruments contained in the database.
 Controls what instrument calendar is used to get events.</p></li>
@@ -286,11 +286,11 @@ collected in this record. If None, a UUIDv4 will be generated</p></li>
 <li><p><strong>generate_previews</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Whether or not to create the preview thumbnail images</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>xml_record</strong> -- A formatted string containing a well-formed and valid XML document
 for the data contained in the provided path</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
 </dd>
 </dl>
@@ -302,14 +302,14 @@ for the data contained in the provided path</p>
 <dd><p>Get the files that would be included for any records to be created based
 off the supplied session</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>s</strong> (<a class="reference internal" href="nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><em>Session</em></a>) -- A session read from the database</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>files</strong> -- A list of strings containing the files that would be included for the
 record of this session (if it were not a dry run)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of str</p>
 </dd>
 </dl>
@@ -321,14 +321,14 @@ record of this session (if it were not a dry run)</p>
 <dd><p>Get the calendar event that would be used to create a record based off
 the supplied session</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>s</strong> (<a class="reference internal" href="nexusLIMS.db.html#nexusLIMS.db.session_handler.Session" title="nexusLIMS.db.session_handler.Session"><em>Session</em></a>) -- A session read from the database</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>cal_event</strong> -- A list of strings containing the files that would be included for the
 record of this session (if it were not a dry run)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>CalendarEvent</p>
 </dd>
 </dl>
@@ -341,7 +341,7 @@ record of this session (if it were not a dry run)</p>
 calendar as well as metadata extracted from the microscope data (e.g. dm3
 files).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>instrument</strong> (<a class="reference internal" href="nexusLIMS.html#nexusLIMS.instruments.Instrument" title="nexusLIMS.instruments.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instrument</span></code></a>) -- One of the NexusLIMS instruments contained in the database.
 Controls what instrument calendar is used to get events.</p></li>
@@ -356,10 +356,10 @@ microscopy experiment</p></li>
 <li><p><strong>generate_previews</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Whether or not to create the preview thumbnail images</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>filename</strong> -- The name of the created record that was returned</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
 </dd>
 </dl>
@@ -371,7 +371,7 @@ microscopy experiment</p></li>
 <dd><p>Get list of files under a path that were last modified between the two
 given timestamps.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The file path in which to search for files</p></li>
 <li><p><strong>dt_from</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><em>datetime.datetime</em></a>) -- The starting timestamp that will be used to determine which files go
@@ -380,11 +380,11 @@ in this record</p></li>
 which files should be associated with this record</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>files</strong> -- A list of the files that have modification times within the
 time range provided (sorted by modification time)</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd>
 </dl>
@@ -402,14 +402,14 @@ save them to disk, and upload them to the NexusLIMS CDCS instance.</p>
 <code class="sig-prename descclassname">nexusLIMS.builder.record_builder.</code><code class="sig-name descname">validate_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xml_filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/nexusLIMS/builder/record_builder.html#validate_record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nexusLIMS.builder.record_builder.validate_record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validate an .xml record against the Nexus schema</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xml_filename</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.7/library/io.html#io.StringIO" title="(in Python v3.7)"><em>io.StringIO</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.7/library/io.html#io.BytesIO" title="(in Python v3.7)"><em>io.BytesIO</em></a>) -- The path to the xml file to be validated (can also be a file-like
 object like StringIO or BytesIO)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>validates</strong> -- Whether or not the record validates against the Nexus schema</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </dd>
 </dl>
@@ -439,7 +439,7 @@ object like StringIO or BytesIO)</p>
     </p>
     <p>
         &copy; Copyright 2021, NIST Office of Data and Informatics.<br/>
-      Last updated on Apr 23, 2021.<br/>
+      Last updated on Nov 29, 2021.<br/>
     </p>
   </div>
 </footer>
