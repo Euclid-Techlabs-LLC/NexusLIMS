@@ -19,7 +19,7 @@ CREATE TABLE "nexuslims_db"."instruments"(
   "calendar_url" TEXT NOT NULL,-- "The URL to this instrument's web-accessible calendar on the sharepoint resource"
   "location" VARCHAR(100) NOT NULL,-- The physical location of this instrument (building and room number)
   "schema_name" TEXT NOT NULL,-- The name of instrument as defined in the Nexus Microscopy schema and displayed in the records
-  "property_tag" VARCHAR(20) NOT NULL,-- The NIST property tag for this instrument
+  "property_tag" VARCHAR(20) NOT NULL,-- The property tag for this instrument
   "filestore_path" TEXT NOT NULL,-- The path (relative to the Nexus facility root) on the central file storage where this instrument stores its data
   "computer_name" TEXT,-- "The name of the 'support PC' connected to this instrument"
   "computer_ip" VARCHAR(15),-- "The REN IP address of the 'support PC' connected to this instrument"
@@ -58,7 +58,7 @@ CREATE TABLE "nexuslims_db"."session_log"(
   "timestamp" DATETIME NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', 'localtime')),-- The date and time of the logged event
   "event_type" TEXT NOT NULL CHECK("event_type" IN('START', 'END', 'RECORD_GENERATION')),-- The type of log for this session either "START" or "END"
   "record_status" TEXT NOT NULL CHECK("record_status" IN('COMPLETED', 'WAITING_FOR_END', 'TO_BE_BUILT', 'ERROR', 'NO_FILES_FOUND')) DEFAULT 'WAITING_FOR_END',-- The status of the record associated with this session. One of 'WAITING_FOR_END' (has a start event, but no end event), 'TO_BE_BUILT' (session has ended, but record not yet built), 'COMPLETED' (record has been built successfully), 'ERROR' (some error happened during record generation), or 'NO_FILES_FOUND' (record generation occurred, but no files matched time span)
-  "user" VARCHAR(50),-- The NIST "short style" username associated with this session (if known)
+  "user" VARCHAR(50),-- The username associated with this session (if known)
   CONSTRAINT "id_session_log_UNIQUE"
     UNIQUE("id_session_log"),
   CONSTRAINT "fk_instrument"
